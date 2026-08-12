@@ -1,0 +1,51 @@
+{
+  "version": 3,
+  "source": "/assets/kilns/cizhou-panorama.png",
+  "panoramaSize": {
+    "width": 1774,
+    "height": 887
+  },
+  "assets": {
+    "heatMask": {
+      "path": "/assets/kilns/cizhou-knowledge/cizhou-ink-heat-mask-v1.png",
+      "usage": "Exact panorama-aligned mask for the black-painted ornament",
+      "blendMode": "mask"
+    },
+    "bloomMask": {
+      "path": "/assets/kilns/cizhou-knowledge/cizhou-ink-bloom-mask-v1.png",
+      "usage": "Soft outer heat halo aligned with the ink mask",
+      "blendMode": "screen"
+    },
+    "emberOverlay": {
+      "path": "/assets/kilns/cizhou-knowledge/cizhou-ink-ember-overlay-v1.png",
+      "usage": "Archived transparent red-hot ink overlay retained as a fallback",
+      "blendMode": "screen"
+    },
+    "firedPanorama": {
+      "path": "/assets/kilns/cizhou-knowledge/cizhou-panorama-fired-v3.png",
+      "usage": "Active brighter high-temperature material target sampled through the ink mask",
+      "blendMode": "masked-material"
+    },
+    "firedPanoramaFallback": {
+      "path": "/assets/kilns/cizhou-knowledge/cizhou-panorama-fired-v2.png",
+      "usage": "Restrained high-temperature fallback retained for visual comparison",
+      "blendMode": "masked-material"
+    },
+    "peonyInk": {
+      "path": "/assets/kilns/cizhou-knowledge/cizhou-peony-ink-cutout-v1.png",
+      "size": 720,
+      "usage": "Warm-black transparent motif for the knowledge-page hero"
+    },
+    "peonyEmber": {
+      "path": "/assets/kilns/cizhou-knowledge/cizhou-peony-ember-cutout-v1.png",
+      "size": 720,
+      "usage": "Red-hot counterpart for the transition match cut"
+    }
+  },
+  "heatPalette": {
+    "deep": "#7D1208",
+    "ember": "#D93612",
+    "hotEdge": "#FF6A1A",
+    "flash": "#FFC06A"
+  }
+}

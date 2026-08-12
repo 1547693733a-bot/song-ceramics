@@ -1,0 +1,10 @@
+{
+  "source": "/assets/kilns/guan-panorama-v3.png",
+  "assets": {
+    "firingMask": {
+      "path": "/assets/kilns/guan-knowledge/guan-firing-mask-v1.png",
+      "usage": "Panorama-aligned three-channel firing mask: red is broad ice-crackle boundary, green is glaze-thickness proxy, blue is pearly glaze-bubble highlight",
+      "generator": "/scripts/generate-guan-firing-mask.py"
+    }
+  }
+}

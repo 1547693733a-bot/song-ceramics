@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "source": "/assets/kilns/jun-panorama.png",
+  "assets": {
+    "kilnChangePanorama": {
+      "path": "/assets/kilns/jun-knowledge/jun-panorama-kilnchange-v2.png",
+      "usage": "Generated completed Jun kiln-transmutation material revealed by the WebGL cloud field",
+      "blendMode": "cloud-material",
+      "fallback": "/assets/kilns/jun-knowledge/jun-panorama-kilnchange-v1.png"
+    }
+  },
+  "palette": {
+    "moonWhite": "#DCE7ED",
+    "milkyBlue": "#A8CBE0",
+    "rosePurple": "#A85F8D",
+    "copperRed": "#A94C68",
+    "deepViolet": "#60436F"
+  }
+}

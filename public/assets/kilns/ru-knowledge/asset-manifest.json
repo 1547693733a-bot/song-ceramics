@@ -1,0 +1,11 @@
+{
+  "coldSource": "/assets/kilns/ru-panorama-v4.png",
+  "firedState": "/assets/kilns/ru-knowledge/ru-panorama-fired-v1.png",
+  "transition": "aligned full-field Ru glaze change: cloud transmission, glaze-light condensation, fired hold",
+  "generationMode": "built-in image generation plus aligned lighting edit",
+  "constraints": [
+    "no central radial convergence",
+    "sphere-safe poles",
+    "cool sky-blue glaze remains visible above subsurface heat"
+  ]
+}

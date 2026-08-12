@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "status": "live-runtime",
+  "source": "/assets/kilns/yaozhou-panorama-v9-1.png",
+  "assets": {
+    "completedGlazePanorama": {
+      "path": "/assets/kilns/yaozhou-knowledge/yaozhou-panorama-glaze-depth-v2.png",
+      "role": "Panorama-aligned completed celadon glaze target with depth-dependent pooling and a repaired horizontal seam",
+      "fallback": "/assets/kilns/yaozhou-knowledge/yaozhou-panorama-glaze-depth-v1.png"
+    },
+    "carvingDepthMask": {
+      "path": "/assets/kilns/yaozhou-knowledge/yaozhou-carving-depth-mask-v2.png",
+      "role": "Grayscale animation control: white deep cuts, gray shallow relief, black raised and flat planes",
+      "generator": "/scripts/generate-yaozhou-depth-mask.py",
+      "fallback": "/assets/kilns/yaozhou-knowledge/yaozhou-carving-depth-mask-v1.png"
+    }
+  },
+  "palette": {
+    "thinGlaze": "#A8AC79",
+    "oliveJade": "#78814F",
+    "pooledGreen": "#263E22",
+    "ridgeLight": "#E4E4BE"
+  }
+}

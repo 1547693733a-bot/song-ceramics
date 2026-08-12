@@ -1,0 +1,10 @@
+{
+  "source": "/assets/kilns/ge-panorama.png",
+  "assets": {
+    "dualCrackleMask": {
+      "path": "/assets/kilns/ge-knowledge/ge-crackle-dual-mask-v1.png",
+      "usage": "Panorama-aligned two-channel crackle mask: red is coarse iron-wire crackle, green is fine gold-thread crackle",
+      "generator": "/scripts/generate-ge-crackle-mask.py"
+    }
+  }
+}

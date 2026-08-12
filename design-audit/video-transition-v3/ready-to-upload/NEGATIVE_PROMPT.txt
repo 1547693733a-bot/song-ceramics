@@ -1,0 +1,8 @@
+中文负面提示词：
+
+不要切镜，不要跳帧，不要镜头漂移，不要改变孔心位置，不要突然改变孔径，不要出现第二个孔，不要出现独立圆盘、圆环、球体、盖子或塞子，不要出现发光传送门，不要闪白，不要黑闪，不要呼吸式缩放，不要突然改变旋转方向或角速度，不要把静态图片直接推向镜头，不要纹理闪烁，不要结构变形，不要材质瞬间替换，不要新增器物、手、火焰、烟雾、粒子、文字、标志、水印、手机外框、状态栏、导航条、按钮或界面，不要过饱和，不要橙红火光，不要科幻和奇幻效果。
+
+English negative prompt:
+
+No cuts, no frame jumps, no camera drift, no off-center opening, no sudden aperture change, no second hole, no separate disc, ring, sphere, lid, or plug, no glowing portal, no white flash, no black flash, no breathing zoom, no rotation reset, no reversal of rotation, no sudden angular-speed change, no flat image pushed toward the camera, no texture flicker, no geometry morphing errors, no abrupt material replacement, no extra vessel, hands, flame, smoke, particles, text, logo, watermark, phone frame, status bar, navigation bar, controls, or interface. No oversaturation, no orange fire lighting, no sci-fi effects, no fantasy effects.
+

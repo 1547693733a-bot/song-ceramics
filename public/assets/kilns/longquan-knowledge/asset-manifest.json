@@ -1,0 +1,13 @@
+{
+  "source": "public/assets/kilns/longquan-panorama-v2.png",
+  "output": "public/assets/kilns/longquan-knowledge/longquan-firing-mask-v1.png",
+  "dimensions": [
+    1774,
+    887
+  ],
+  "channels": {
+    "red": "small glaze-cell interior",
+    "green": "fine celadon cell boundary",
+    "blue": "stable per-cell firing offset"
+  }
+}

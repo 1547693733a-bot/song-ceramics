@@ -1,0 +1,11 @@
+{
+  "coldSource": "/assets/kilns/ding-panorama-v3.png",
+  "firedState": "/assets/kilns/ding-knowledge/ding-panorama-fired-v2.png",
+  "transition": "full-field aligned material blend from cold ivory glaze to kiln-fired ceramic",
+  "generationMode": "built-in image generation edit",
+  "legacyMask": {
+    "path": "/assets/kilns/ding-knowledge/ding-impression-depth-mask-v1.png",
+    "runtime": false,
+    "generator": "scripts/generate-ding-impression-mask.py"
+  }
+}
