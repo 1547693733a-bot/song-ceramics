@@ -14,8 +14,6 @@ import { useGSAP } from "@gsap/react";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import {
   ArrowLeftIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
   Cross2Icon,
   SpeakerLoudIcon,
   SpeakerOffIcon,
@@ -451,6 +449,10 @@ type CizhouTrait = {
   vessel: string;
   period: string;
   image: string;
+  prop?: string;
+  occlusion?: "cart";
+  atmosphere: string;
+  motion: "smoke" | "dust" | "candle";
   audio: string;
   soundscape: string;
   fact: string;
@@ -462,101 +464,107 @@ type CizhouTrait = {
 
 const cizhouTraits: readonly CizhouTrait[] = [
   {
-    id: "black-white",
+    id: "kiln-yard",
     number: "01",
-    title: "黑白成画",
-    tagline: "以白为纸，以黑作画。",
+    title: "出匣初明",
+    tagline: "匣钵护火，黑彩成器。",
     vessel: "磁州窑白地黑花梅瓶",
-    period: "宋代代表类型 · 盛酒器",
-    image: "/assets/kilns/cizhou-traits/01-black-white-meiping-v1.png",
-    audio: "/assets/kilns/cizhou-traits/audio/01-black-white-tavern-v1.wav",
-    soundscape: "酒肆人声、倒酒与酒碗轻碰",
-    fact: "白色化妆土遮盖较粗胎体，再用含铁黑彩在白地上绘画，形成磁州窑醒目的黑白对比。",
-    reconstruction: "基于宋金器物与北方市井史料的酒肆情境复原。",
-    sourceLabel: "故宫博物院 · 磁州窑白地黑花梅瓶",
-    sourceUrl: "https://www.dpm.org.cn/collection/ceramic/226833.html",
-    hotspots: [
-      {
-        id: "paint",
-        label: "看黑彩",
-        title: "毛笔画进日用瓷",
-        body: "黑彩并非贴花。匠人以含铁颜料直接落笔，花叶舒展，保留民窑绘画自由明快的笔意。",
-        x: 71,
-        y: 59,
-      },
-      {
-        id: "slip",
-        label: "看白地",
-        title: "一层化妆土，粗瓷细作",
-        body: "白色化妆土先覆盖胎体，再承接黑彩与透明釉，让有限材料得到干净、鲜明的视觉效果。",
-        x: 74,
-        y: 72,
-      },
-    ],
-  },
-  {
-    id: "carved",
-    number: "02",
-    title: "刀笔生花",
-    tagline: "一刀见地，一划成纹。",
-    vessel: "磁州窑白地剔划黑花玉壶春瓶",
-    period: "北宋 · 中国国家博物馆藏",
-    image: "/assets/kilns/cizhou-traits/02-carved-yuhuchun-v1.png",
+    period: "出窑 · 匣钵、垫饼与检选",
+    image: "/assets/kilns/cizhou-one-shot/01-kiln-yard-meiping-integrated-v4-clean-r4.png",
+    atmosphere: "/assets/kilns/cizhou-one-shot/atmosphere-smoke-v1.webp",
+    motion: "smoke",
     audio: "/assets/kilns/cizhou-traits/audio/02-carved-interior-v1.wav",
-    soundscape: "室内低语、斟酒与衣袖木案轻响",
-    fact: "先剔出大面积明暗，再以划线补足花叶细部。装饰来自材料层次本身，而非附着的平面图案。",
-    reconstruction: "器物信息有馆藏依据；家庭待客环境为功用导向的艺术复原。",
-    sourceLabel: "中国国家博物馆 · 白地剔划黑花玉壶春瓶",
-    sourceUrl: "https://www.chnmuseum.cn/zp/zpml/csp/202203/t20220315_254286.shtml",
+    soundscape: "窑体冷却、搬运匣钵与清晨院落风声",
+    fact: "观台磁州窑宋金地层出土匣钵、垫饼、支钉等装烧窑具；匣钵是器物入窑烧成时真正所属的保护空间。",
+    reconstruction: "窑门外冷却后的出匣检选位置与人物动作，是依据观台窑具和烧造流程完成的克制复原。",
+    sourceLabel: "北京大学 · 观台磁州窑址发掘简报",
+    sourceUrl: "https://ir.pku.edu.cn/handle/20.500.11897/7267",
     hotspots: [
       {
-        id: "carve",
-        label: "看剔地",
-        title: "剔，决定大块明暗",
-        body: "刀具揭去深色覆盖层，让浅色底层成为牡丹主体；深浅材料直接构成画面。",
-        x: 70,
-        y: 60,
+        id: "saggar",
+        label: "看窑具",
+        title: "匣钵护器，隔开窑火与落灰",
+        body: "匣钵把器物包在耐火窑具中烧成，减少火焰与窑灰直接侵扰。出窑后，器物才会被逐件取出检选。",
+        x: 64,
+        y: 61,
       },
       {
-        id: "incise",
-        label: "看划线",
-        title: "划，补足花叶筋脉",
-        body: "细线深入花叶内部，和剔出的宽阔色块配合，使纹样既有力量又保留细部节奏。",
-        x: 75,
+        id: "firing-pad",
+        label: "看垫饼",
+        title: "一枚垫饼，托住器底",
+        body: "垫饼等支烧窑具承托器底、控制器物与窑具的接触。它们留下的痕迹，也是辨认烧造方法的重要线索。",
+        x: 68,
         y: 72,
       },
     ],
   },
   {
-    id: "folk-life",
-    number: "03",
-    title: "瓷上人间",
-    tagline: "枕上有画，器底有名。",
-    vessel: "白地黑花鹭鸶莲池纹“张家造”瓷枕",
-    period: "宋 · 1955年西安韩森寨出土",
-    image: "/assets/kilns/cizhou-traits/03-painted-pillow-v1.png",
-    audio: "/assets/kilns/cizhou-traits/audio/03-painted-pillow-night-v1.wav",
-    soundscape: "夜风虫鸣、翻书与织物轻响",
-    fact: "鹭鸶莲池进入枕面，“张家造”留在器底。日用瓷由此成为民间绘画、作坊生产与生活审美的共同载体。",
-    reconstruction: "图案、作坊款与出土信息可考；居室陈设与声境为艺术复原。",
-    sourceLabel: "中国国家博物馆 · 《瓷器卷（宋—元）》",
-    sourceUrl: "https://www.chnmuseum.cn/yj/kydt/202401/t20240124_265862.shtml",
+    id: "northbound-cart",
+    number: "02",
+    title: "车辙北行",
+    tagline: "一车载瓷，器走北方。",
+    vessel: "磁州窑白地黑花梅瓶",
+    period: "流通 · 北方陆路车载",
+    image: "/assets/kilns/cizhou-one-shot/02-northbound-cart-integrated-v5-clean-r5.png",
+    atmosphere: "/assets/kilns/cizhou-one-shot/atmosphere-dust-v1.webp",
+    motion: "dust",
+    audio: "/assets/kilns/cizhou-traits/audio/01-black-white-tavern-v1.wav",
+    soundscape: "木轮、车板轻震、牲畜脚步与驿路风声",
+    fact: "宋代绘画保存了牛车和载重车辆在山路、驿路间运输的图像。重货北行依靠车体、牵引和道路共同完成。",
+    reconstruction: "草束护套、填塞与捆扎为综合同时代车载图像和瓷器防碰包装方式的艺术推断。",
+    sourceLabel: "台北故宫博物院 · 雪栈牛车图",
+    sourceUrl: "https://digitalarchive.npm.gov.tw/Collection/Detail/1474?dep=P",
     hotspots: [
       {
-        id: "painting",
-        label: "看枕画",
-        title: "日常器，也承载绘画",
-        body: "鹭鸶与莲池不是宫廷陈设专属的图像，它们进入可使用的瓷枕，让生活器物拥有完整画面。",
-        x: 68,
-        y: 66,
+        id: "cart-load",
+        label: "看车载",
+        title: "车板承重，木轮走远路",
+        body: "梅瓶不再被当作市场摆设，而是成为货车上的易碎载荷。车板、车轮和牵引方向共同交代它正在北运。",
+        x: 64,
+        y: 61,
       },
       {
-        id: "maker",
-        label: "看款识",
-        title: "“张家造”，匠人留下姓名",
-        body: "作坊款帮助辨识生产者与商品来源。这里不虚构诗文，只呈现该器确有的图像和款识。",
-        x: 77,
-        y: 77,
+        id: "packing",
+        label: "看包裹",
+        title: "草束填塞，绳索稳住器身",
+        body: "低矮护套围住瓶底，草绳从两侧收紧；柔性填塞吸收车板震动，避免完整器物无遮拦地立在车上。",
+        x: 68,
+        y: 78,
+      },
+    ],
+  },
+  {
+    id: "tavern",
+    number: "03",
+    title: "酒肆入席",
+    tagline: "瓶中有酒，瓷上有人间。",
+    vessel: "磁州窑白地黑花梅瓶",
+    period: "功用 · 宋代盛酒器",
+    image: "/assets/kilns/cizhou-one-shot/03-tavern-meiping-integrated-v4-clean-r5.png",
+    atmosphere: "/assets/kilns/cizhou-one-shot/atmosphere-candle-v1.webp",
+    motion: "candle",
+    audio: "/assets/kilns/cizhou-traits/audio/01-black-white-tavern-v1.wav",
+    soundscape: "斟酒、酒碗轻碰、低语与店家远声",
+    fact: "梅瓶自宋代开始流行，小口、短颈、丰肩、修腹，主要承担储酒功用；酒盏与盏托构成真正的饮酒器物关系。",
+    reconstruction: "酒肆木桌、远处客人、酒盏与错位烛火为依据宋金器物功用完成的艺术复原。",
+    sourceLabel: "故宫博物院 · 梅瓶",
+    sourceUrl: "https://www.dpm.org.cn/lemmas/239389.html",
+    hotspots: [
+      {
+        id: "shape",
+        label: "看器形",
+        title: "小口丰肩，为盛酒而生",
+        body: "梅瓶的小口、短颈、丰肩和向下收敛的腹部适合储存与倾注酒液。自宋代开始，它成为常见的盛酒用具。",
+        x: 64,
+        y: 61,
+      },
+      {
+        id: "wine-cup",
+        label: "看酒盏",
+        title: "瓶中储酒，盏上入席",
+        body: "桌面只保留一只小酒盏和低矮盏托，与梅瓶组成清楚的储酒、斟酒和饮用关系。",
+        x: 13,
+        y: 70,
       },
     ],
   },
@@ -1983,6 +1991,7 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
   const audioFrameRef = useRef<number | null>(null);
   const arrivalTimelineRef = useRef<gsap.core.Timeline | null>(null);
+  const sceneTweenRef = useRef<gsap.core.Tween | null>(null);
   const [arrivalPhase, setArrivalPhase] = useState<CizhouArrivalPhase>("transitioning");
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeHotspot, setActiveHotspot] = useState<CizhouTraitHotspot | null>(null);
@@ -1999,54 +2008,75 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
       const root = rootRef.current;
       if (!root) return;
 
-      const firstSceneImage = root.querySelector<HTMLImageElement>('[data-trait-index="0"] .cizhou-trait-image');
-      const firstSceneHeat = root.querySelector<HTMLElement>('[data-trait-index="0"] .cizhou-trait-heat');
-      const firstSceneShade = root.querySelector<HTMLElement>('[data-trait-index="0"] .cizhou-trait-shade');
-      if (!firstSceneImage || !firstSceneHeat || !firstSceneShade) {
+      const cameraStage = root.querySelector<HTMLElement>(".cizhou-arrival-camera");
+      const meipingStage = root.querySelector<HTMLElement>(".cizhou-meiping-stage");
+      const meiping = root.querySelector<HTMLImageElement>(".cizhou-meiping-master");
+      const shadow = root.querySelector<HTMLElement>(".cizhou-meiping-shadow");
+      const light = root.querySelector<HTMLElement>(".cizhou-meiping-light");
+      const tone = root.querySelector<HTMLElement>(".cizhou-meiping-tone");
+      const firstSceneImage = root.querySelector<HTMLImageElement>('[data-scene-layer="kiln-yard"] .cizhou-scene-layer-image');
+      const firstSceneAtmosphere = root.querySelector<HTMLElement>('[data-scene-layer="kiln-yard"] .cizhou-scene-layer-atmosphere');
+      const foregroundHaze = root.querySelector<HTMLElement>(".cizhou-arrival-foreground-haze");
+      const firstSceneShade = root.querySelector<HTMLElement>('[data-scene-layer="kiln-yard"] .cizhou-scene-layer-shade');
+      if (!cameraStage || !meipingStage || !meiping || !shadow || !light || !tone || !firstSceneImage || !firstSceneAtmosphere || !foregroundHaze || !firstSceneShade) {
         setArrivalPhase("ready");
         return;
       }
 
       if (reducedMotion) {
-        gsap.set([firstSceneImage, firstSceneHeat, firstSceneShade], { clearProps: "all" });
+        gsap.set([cameraStage, meipingStage, meiping, shadow, light, tone, firstSceneImage, firstSceneAtmosphere, foregroundHaze, firstSceneShade], { clearProps: "all" });
+        gsap.set(meipingStage, { autoAlpha: 0 });
         setArrivalPhase("ready");
         return;
       }
 
       setArrivalPhase("transitioning");
-      gsap.set(firstSceneImage, {
+      gsap.set(cameraStage, {
         autoAlpha: 0,
-        scale: 3.48,
-        transformOrigin: "67% 60%",
-        filter: "none",
+        scale: 3.18,
+        xPercent: -16.2,
+        yPercent: -10.4,
+        transformOrigin: "64% 64%",
       });
-      gsap.set(firstSceneHeat, { autoAlpha: 0 });
+      gsap.set(firstSceneImage, { autoAlpha: 1 });
+      gsap.set(meipingStage, { autoAlpha: 0 });
+      gsap.set(meiping, { filter: "brightness(0.72) saturate(0.4) contrast(0.92)" });
+      gsap.set([light, tone], { autoAlpha: 0 });
+      gsap.set(shadow, { autoAlpha: 0, scaleX: 0.42, scaleY: 0.52 });
+      gsap.set(firstSceneAtmosphere, { autoAlpha: 0.08 });
+      gsap.set(foregroundHaze, { autoAlpha: 0.72, scale: 1.1 });
       gsap.set(firstSceneShade, { autoAlpha: 1 });
 
       const timeline = gsap.timeline({
-        defaults: { ease: "sine.inOut" },
-        onComplete: () => setArrivalPhase("ready"),
+        defaults: { ease: "power1.inOut" },
+        onComplete: () => {
+          gsap.set([cameraStage, meiping, shadow, light, tone], { clearProps: "all" });
+          gsap.set(meipingStage, { autoAlpha: 0 });
+          setArrivalPhase("ready");
+        },
       });
       arrivalTimelineRef.current = timeline;
 
       timeline
-        .addLabel("meipingReveal", 0)
-        .to(firstSceneImage, { autoAlpha: 1, duration: 0.52, ease: "sine.out" }, "meipingReveal")
-        .addLabel("directPullback", 1.1)
+        .addLabel("sceneReveal", 0)
+        .to(cameraStage, { autoAlpha: 1, duration: 1.05, ease: "sine.out" }, "sceneReveal")
+        .addLabel("directPullback", 0.9)
         .to(
-          firstSceneImage,
+          cameraStage,
           {
-            scale: 2.24,
-            duration: 3.6,
-            ease: "sine.in",
+            scale: 1,
+            xPercent: 0,
+            yPercent: 0,
+            duration: 5.2,
+            ease: "power1.inOut",
           },
           "directPullback",
         )
-        .to(firstSceneImage, {
-          scale: 1,
-          duration: 2.1,
-          ease: (progress: number) => progress * (0.9 + 0.1 * progress),
-        });
+        .to(firstSceneAtmosphere, { autoAlpha: 0.24, duration: 5.2, ease: "sine.inOut" }, "directPullback")
+        .to(meiping, { filter: "brightness(0.84) saturate(0.46) contrast(0.92)", duration: 2.0, ease: "sine.inOut" }, "directPullback+=3.2")
+        .to([light, tone], { autoAlpha: 1, duration: 1.6, ease: "sine.inOut" }, "directPullback+=3.35")
+        .to(shadow, { autoAlpha: 1, scaleX: 1, scaleY: 1, duration: 1.7, ease: "sine.inOut" }, "directPullback+=3.3");
+      timeline.to(foregroundHaze, { autoAlpha: 0.16, scale: 1, duration: 2.4, ease: "sine.inOut" }, "directPullback+=2.8");
 
       return () => {
         timeline.kill();
@@ -2056,42 +2086,119 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
     { scope: rootRef },
   );
 
-  const scrollToTrait = useCallback(
-    (index: number) => {
-      const nextIndex = clamp(index, 0, cizhouTraits.length - 1);
-      const viewport = rootRef.current?.querySelector<HTMLDivElement>(".cizhou-trait-carousel");
-      const card = viewport?.querySelector<HTMLElement>(`[data-trait-index="${nextIndex}"]`);
-      if (!viewport || !card) return;
-      setActiveHotspot(null);
-      setActiveIndex(nextIndex);
-      viewport.scrollTo({ left: card.offsetLeft, behavior: reducedMotion ? "auto" : "smooth" });
-    },
-    [reducedMotion],
-  );
-
   useEffect(() => {
+    const root = rootRef.current;
     const viewport = rootRef.current?.querySelector<HTMLDivElement>(".cizhou-trait-carousel");
-    if (!viewport) return;
+    const cards = viewport
+      ? Array.from(viewport.querySelectorAll<HTMLElement>(".cizhou-trait-card"))
+      : [];
+    const sceneLayers = Array.from(root?.querySelectorAll<HTMLElement>(".cizhou-scene-layer") ?? []);
+    const sceneSlices = Array.from(root?.querySelectorAll<HTMLElement>("[data-scene-slice]") ?? []);
+    if (!root || !viewport || cards.length === 0 || sceneLayers.length === 0) return;
 
     let frame = 0;
-    const updateActiveCard = () => {
+    let settleTimer = 0;
+    let snapping = false;
+    let moving = false;
+    const sceneOriginIndex = activeIndex;
+
+    const updateScenePresentation = () => {
+      const width = Math.max(1, viewport.clientWidth);
+      const scenePosition = viewport.scrollLeft / width;
+      cards.forEach((card) => {
+        const distance = (card.offsetLeft - viewport.scrollLeft) / width;
+        const magnitude = Math.min(Math.abs(distance), 1);
+        card.style.setProperty("--scene-copy-x", `${distance * 10}px`);
+        card.style.setProperty("--scene-copy-opacity", `${Math.max(0, 1 - magnitude * 2.4)}`);
+        card.style.setProperty("--scene-content-opacity", `${Math.max(0, 1 - magnitude * 2.1)}`);
+      });
+      sceneLayers.forEach((layer, index) => {
+        const distance = Math.abs(scenePosition - index);
+        const visibility = clamp(1 - distance, 0, 1);
+        layer.style.setProperty("--scene-layer-opacity", `${visibility}`);
+        layer.dataset.running = visibility > 0.03 ? "true" : "false";
+      });
+      sceneSlices.forEach((slice) => {
+        const index = Number(slice.dataset.sceneSlice ?? 0);
+        const visibility = clamp(1 - Math.abs(scenePosition - index), 0, 1);
+        slice.style.setProperty("--scene-weight", `${visibility}`);
+        slice.dataset.running = visibility > 0.03 ? "true" : "false";
+      });
+      const nearestIndex = clamp(Math.round(scenePosition), 0, cards.length - 1);
+      root.dataset.scene = cizhouTraits[nearestIndex].id;
+    };
+
+    const requestScenePresentation = () => {
       window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(() => {
-        const width = Math.max(1, viewport.clientWidth);
-        const nextIndex = clamp(Math.round(viewport.scrollLeft / width), 0, cizhouTraits.length - 1);
-        setActiveIndex((current) => {
-          if (current !== nextIndex) setActiveHotspot(null);
-          return nextIndex;
-        });
+      frame = window.requestAnimationFrame(updateScenePresentation);
+    };
+
+    const finishSceneChange = (nextIndex: number) => {
+      snapping = false;
+      moving = false;
+      root.dataset.sceneMoving = "false";
+      root.dataset.scene = cizhouTraits[nextIndex].id;
+      setActiveIndex(nextIndex);
+      setActiveHotspot(null);
+      updateScenePresentation();
+    };
+
+    const settleToNearestScene = () => {
+      if (!ready) return;
+      const width = Math.max(1, viewport.clientWidth);
+      const nextIndex = clamp(Math.round(viewport.scrollLeft / width), 0, cards.length - 1);
+      const targetLeft = cards[nextIndex]?.offsetLeft ?? nextIndex * width;
+      const travel = Math.abs(targetLeft - viewport.scrollLeft) / width;
+
+      if (reducedMotion || travel < 0.002) {
+        viewport.scrollLeft = targetLeft;
+        finishSceneChange(nextIndex);
+        return;
+      }
+
+      snapping = true;
+      sceneTweenRef.current?.kill();
+      sceneTweenRef.current = gsap.to(viewport, {
+        scrollLeft: targetLeft,
+        duration: 0.46 + Math.min(travel, 0.5) * 0.38,
+        ease: "power1.out",
+        overwrite: true,
+        onUpdate: updateScenePresentation,
+        onComplete: () => {
+          sceneTweenRef.current = null;
+          finishSceneChange(nextIndex);
+        },
       });
     };
 
-    viewport.addEventListener("scroll", updateActiveCard, { passive: true });
-    return () => {
-      viewport.removeEventListener("scroll", updateActiveCard);
-      window.cancelAnimationFrame(frame);
+    const handleScroll = () => {
+      if (!snapping) {
+        const previousScene = cards[Math.max(0, sceneOriginIndex - 1)]?.offsetLeft ?? 0;
+        const nextScene = cards[Math.min(cards.length - 1, sceneOriginIndex + 1)]?.offsetLeft ?? viewport.scrollWidth;
+        const constrainedLeft = clamp(viewport.scrollLeft, previousScene, nextScene);
+        if (Math.abs(viewport.scrollLeft - constrainedLeft) > 0.5) viewport.scrollLeft = constrainedLeft;
+      }
+      requestScenePresentation();
+      if (snapping) return;
+      if (!moving) {
+        moving = true;
+        root.dataset.sceneMoving = "true";
+        setActiveHotspot(null);
+      }
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(settleToNearestScene, 34);
     };
-  }, []);
+
+    updateScenePresentation();
+    viewport.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      viewport.removeEventListener("scroll", handleScroll);
+      window.clearTimeout(settleTimer);
+      window.cancelAnimationFrame(frame);
+      sceneTweenRef.current?.kill();
+      sceneTweenRef.current = null;
+    };
+  }, [activeIndex, ready, reducedMotion]);
 
   useEffect(() => {
     if (audioFrameRef.current !== null) window.cancelAnimationFrame(audioFrameRef.current);
@@ -2161,8 +2268,73 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
       data-arrival-phase={arrivalPhase}
       data-transitioning={!ready}
       data-detail-open={Boolean(activeHotspot)}
+      data-scene={activeTrait.id}
       aria-label="识窑 · 磁州三章"
     >
+      <div className="cizhou-arrival-camera">
+        <div className="cizhou-scene-stack" aria-hidden="true">
+          {cizhouTraits.map((trait, traitIndex) => (
+            <div
+              key={`scene-${trait.id}`}
+              className="cizhou-scene-layer"
+              data-scene-layer={trait.id}
+              style={{ "--scene-layer-index": traitIndex } as CSSProperties}
+            >
+              <img className="cizhou-scene-layer-image" src={trait.image} alt="" draggable={false} />
+              <div className="cizhou-scene-layer-atmosphere" />
+              <div className="cizhou-scene-layer-motion" />
+              <div className="cizhou-scene-layer-shade" />
+            </div>
+          ))}
+          <div className="cizhou-transition-veil" />
+        </div>
+
+        <div className="cizhou-context-behind" aria-hidden="true">
+          {cizhouTraits.map((trait, traitIndex) => (
+            <div
+              key={`context-back-${trait.id}`}
+              className="cizhou-context-slice cizhou-context-slice-back"
+              data-scene-slice={traitIndex}
+              data-motion={trait.motion}
+            >
+              {trait.prop ? <img className="cizhou-context-prop cizhou-context-prop-back" src={trait.prop} alt="" draggable={false} /> : null}
+            </div>
+          ))}
+        </div>
+
+        <div className="cizhou-meiping-stage" aria-hidden="true">
+          <div className="cizhou-meiping-shadow" />
+          <img
+            className="cizhou-meiping-master"
+            src="/assets/kilns/cizhou-one-shot/cizhou-meiping-master-v1.png"
+            alt=""
+            draggable={false}
+          />
+          <div className="cizhou-meiping-tone" />
+          <div className="cizhou-meiping-light" />
+        </div>
+
+        <div className="cizhou-context-front" aria-hidden="true">
+          {cizhouTraits.map((trait, traitIndex) => (
+            <div
+              key={`context-front-${trait.id}`}
+              className="cizhou-context-slice cizhou-context-slice-front"
+              data-scene-slice={traitIndex}
+              data-motion={trait.motion}
+            >
+              {trait.prop ? <img className="cizhou-context-prop cizhou-context-prop-front" src={trait.prop} alt="" draggable={false} /> : null}
+              {trait.occlusion === "cart" ? (
+                <img className="cizhou-scene-occlusion cizhou-scene-occlusion-cart" src={trait.image} alt="" draggable={false} />
+              ) : null}
+              <img className="cizhou-atmosphere-raster cizhou-atmosphere-raster-a" src={trait.atmosphere} alt="" draggable={false} />
+              <img className="cizhou-atmosphere-raster cizhou-atmosphere-raster-b" src={trait.atmosphere} alt="" draggable={false} />
+            </div>
+          ))}
+        </div>
+
+        <div className="cizhou-arrival-foreground-haze" aria-hidden="true" />
+      </div>
+
       <Carousel
         className="cizhou-trait-carousel"
         contentClassName="cizhou-trait-track"
@@ -2174,15 +2346,11 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
             key={trait.id}
             className="cizhou-trait-card"
             data-trait-index={traitIndex}
+            data-scene-active={activeIndex === traitIndex}
             aria-hidden={activeIndex !== traitIndex}
             inert={activeIndex !== traitIndex}
           >
-            <img className="cizhou-trait-image" src={trait.image} alt="" draggable={false} />
-            <div className="cizhou-trait-heat" aria-hidden="true" />
-            <div className="cizhou-trait-shade" aria-hidden="true" />
-
             <header className="cizhou-trait-copy">
-              <span className="cizhou-trait-kicker">识窑 · 磁州三章 / {trait.number}</span>
               <h2>{trait.title}</h2>
               <p>{trait.tagline}</p>
               <div className="cizhou-trait-vessel">
@@ -2207,54 +2375,30 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
               ))}
             </div>
 
-            <div className="cizhou-trait-context">
-              <span>情境复原</span>
-              <p>{trait.soundscape}</p>
-            </div>
           </article>
         ))}
       </Carousel>
 
+      <div className="cizhou-scene-hotspots" aria-label={`${activeTrait.title}知识观察点`}>
+        {activeTrait.hotspots.map((hotspot, hotspotIndex) => (
+          <button
+            key={`${activeTrait.id}-${hotspot.id}`}
+            type="button"
+            className="cizhou-trait-hotspot"
+            style={{ "--hotspot-x": `${hotspot.x}%`, "--hotspot-y": `${hotspot.y}%` } as CSSProperties}
+            aria-label={`${hotspot.label}：${hotspot.title}`}
+            disabled={!ready}
+            onClick={() => setActiveHotspot(hotspot)}
+          >
+            <i aria-hidden="true">{hotspotIndex + 1}</i>
+            <span>{hotspot.label}</span>
+          </button>
+        ))}
+      </div>
+
       <button type="button" className="cizhou-knowledge-back" onClick={onBack} aria-label="返回窑中">
         <ArrowLeftIcon aria-hidden="true" />
-        <span>返回窑中</span>
       </button>
-
-      <nav className="cizhou-trait-controls" aria-label="切换磁州窑特性">
-        <button
-          type="button"
-          className="cizhou-trait-arrow"
-          onClick={() => scrollToTrait(activeIndex - 1)}
-          disabled={!ready || activeIndex === 0}
-          aria-label="上一项窑口特性"
-        >
-          <ChevronLeftIcon aria-hidden="true" />
-        </button>
-        <div className="cizhou-trait-dots">
-          {cizhouTraits.map((trait, index) => (
-            <button
-              key={trait.id}
-              type="button"
-              data-active={activeIndex === index}
-              onClick={() => scrollToTrait(index)}
-              disabled={!ready}
-              aria-label={`查看${trait.title}`}
-              aria-current={activeIndex === index ? "true" : undefined}
-            >
-              <span>{trait.number}</span>
-            </button>
-          ))}
-        </div>
-        <button
-          type="button"
-          className="cizhou-trait-arrow"
-          onClick={() => scrollToTrait(activeIndex + 1)}
-          disabled={!ready || activeIndex === cizhouTraits.length - 1}
-          aria-label="下一项窑口特性"
-        >
-          <ChevronRightIcon aria-hidden="true" />
-        </button>
-      </nav>
 
       <button
         type="button"
@@ -2265,7 +2409,6 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
         aria-label={audioEnabled ? `关闭${activeTrait.title}声境` : `开启${activeTrait.title}声境`}
       >
         {audioEnabled ? <SpeakerLoudIcon aria-hidden="true" /> : <SpeakerOffIcon aria-hidden="true" />}
-        <span>{audioEnabled ? "声境已开" : "开启声境"}</span>
       </button>
 
       {cizhouTraits.map((trait, index) => (
