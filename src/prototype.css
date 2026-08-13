@@ -2246,6 +2246,110 @@
   animation: cizhou-candle-flicker-b 3.35s ease-in-out -1.2s infinite;
 }
 
+.cizhou-visible-motion {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cizhou-visible-motion::before,
+.cizhou-visible-motion::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+  animation-play-state: paused;
+  will-change: opacity, transform;
+}
+
+.cizhou-context-slice[data-running="true"] .cizhou-visible-motion::before,
+.cizhou-context-slice[data-running="true"] .cizhou-visible-motion::after {
+  animation-play-state: running;
+}
+
+.cizhou-context-slice[data-motion="smoke"] .cizhou-visible-motion::before {
+  top: 34%;
+  right: 7.5%;
+  width: 21%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 239 193 / 0.96) 0 4%, rgb(255 210 145 / 0.52) 13%, rgb(211 225 224 / 0.2) 37%, transparent 70%);
+  filter: blur(3px);
+  mix-blend-mode: screen;
+  transform-origin: center;
+  animation: cizhou-visible-lantern 3.2s ease-in-out -0.8s infinite;
+}
+
+.cizhou-context-slice[data-motion="smoke"] .cizhou-visible-motion::after {
+  top: 27%;
+  right: -8%;
+  width: 63%;
+  height: 31%;
+  background:
+    radial-gradient(ellipse at 62% 52%, rgb(226 237 236 / 0.38), transparent 48%),
+    linear-gradient(98deg, transparent 5%, rgb(207 224 224 / 0.22) 48%, transparent 91%);
+  filter: blur(10px);
+  mix-blend-mode: screen;
+  animation: cizhou-visible-air 5.6s ease-in-out -2.1s infinite alternate;
+}
+
+.cizhou-context-slice[data-motion="dust"] .cizhou-visible-motion::before {
+  top: 27%;
+  right: -13%;
+  width: 79%;
+  height: 27%;
+  background:
+    radial-gradient(ellipse at 70% 63%, rgb(245 218 174 / 0.46), transparent 42%),
+    linear-gradient(108deg, transparent 6%, rgb(224 192 145 / 0.3) 48%, transparent 88%);
+  filter: blur(7px);
+  mix-blend-mode: screen;
+  transform: translate3d(16%, 0, 0) skewX(-8deg);
+  animation: cizhou-visible-dust-a 5.2s linear -1.4s infinite;
+}
+
+.cizhou-context-slice[data-motion="dust"] .cizhou-visible-motion::after {
+  top: 43%;
+  right: -18%;
+  width: 71%;
+  height: 19%;
+  background: radial-gradient(ellipse at 58% 48%, rgb(232 198 151 / 0.36), transparent 66%);
+  filter: blur(9px);
+  mix-blend-mode: screen;
+  transform: translate3d(20%, 0, 0) scale(0.94);
+  animation: cizhou-visible-dust-b 7.1s linear -3.3s infinite;
+}
+
+.cizhou-context-slice[data-motion="candle"] .cizhou-visible-motion::before {
+  top: 38%;
+  right: -1.5%;
+  width: 22%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(255 235 169 / 0.88) 0 4%, rgb(255 177 76 / 0.5) 17%, rgb(225 119 39 / 0.18) 40%, transparent 70%);
+  filter: blur(3.5px);
+  mix-blend-mode: screen;
+  transform-origin: 68% 56%;
+  animation: cizhou-visible-candle 1.7s ease-in-out -0.45s infinite;
+}
+
+.cizhou-context-slice[data-motion="candle"] .cizhou-visible-motion::after {
+  top: 27%;
+  right: -8%;
+  width: 68%;
+  height: 45%;
+  background: radial-gradient(ellipse at 78% 46%, rgb(236 141 57 / 0.35), transparent 61%);
+  filter: blur(15px);
+  mix-blend-mode: screen;
+  transform-origin: 78% 46%;
+  animation: cizhou-visible-room-light 3.4s ease-in-out -1.2s infinite;
+}
+
+.cizhou-context-slice[data-running="false"] .cizhou-visible-motion::before,
+.cizhou-context-slice[data-running="false"] .cizhou-visible-motion::after {
+  animation-play-state: paused;
+}
+
 .cizhou-scene-layer[data-running="false"] .cizhou-scene-layer-motion::before,
 .cizhou-scene-layer[data-running="false"] .cizhou-scene-layer-motion::after,
 .cizhou-context-slice[data-running="false"] .cizhou-atmosphere-raster {
@@ -2975,6 +3079,106 @@
   72% {
     opacity: 0.09;
     transform: translate3d(-8%, 5%, 0) scale(1.08, 0.88);
+  }
+}
+
+@keyframes cizhou-visible-lantern {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translate3d(-2px, 1px, 0) scale(0.9);
+  }
+  38% {
+    opacity: 0.58;
+    transform: translate3d(1px, -1px, 0) scale(1.12);
+  }
+  68% {
+    opacity: 0.34;
+    transform: translate3d(3px, 0, 0) scale(0.98);
+  }
+}
+
+@keyframes cizhou-visible-air {
+  0% {
+    opacity: 0.12;
+    transform: translate3d(-7%, 1%, 0) scaleX(0.94);
+  }
+  52% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.16;
+    transform: translate3d(8%, -1%, 0) scaleX(1.07);
+  }
+}
+
+@keyframes cizhou-visible-dust-a {
+  0% {
+    opacity: 0;
+    transform: translate3d(18%, 1%, 0) skewX(-8deg) scale(0.92);
+  }
+  26% {
+    opacity: 0.34;
+  }
+  66% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-20%, 7%, 0) skewX(-8deg) scale(1.1);
+  }
+}
+
+@keyframes cizhou-visible-dust-b {
+  0% {
+    opacity: 0;
+    transform: translate3d(23%, 1%, 0) scale(0.92);
+  }
+  35% {
+    opacity: 0.26;
+  }
+  72% {
+    opacity: 0.14;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-16%, 5%, 0) scale(1.08);
+  }
+}
+
+@keyframes cizhou-visible-candle {
+  0%,
+  100% {
+    opacity: 0.22;
+    transform: translate3d(-1px, 1px, 0) scale(0.9, 0.96);
+  }
+  28% {
+    opacity: 0.56;
+    transform: translate3d(1px, -1px, 0) scale(1.12, 1.18);
+  }
+  61% {
+    opacity: 0.31;
+    transform: translate3d(-1px, 1px, 0) scale(0.96, 0.9);
+  }
+  79% {
+    opacity: 0.48;
+    transform: translate3d(2px, 0, 0) scale(1.06, 1.1);
+  }
+}
+
+@keyframes cizhou-visible-room-light {
+  0%,
+  100% {
+    opacity: 0.09;
+    transform: scale(0.96);
+  }
+  43% {
+    opacity: 0.24;
+    transform: scale(1.07);
+  }
+  72% {
+    opacity: 0.14;
+    transform: scale(1.01);
   }
 }
 
@@ -4705,6 +4909,8 @@
   .cizhou-context-prop,
   .cizhou-scene-occlusion,
   .cizhou-atmosphere-raster,
+  .cizhou-visible-motion::before,
+  .cizhou-visible-motion::after,
   .cizhou-scene-layer-motion::before,
   .cizhou-scene-layer-motion::after,
   .cizhou-scene-visual,
@@ -4742,6 +4948,17 @@
 
   .cizhou-atmosphere-raster-b {
     display: none;
+  }
+
+  .cizhou-visible-motion::before,
+  .cizhou-visible-motion::after {
+    opacity: 0.04;
+    transform: none;
+  }
+
+  .cizhou-context-slice[data-motion="smoke"] .cizhou-visible-motion::before,
+  .cizhou-context-slice[data-motion="candle"] .cizhou-visible-motion::before {
+    opacity: 0.1;
   }
 
   .cizhou-scene-layer[data-scene-layer="kiln-yard"] .cizhou-scene-layer-motion::before {

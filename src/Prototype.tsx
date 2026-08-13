@@ -2328,6 +2328,7 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
               ) : null}
               <img className="cizhou-atmosphere-raster cizhou-atmosphere-raster-a" src={trait.atmosphere} alt="" draggable={false} />
               <img className="cizhou-atmosphere-raster cizhou-atmosphere-raster-b" src={trait.atmosphere} alt="" draggable={false} />
+              <div className="cizhou-visible-motion" aria-hidden="true" />
             </div>
           ))}
         </div>
