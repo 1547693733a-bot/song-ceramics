@@ -346,18 +346,14 @@ const JUN_KNOWLEDGE_DELAY = 4400;
 const YAOZHOU_GLAZE_PANORAMA = "/assets/kilns/yaozhou-knowledge/yaozhou-panorama-glaze-depth-v2.png";
 const YAOZHOU_DEPTH_MASK = "/assets/kilns/yaozhou-knowledge/yaozhou-carving-depth-mask-v2.png";
 const YAOZHOU_KNOWLEDGE_DELAY = 4600;
-const GE_KNOWLEDGE_PANORAMA = "/assets/kilns/ge-panorama.png";
 const GE_CRACKLE_MASK = "/assets/kilns/ge-knowledge/ge-crackle-dual-mask-v1.png";
 const GE_KNOWLEDGE_DELAY = 4800;
 const GUAN_KNOWLEDGE_PANORAMA = "/assets/kilns/guan-panorama-v3.png";
 const GUAN_FIRING_MASK = "/assets/kilns/guan-knowledge/guan-firing-mask-v1.png";
 const GUAN_KNOWLEDGE_DELAY = 5100;
-const LONGQUAN_KNOWLEDGE_PANORAMA = "/assets/kilns/longquan-panorama-v2.png";
 const LONGQUAN_KNOWLEDGE_DELAY = 5200;
-const RU_KNOWLEDGE_PANORAMA = "/assets/kilns/ru-panorama-v4.png";
 const RU_FIRED_PANORAMA = "/assets/kilns/ru-knowledge/ru-panorama-fired-v1.png";
 const RU_KNOWLEDGE_DELAY = 5200;
-const DING_KNOWLEDGE_PANORAMA = "/assets/kilns/ding-panorama-v3.png";
 const DING_FIRED_PANORAMA = "/assets/kilns/ding-knowledge/ding-panorama-fired-v2.png";
 const DING_KNOWLEDGE_DELAY = 5000;
 
@@ -449,11 +445,16 @@ type CizhouTrait = {
   vessel: string;
   period: string;
   image: string;
+  video?: string;
+  videoLoop?: "trim" | "native" | "none";
+  videoStart?: number;
+  videoEnd?: number;
+  audioSource?: "scene" | "video";
   prop?: string;
   occlusion?: "cart";
   atmosphere: string;
-  motion: "smoke" | "dust" | "candle";
-  audio: string;
+  motion: "none" | "smoke" | "dust" | "candle";
+  audio?: string;
   soundscape: string;
   fact: string;
   reconstruction: string;
@@ -470,13 +471,15 @@ const cizhouTraits: readonly CizhouTrait[] = [
     tagline: "匣钵护火，黑彩成器。",
     vessel: "磁州窑白地黑花梅瓶",
     period: "出窑 · 匣钵、垫饼与检选",
-    image: "/assets/kilns/cizhou-one-shot/01-kiln-yard-meiping-integrated-v4-clean-r4.png",
+    image: "/assets/kilns/cizhou-one-shot/01-kiln-yard-closeup-song-v4.png",
+    video: "/assets/kilns/cizhou-one-shot/cizhou-vase-in-kiln-interior-v1.mp4",
+    videoLoop: "trim",
     atmosphere: "/assets/kilns/cizhou-one-shot/atmosphere-smoke-v1.webp",
-    motion: "smoke",
+    motion: "none",
     audio: "/assets/kilns/cizhou-traits/audio/02-carved-interior-v1.wav",
-    soundscape: "窑体冷却、搬运匣钵与清晨院落风声",
+    soundscape: "窑体余温、窑口轻烟与清晨院落风声",
     fact: "观台磁州窑宋金地层出土匣钵、垫饼、支钉等装烧窑具；匣钵是器物入窑烧成时真正所属的保护空间。",
-    reconstruction: "窑门外冷却后的出匣检选位置与人物动作，是依据观台窑具和烧造流程完成的克制复原。",
+    reconstruction: "窑门外低矮冷却检选台、匣钵与窑具位置，是依据观台窑址出土窑具和北方窑炉流程完成的克制复原；不对应某次具体出窑记录。",
     sourceLabel: "北京大学 · 观台磁州窑址发掘简报",
     sourceUrl: "https://ir.pku.edu.cn/handle/20.500.11897/7267",
     hotspots: [
@@ -505,13 +508,15 @@ const cizhouTraits: readonly CizhouTrait[] = [
     tagline: "一车载瓷，器走北方。",
     vessel: "磁州窑白地黑花梅瓶",
     period: "流通 · 北方陆路车载",
-    image: "/assets/kilns/cizhou-one-shot/02-northbound-cart-integrated-v5-clean-r5.png",
+    image: "/assets/kilns/cizhou-one-shot/02-cizhou-land-loading-v3-meiping-tree.png",
+    video: "/assets/kilns/cizhou-one-shot/02-cizhou-land-loading-v3-meiping-tree.mp4",
+    videoLoop: "trim",
+    audioSource: "video",
     atmosphere: "/assets/kilns/cizhou-one-shot/atmosphere-dust-v1.webp",
-    motion: "dust",
-    audio: "/assets/kilns/cizhou-traits/audio/01-black-white-tavern-v1.wav",
-    soundscape: "木轮、车板轻震、牲畜脚步与驿路风声",
+    motion: "none",
+    soundscape: "窑场院落微风、树叶沙沙、竹篾与草衬轻响",
     fact: "宋代绘画保存了牛车和载重车辆在山路、驿路间运输的图像。重货北行依靠车体、牵引和道路共同完成。",
-    reconstruction: "草束护套、填塞与捆扎为综合同时代车载图像和瓷器防碰包装方式的艺术推断。",
+    reconstruction: "梅瓶置于已捆扎货包上方，瓶底以草窝承托，外设竹编护架与颈部柔性垫护，表现最后封盖前的陆路装运准备；具体包装结构属于结合同时代陶瓷运输材料的艺术推断。",
     sourceLabel: "台北故宫博物院 · 雪栈牛车图",
     sourceUrl: "https://digitalarchive.npm.gov.tw/Collection/Detail/1474?dep=P",
     hotspots: [
@@ -538,31 +543,34 @@ const cizhouTraits: readonly CizhouTrait[] = [
     number: "03",
     title: "酒肆入席",
     tagline: "瓶中有酒，瓷上有人间。",
-    vessel: "磁州窑白地黑花梅瓶",
+    vessel: "磁州窑剔黑玉壶春瓶",
     period: "功用 · 宋代盛酒器",
-    image: "/assets/kilns/cizhou-one-shot/03-tavern-meiping-integrated-v4-clean-r5.png",
+    image: "/assets/kilns/cizhou-one-shot/03-wine-shop-yuhuchunping-reference-with-white-black-bowl-v6.png",
+    video: "/assets/kilns/cizhou-one-shot/cizhou-tavern-generated-v2.mp4",
+    videoLoop: "trim",
+    videoStart: 0,
+    audioSource: "video",
     atmosphere: "/assets/kilns/cizhou-one-shot/atmosphere-candle-v1.webp",
-    motion: "candle",
-    audio: "/assets/kilns/cizhou-traits/audio/01-black-white-tavern-v1.wav",
-    soundscape: "斟酒、酒碗轻碰、低语与店家远声",
-    fact: "梅瓶自宋代开始流行，小口、短颈、丰肩、修腹，主要承担储酒功用；酒盏与盏托构成真正的饮酒器物关系。",
-    reconstruction: "酒肆木桌、远处客人、酒盏与错位烛火为依据宋金器物功用完成的艺术复原。",
-    sourceLabel: "故宫博物院 · 梅瓶",
-    sourceUrl: "https://www.dpm.org.cn/lemmas/239389.html",
+    motion: "none",
+    soundscape: "门外微风、酒旗布面轻响、树叶沙沙与稀疏鸟鸣",
+    fact: "中国国家博物馆所藏北宋磁州窑剔黑玉壶春瓶，撇口、细颈、下垂腹、浅圈足，通体黑釉，瓶身剔黑缠枝牡丹花，肩部剔卷叶纹；白地黑花碗类则以白色化妆土和铁黑彩形成黑白对比。",
+    reconstruction: "酒肆门槛、木格门、酒旗和木案构成宋代生活场景；主瓶严格参考馆藏剔黑玉壶春瓶，旁置一只白地黑彩小碗，木勺和布巾仅作为非陶瓷酒铺用具。",
+    sourceLabel: "中国国家博物馆、故宫博物院 · 磁州窑器物资料",
+    sourceUrl: "https://www.chnmuseum.cn/zp/zpml/csp/202203/t20220315_254286.shtml",
     hotspots: [
       {
         id: "shape",
         label: "看器形",
-        title: "小口丰肩，为盛酒而生",
-        body: "梅瓶的小口、短颈、丰肩和向下收敛的腹部适合储存与倾注酒液。自宋代开始，它成为常见的盛酒用具。",
+        title: "撇口细颈，腹部下垂",
+        body: "玉壶春瓶的撇口、细颈、下垂腹与浅圈足形成流畅的承酒器形；黑釉剔花让缠枝牡丹和卷叶纹在器表显出黑白层次。",
         x: 64,
         y: 61,
       },
       {
         id: "wine-cup",
-        label: "看酒盏",
-        title: "瓶中储酒，盏上入席",
-        body: "桌面只保留一只小酒盏和低矮盏托，与梅瓶组成清楚的储酒、斟酒和饮用关系。",
+        label: "看小碗",
+        title: "白地黑彩，黑白相映",
+        body: "桌面的小碗采用白色化妆土与铁黑彩的黑白对比，仅作为与剔黑玉壶春瓶并置的饮酒小器，不增加未经核实的瓷器。",
         x: 13,
         y: 70,
       },
@@ -570,11 +578,739 @@ const cizhouTraits: readonly CizhouTrait[] = [
   },
 ] as const;
 
+type KilnStoryMotion =
+  | "ru-after-rain"
+  | "ru-river"
+  | "ru-window"
+  | "guan-storage"
+  | "none"
+  | "ding-ash"
+  | "ding-packing"
+  | "ding-lamp";
+
+type KilnStoryScene = {
+  id: string;
+  number: string;
+  title: string;
+  tagline: string;
+  vessel: string;
+  period: string;
+  image: string;
+  video?: string;
+  videoLoop?: "native" | "trim" | "crossfade" | "none";
+  audio?: string;
+  motion: KilnStoryMotion;
+  fact: string;
+  reconstruction: string;
+  sourceLabel: string;
+  sourceUrl: string;
+  hotspots: readonly CizhouTraitHotspot[];
+};
+
+type DingAshMote = {
+  x: string;
+  y: string;
+  size: string;
+  blur: string;
+  dx: string;
+  dy: string;
+  midDx: string;
+  midDy: string;
+  duration: string;
+  delay: string;
+  alpha: string;
+  lowAlpha: string;
+};
+
+const dingAshMotes: readonly DingAshMote[] = [
+  { x: "8%", y: "32%", size: "1.1px", blur: "0.15px", dx: "2px", dy: "-1px", midDx: "1px", midDy: "-0.5px", duration: "7.2s", delay: "-2.4s", alpha: "0.56", lowAlpha: "0.42" },
+  { x: "15%", y: "39%", size: "1.5px", blur: "0.3px", dx: "-2px", dy: "1px", midDx: "-1px", midDy: "0.5px", duration: "8.4s", delay: "-4.1s", alpha: "0.62", lowAlpha: "0.47" },
+  { x: "23%", y: "45%", size: "0.9px", blur: "0.1px", dx: "1px", dy: "-2px", midDx: "0.5px", midDy: "-1px", duration: "6.8s", delay: "-1.2s", alpha: "0.48", lowAlpha: "0.34" },
+  { x: "31%", y: "51%", size: "1.25px", blur: "0.22px", dx: "-2px", dy: "1px", midDx: "-1px", midDy: "0.5px", duration: "7.8s", delay: "-3.7s", alpha: "0.58", lowAlpha: "0.41" },
+  { x: "40%", y: "57%", size: "1.7px", blur: "0.55px", dx: "2px", dy: "-1px", midDx: "1px", midDy: "-0.5px", duration: "9.2s", delay: "-5.1s", alpha: "0.6", lowAlpha: "0.44" },
+  { x: "48%", y: "63%", size: "1px", blur: "0.16px", dx: "-1px", dy: "1px", midDx: "-0.5px", midDy: "0.5px", duration: "8.6s", delay: "-2.2s", alpha: "0.46", lowAlpha: "0.33" },
+  { x: "9%", y: "59%", size: "0.85px", blur: "0.1px", dx: "1px", dy: "-1px", midDx: "0.5px", midDy: "-0.5px", duration: "6.4s", delay: "-4.8s", alpha: "0.44", lowAlpha: "0.31" },
+  { x: "18%", y: "68%", size: "1.35px", blur: "0.38px", dx: "-2px", dy: "1px", midDx: "-1px", midDy: "0.5px", duration: "8.9s", delay: "-1.8s", alpha: "0.52", lowAlpha: "0.38" },
+  { x: "29%", y: "74%", size: "0.95px", blur: "0.12px", dx: "1px", dy: "-1px", midDx: "0.5px", midDy: "-0.5px", duration: "7.6s", delay: "-3.2s", alpha: "0.42", lowAlpha: "0.3" },
+  { x: "41%", y: "80%", size: "1.2px", blur: "0.24px", dx: "-1px", dy: "1px", midDx: "-0.5px", midDy: "0.5px", duration: "9.6s", delay: "-5.7s", alpha: "0.46", lowAlpha: "0.32" },
+  { x: "12%", y: "28%", size: "0.75px", blur: "0.08px", dx: "1px", dy: "0px", midDx: "0.5px", midDy: "0px", duration: "6.1s", delay: "-0.7s", alpha: "0.4", lowAlpha: "0.28" },
+  { x: "27%", y: "36%", size: "1px", blur: "0.18px", dx: "-1px", dy: "1px", midDx: "-0.5px", midDy: "0.5px", duration: "8.1s", delay: "-2.9s", alpha: "0.5", lowAlpha: "0.35" },
+] as const;
+
+type DingKilnSpark = {
+  x: string;
+  y: string;
+  size: string;
+  rise: number;
+  drift: number;
+  duration: number;
+  delay: number;
+  alpha: number;
+  tone: "gold" | "amber" | "red";
+};
+
+const dingKilnSparks: readonly DingKilnSpark[] = [
+  { x: "46%", y: "76%", size: "3.8px", rise: 65, drift: -5, duration: 9.0, delay: -0.3, alpha: 0.8, tone: "gold" },
+  { x: "54%", y: "69%", size: "3px", rise: 44, drift: 4, duration: 7.5, delay: -1.1, alpha: 0.67, tone: "amber" },
+  { x: "39%", y: "82%", size: "2.6px", rise: 28, drift: -3, duration: 6.8, delay: -0.72, alpha: 0.6, tone: "red" },
+  { x: "61%", y: "80%", size: "3.3px", rise: 86, drift: 6, duration: 11.5, delay: -1.8, alpha: 0.7, tone: "gold" },
+  { x: "49%", y: "63%", size: "2px", rise: 22, drift: 2, duration: 6.2, delay: -0.42, alpha: 0.5, tone: "amber" },
+  { x: "32%", y: "73%", size: "2.2px", rise: 58, drift: -7, duration: 10.0, delay: -1.46, alpha: 0.52, tone: "red" },
+  { x: "68%", y: "72%", size: "2.4px", rise: 38, drift: 8, duration: 8.0, delay: -0.94, alpha: 0.5, tone: "amber" },
+  { x: "57%", y: "88%", size: "1.9px", rise: 24, drift: -1, duration: 6.4, delay: -0.12, alpha: 0.46, tone: "red" },
+  { x: "43%", y: "58%", size: "1.8px", rise: 18, drift: 3, duration: 5.8, delay: -0.62, alpha: 0.4, tone: "gold" },
+  { x: "73%", y: "84%", size: "1.8px", rise: 46, drift: 5, duration: 8.8, delay: -1.22, alpha: 0.44, tone: "amber" },
+] as const;
+
+type KilnStoryDefinition = {
+  id: "ge" | "ru" | "guan" | "longquan" | "jun" | "yaozhou" | "ding";
+  ariaLabel: string;
+  vesselIntegrated: boolean;
+  vesselImage: string;
+  vesselFilter: string;
+  scenes: readonly KilnStoryScene[];
+};
+
+const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
+  ge: {
+    id: "ge",
+    ariaLabel: "识窑 · 哥窑三幕",
+    vesselIntegrated: true,
+    vesselImage: "",
+    vesselFilter: "none",
+    scenes: [
+      {
+        id: "fish-ear-censer",
+        number: "01",
+        title: "鱼耳承古",
+        tagline: "一炉承古，厚釉把晨光收进静处。",
+        vessel: "传世哥窑鱼耳炉",
+        period: "陈设 · 宫廷式香事空间",
+        image: "/assets/kilns/ge-one-shot/01-fish-ear-censer-palace-v1.png",
+        video: "/assets/kilns/ge-one-shot/01-fish-ear-censer-palace-v2-loop.mp4",
+        videoLoop: "native",
+        motion: "none",
+        fact: "传世哥窑器以肥厚乳浊釉与层次分明的开片著称；鱼耳炉借鉴古代青铜礼器式样，以双耳和稳重腹形强化陈设感。",
+        reconstruction: "哥窑窑址至今仍有争议，画面依据传世器物与南宋宫廷式室内语境进行艺术化重构，不指认某处确切窑场或原状陈设。",
+        sourceLabel: "用户提供 · 哥窑鱼耳炉器型参考",
+        sourceUrl: "/assets/kilns/ge-one-shot/references/01-fish-ear-censer-reference.png",
+        hotspots: [
+          {
+            id: "fish-ears",
+            label: "看鱼耳",
+            title: "仿古之形，先由双耳建立器物秩序",
+            body: "双鱼形耳并非后来附加的装饰，而与炉身比例共同形成稳定、对称的仿古轮廓。厚釉覆盖其上，开片顺着腹部与双耳自然延伸。",
+            x: 52,
+            y: 66,
+          },
+        ],
+      },
+      {
+        id: "long-neck-crackle",
+        number: "02",
+        title: "开片之纹",
+        tagline: "冷光缓行，金丝铁线才从厚釉里浮现。",
+        vessel: "传世哥窑长颈瓶",
+        period: "赏鉴 · 宫廷式书斋陈设",
+        image: "/assets/kilns/ge-one-shot/02-long-neck-bottle-crackle-v1.png",
+        video: "/assets/kilns/ge-one-shot/02-long-neck-bottle-crackle-v2-loop.mp4",
+        videoLoop: "native",
+        motion: "none",
+        fact: "哥窑开片常以粗深与细浅两类纹路交织形成层次，后世以“金丝铁线”概括其视觉特征；纹路依附厚釉，不应呈现金属线或规则网格。",
+        reconstruction: "场景以稳定侧光帮助观察器表开片，木案、素布与格窗仅承担赏鉴语境，不代表某件传世瓶的确切历史摆放位置。",
+        sourceLabel: "用户提供 · 哥窑长颈瓶器型参考",
+        sourceUrl: "/assets/kilns/ge-one-shot/references/02-long-neck-bottle-reference.png",
+        hotspots: [
+          {
+            id: "double-crackle",
+            label: "看开片",
+            title: "粗线为骨，细线在其间继续生长",
+            body: "长颈与圆腹提供了连续釉面，使粗深开片和细密暖色纹路能够同时被侧光读出；动态只改变反射，不让裂纹本身移动。",
+            x: 51,
+            y: 61,
+          },
+        ],
+      },
+      {
+        id: "lobed-bowl",
+        number: "03",
+        title: "紫口铁足",
+        tagline: "釉薄处露骨，口沿与足端留下胎色。",
+        vessel: "传世哥窑葵口碗",
+        period: "日用 · 宫廷式内室清供",
+        image: "/assets/kilns/ge-one-shot/03-lobed-bowl-purple-rim-v1.png",
+        video: "/assets/kilns/ge-one-shot/03-lobed-bowl-purple-rim-v2-loop.mp4",
+        videoLoop: "native",
+        motion: "none",
+        fact: "哥窑器口沿与足部釉层较薄，胎色透出后形成深色边缘，常以“紫口铁足”概括；葵口轮廓又让这一圈深色口沿更容易被看见。",
+        reconstruction: "漆案、素布与木匙用于补足安静的生活痕迹；画面是基于传世器物特征的宫廷式使用想象，不对应某一历史房间。",
+        sourceLabel: "用户提供 · 哥窑葵口碗器型参考",
+        sourceUrl: "/assets/kilns/ge-one-shot/references/03-lobed-bowl-reference.png",
+        hotspots: [
+          {
+            id: "rim-foot",
+            label: "看口足",
+            title: "一圈薄釉，把胎骨从青灰釉色中显出来",
+            body: "葵口边缘的褐紫色与圈足的深胎色互相呼应。暖光只沿口沿和漆桌反射缓慢移动，器物、布与木匙都保持静止。",
+            x: 52,
+            y: 63,
+          },
+        ],
+      },
+    ],
+  },
+  ru: {
+    id: "ru",
+    ariaLabel: "识窑 · 汝窑三幕",
+    vesselIntegrated: true,
+    vesselImage: "/assets/ceramics/03-lotus-bowl.png",
+    vesselFilter: "grayscale(.76) sepia(.12) hue-rotate(190deg) saturate(.62) brightness(1.6)",
+    scenes: [
+      {
+        id: "kiln-rain",
+        number: "01",
+        title: "雨歇开窑",
+        tagline: "雨过天青，釉从火里醒来。",
+        vessel: "北宋汝窑莲花式碗",
+        period: "出窑 · 清凉寺窑场检选",
+        image: "/assets/kilns/ru-one-shot/01-kiln-after-rain-integrated-v2.png",
+        motion: "ru-after-rain",
+        fact: "清凉寺窑址所见汝器以厚润青釉、细密开片与支钉烧造痕迹著称；传世汝器的生产年代集中在北宋晚期。",
+        reconstruction: "雨后窑场、石案与远处工匠为依据清凉寺窑址环境完成的克制复原，画面不对应某一件传世器物的确切出窑记录。",
+        sourceLabel: "大英博物馆 · 北宋汝窑碗",
+        sourceUrl: "https://www.britishmuseum.org/collection/object/A_PDF-3",
+        hotspots: [
+          {
+            id: "glaze",
+            label: "看釉色",
+            title: "天青不是平涂，是厚釉里浮出的冷光",
+            body: "汝釉在灰青、淡蓝与微带紫意的乳浊层之间缓慢过渡。细开片只在近看时出现，不应该压过器形本身。",
+            x: 67,
+            y: 72,
+          },
+        ],
+      },
+      {
+        id: "river-tribute",
+        number: "02",
+        title: "汴水奉瓷",
+        tagline: "一匣天青，沿水路入京。",
+        vessel: "北宋汝窑莲花式碗",
+        period: "流转 · 河南至东京的奉运想象",
+        image: "/assets/kilns/ru-one-shot/02-river-transport-no-people-v2.png",
+        video: "/assets/kilns/ru-one-shot/02-river-transport-no-people-v2.mp4",
+        videoLoop: "trim",
+        motion: "ru-river",
+        fact: "汝器在北宋哲宗、徽宗时期为宫廷烧造，烧造时间短，传世完整器数量极少。",
+        reconstruction: "汴河码头、官船与装匣过程属于依据北宋漕运体系进行的艺术推演，用来解释器物如何离开窑场，而非复原某次具体运输。",
+        sourceLabel: "大英博物馆 · 汝窑器座",
+        sourceUrl: "https://www.britishmuseum.org/collection/object/A_1971-0921-1",
+        hotspots: [
+          {
+            id: "packing",
+            label: "看奉运",
+            title: "稀少不只来自烧造，也来自长途保存",
+            body: "厚釉与纤细器形在运输中需要稳固承托。画面以草衬木匣缓冲碰撞，再用绳扎货箱、跳板与货船串起沿汴水奉运的完整路径。",
+            x: 68,
+            y: 82,
+          },
+        ],
+      },
+      {
+        id: "palace-study",
+        number: "03",
+        title: "清供照影",
+        tagline: "宫窗微明，器物只留一层静气。",
+        vessel: "北宋汝窑莲花式碗",
+        period: "宫用 · 北宋内廷清供",
+        image: "/assets/kilns/ru-one-shot/03-palace-study-sunlight-v1.png",
+        motion: "ru-window",
+        fact: "大英博物馆将清凉寺汝器年代约定为1086至1125年，并指出这类器物为北宋皇室烧造。",
+        reconstruction: "宫中书斋与清供台面以格窗强光、少陈设和近景器物表现汝器釉面的含蓄反光；具体陈设关系属于艺术复原。",
+        sourceLabel: "大英博物馆 · 北宋汝窑器",
+        sourceUrl: "https://www.britishmuseum.org/collection/term/x101207",
+        hotspots: [
+          {
+            id: "quiet-light",
+            label: "看清供",
+            title: "器物越静，窗光越能显出釉层深浅",
+            body: "侧窗冷光沿莲瓣口缘移动，厚釉处仍保留天青体色，薄处只出现一线柔亮，不做金属般的高光。",
+            x: 67,
+            y: 72,
+          },
+        ],
+      },
+    ],
+  },
+  ding: {
+    id: "ding",
+    ariaLabel: "识窑 · 定窑三幕",
+    vesselIntegrated: true,
+    vesselImage: "/assets/ceramics/08-boy-pillow.png",
+    vesselFilter: "grayscale(.9) sepia(.2) saturate(.42) brightness(1.42)",
+    scenes: [
+      {
+        id: "kiln-inspection",
+        number: "01",
+        title: "火退牙白",
+        tagline: "窑火收住，白釉才显出温度。",
+        vessel: "北宋定窑白釉孩儿枕",
+        period: "出窑 · 曲阳窑场检选",
+        image: "/assets/kilns/ding-one-shot/01-kiln-inspection-firelight-v1.png",
+        audio: "/assets/kilns/ding-one-shot/audio/01-kiln-inspection-ambience-v1.wav",
+        motion: "ding-ash",
+        fact: "北宋定窑以白釉瓷器为主，常见划花、刻花、印花与捏塑装饰；孩儿枕把捏塑器形与牙白釉结合在一起。",
+        reconstruction: "窑后检选、匣钵与浅色工坊依据曲阳定窑烧造背景完成艺术复原，不对应故宫藏品的确切出窑现场。",
+        sourceLabel: "故宫博物院 · 定窑白釉孩儿枕",
+        sourceUrl: "https://www.dpm.org.cn/collection/ceramic/226760.html",
+        hotspots: [
+          {
+            id: "ivory-glaze",
+            label: "看白釉",
+            title: "象牙白不是冷白，而是火后留下的柔暖",
+            body: "牙白釉把人物面部、衣褶和榻座纹样收进同一层温润光泽，细部依靠浅阴影而不是强色差出现。",
+            x: 66,
+            y: 62,
+          },
+        ],
+      },
+      {
+        id: "packing-hall",
+        number: "02",
+        title: "装笼北行",
+        tagline: "一枕入匣，白瓷随路而行。",
+        vessel: "北宋定窑白釉孩儿枕",
+        period: "流转 · 窑场至州府的装运",
+        image: "/assets/kilns/ding-one-shot/02-packing-decoration-integrated-v1.png",
+        video: "/assets/kilns/ding-one-shot/02-bamboo-blind-seamless-v4.mp4",
+        videoLoop: "trim",
+        motion: "ding-packing",
+        fact: "定窑是宋代北方重要白瓷窑场，窑址位于今河北曲阳；北宋宫廷也曾使用定窑产品。",
+        reconstruction: "覆草、木笼与州府库房属于依据宋代易碎器物运输方式完成的场景推演，重点是呈现瓷枕从窑场进入流通的过程。",
+        sourceLabel: "故宫博物院 · 定窑孩儿枕",
+        sourceUrl: "https://intl.dpm.org.cn/Ceramicsis/64068.html",
+        hotspots: [
+          {
+            id: "relief",
+            label: "看塑形",
+            title: "孩童、衣纹与榻座被塑成一个完整枕体",
+            body: "人物并非贴在枕面上的装饰，而是与承托头部的枕体连成整体；运输时最需要保护的正是突出的手足与衣褶。",
+            x: 66,
+            y: 62,
+          },
+        ],
+      },
+      {
+        id: "sleeping-chamber",
+        number: "03",
+        title: "枕上清凉",
+        tagline: "灯影渐短，瓷枕真正进入日常。",
+        vessel: "北宋定窑白釉孩儿枕",
+        period: "功用 · 宋人寝具",
+        image: "/assets/kilns/ding-one-shot/03-sleeping-chamber-integrated-v1.png",
+        video: "/assets/kilns/ding-one-shot/03-sleeping-chamber-candle-v1-no-music.mp4",
+        videoLoop: "trim",
+        audio: "/assets/kilns/cizhou-traits/audio/03-painted-pillow-night-v1.wav",
+        motion: "ding-lamp",
+        fact: "宋代瓷枕流行，既有方、圆、如意等形制，也有人物与动物造型；故宫藏孩儿枕以孩童伏卧的身体构成枕面。",
+        reconstruction: "寝榻、竹帘与远处灯盏用来解释瓷枕的日常功能，室内布局并非某一历史居所的复原图。",
+        sourceLabel: "故宫博物院 · 定窑白釉孩儿枕",
+        sourceUrl: "https://www.dpm.org.cn/collection/ceramic/226760.html",
+        hotspots: [
+          {
+            id: "pillow-use",
+            label: "看枕用",
+            title: "瓷枕的清凉，来自材质与中空结构",
+            body: "孩童伏卧的背部承担枕面，底部中空并留通气孔。它既是雕塑，也是实际进入寝居的器具。",
+            x: 66,
+            y: 62,
+          },
+        ],
+      },
+    ],
+  },
+  guan: {
+    id: "guan",
+    ariaLabel: "识窑 · 官窑三幕",
+    vesselIntegrated: true,
+    vesselImage: "",
+    vesselFilter: "none",
+    scenes: [
+      {
+        id: "finished-goods-house",
+        number: "01",
+        title: "成品静置",
+        tagline: "出窑之后，粉青在侧光里沉静下来。",
+        vessel: "南宋官窑粉青釉瓶与青釉洗",
+        period: "成品堆放屋 · 郊坛下窑场",
+        image: "/assets/kilns/guan-one-shot/01-jiaotanxia-finished-goods-house-lived-in-v10.png",
+        video: "/assets/kilns/guan-one-shot/01-finished-goods-house-v10.mp4",
+        videoLoop: "native",
+        motion: "guan-storage",
+        fact: "郊坛下官窑作坊遗址包含成品堆放屋、修坯上釉工房、釉缸、素烧炉和排水沟等生产遗迹。",
+        reconstruction: "画面依据成品堆放屋与三开间作坊遗迹进行艺术化复原；器物、草垫与竹帘表现出窑后收置和检看的生活痕迹，不对应某一次考古原位记录。",
+        sourceLabel: "杭州南宋官窑博物馆 · 郊坛下作坊遗址",
+        sourceUrl: "https://z.hangzhou.cn/2020/rwwhql/content/content_7746554.htm",
+        hotspots: [
+          {
+            id: "finished-glaze",
+            label: "看粉青",
+            title: "厚釉器物先在成品屋里安静下来",
+            body: "粉青釉瓶与青釉洗不再紧贴窑火，而是在有遮护的成品堆放空间里等待检看。侧光掠过开片和低足，器形、釉色与使用痕迹同时被看见。",
+            x: 68,
+            y: 70,
+          },
+        ],
+      },
+      {
+        id: "glaze-settling-workshop",
+        number: "02",
+        title: "釉色初定",
+        tagline: "粉青入釉，器形在侧光中显出深浅。",
+        vessel: "南宋官窑粉青釉葵花式洗",
+        period: "修坯上釉工房 · 郊坛下窑场",
+        image: "/assets/kilns/guan-one-shot/02-glaze-settling-workshop-v3-vessel-closeup.png",
+        video: "/assets/kilns/guan-one-shot/02-glaze-settling-workshop-v4-forward-loop-source.mp4",
+        videoLoop: "native",
+        audio: "/assets/kilns/guan-one-shot/02-glaze-settling-workshop-ambience.m4a",
+        motion: "none",
+        fact: "郊坛下作坊遗址可见釉料缸、素烧炉、排水沟等生产遗迹；官窑粉青釉器以厚釉、开片和素面器形见长。",
+        reconstruction: "画面以釉料工房和器物检看为依据的艺术化复原；葵花式洗、釉缸与木台的相对位置不对应某一次考古原位记录。",
+        sourceLabel: "杭州南宋官窑博物馆 · 郊坛下作坊遗址",
+        sourceUrl: "https://z.hangzhou.cn/2020/rwwhql/content/content_7746554.htm",
+        hotspots: [
+          {
+            id: "glaze-close",
+            label: "看厚釉",
+            title: "粉青厚釉把光藏在器物内部",
+            body: "葵花式洗的粉青釉面以厚薄变化收住侧光，细密开片和低矮器形在近距离才显出层次；周围的釉料缸与木台只作工房语境，不抢走器物的第一视线。",
+            x: 58,
+            y: 64,
+          },
+        ],
+      },
+      {
+        id: "ritual-side-hall",
+        number: "03",
+        title: "香烟入礼",
+        tagline: "礼器无声，香烟把粉青送入静处。",
+        vessel: "南宋官窑粉青釉簋式炉",
+        period: "礼仪侧厅 · 郊坛近旁",
+        image: "/assets/kilns/guan-one-shot/03-ritual-side-hall-incense-v3-vessel-closeup.png",
+        video: "/assets/kilns/guan-one-shot/03-ritual-side-hall-incense-v5.mp4",
+        videoLoop: "native",
+        audio: "/assets/kilns/guan-one-shot/03-ritual-side-hall-incense-ambience.m4a",
+        motion: "none",
+        fact: "南宋官窑青瓷簋式炉见于郊坛下窑址出土资料，被用于宫廷礼仪活动；官窑器物亦供宫廷祭祀与陈设。",
+        reconstruction: "画面以郊坛近旁的礼仪准备空间作艺术化复原，不对应某一处宫殿或祭坛的精确原位；香烟与烛火作为礼仪使用的时间线索。",
+        sourceLabel: "西湖博物馆 · 南宋官窑青瓷簋式炉",
+        sourceUrl: "https://westlakemuseum.com/index.php/gcjp/jpzs2/854-gcjp-008.html",
+        hotspots: [
+          {
+            id: "ritual-smoke",
+            label: "看香烟",
+            title: "簋式炉让器形成为礼仪的一部分",
+            body: "簋式炉的粉青釉、厚胎与低矮比例在薄烟中更显安定；烟气缓慢上行，提示它已经从窑场成品进入礼仪侧厅，而不是孤立的器物陈列。",
+            x: 58,
+            y: 64,
+          },
+        ],
+      },
+    ],
+  },
+  longquan: {
+    id: "longquan",
+    ariaLabel: "识窑 · 龙泉窑三幕",
+    vesselIntegrated: true,
+    vesselImage: "",
+    vesselFilter: "none",
+    scenes: [
+      {
+        id: "inspection-shed",
+        number: "01",
+        title: "出窑初青",
+        tagline: "山雾穿棚，粉青在微明里安静下来。",
+        vessel: "南宋龙泉窑粉青釉盘口瓶",
+        period: "出窑 · 龙泉窑场检选",
+        image: "/assets/kilns/longquan-one-shot/01-inspection-shed-reference-locked-v2.png",
+        video: "/assets/kilns/longquan-one-shot/01-inspection-shed-reference-locked-v4.mp4",
+        videoLoop: "native",
+        motion: "none",
+        fact: "南宋龙泉窑青瓷以厚润的粉青、梅子青釉见长。盘口瓶以浅盘口、长颈、折肩和近筒形腹构成清楚而克制的轮廓。",
+        reconstruction: "开放式检选棚、木台、匣钵与远处窑棚依据龙泉山地窑场的生产语境作艺术化复原；器物形制严格参照用户提供的盘口瓶资料图。",
+        sourceLabel: "用户提供器物参考图 · 龙泉窑盘口瓶",
+        sourceUrl: "/assets/kilns/longquan-one-shot/references/01-dish-mouth-vase-reference.png",
+        hotspots: [
+          {
+            id: "dish-mouth-vase",
+            label: "看粉青",
+            title: "长颈折肩，让粉青釉拥有完整的停光路径",
+            body: "盘口、长直颈与近筒形腹把器形分成清楚的转折。柔光从口沿落到肩部，再沉入厚润的粉青釉面，器形与釉色因此同时被看见。",
+            x: 68,
+            y: 64,
+          },
+        ],
+      },
+      {
+        id: "double-fish-washer",
+        number: "02",
+        title: "双鱼映水",
+        tagline: "水纹轻起，两尾模印藏在青釉之下。",
+        vessel: "南宋龙泉窑青釉双鱼洗",
+        period: "日用 · 书斋清供",
+        image: "/assets/kilns/longquan-one-shot/02-double-fish-washer-reference-locked-v2.png",
+        video: "/assets/kilns/longquan-one-shot/02-double-fish-washer-reference-locked-v3.mp4",
+        videoLoop: "native",
+        motion: "none",
+        fact: "龙泉窑双鱼洗常以低矮浅腹、宽折沿和器心双鱼模印构成。鱼纹与器体同施青釉，并不是绘上去的图案。",
+        reconstruction: "暗木案、薄水、布巾和墨条构成克制的书斋使用片段；双鱼洗的侧面比例与器心鱼纹分别参照用户提供的两张器物资料图。",
+        sourceLabel: "用户提供器物参考图 · 龙泉窑双鱼洗",
+        sourceUrl: "/assets/kilns/longquan-one-shot/references/02-double-fish-washer-top-reference.jpg",
+        hotspots: [
+          {
+            id: "molded-fish",
+            label: "看双鱼",
+            title: "鱼在器底，不在水中游动",
+            body: "两尾鱼是模印在浅洗器心的陶瓷纹饰。清水和窗影只改变观看时的折射，鱼纹本身始终与器物连为一体。",
+            x: 55,
+            y: 66,
+          },
+        ],
+      },
+      {
+        id: "guan-ear-study",
+        number: "03",
+        title: "贯耳入室",
+        tagline: "一枝受风，青玉般的器身留在静处。",
+        vessel: "南宋龙泉窑粉青釉贯耳瓶",
+        period: "陈设 · 南宋书斋",
+        image: "/assets/kilns/longquan-one-shot/03-lived-in-study-guan-ear-reference-locked-v2.png",
+        video: "/assets/kilns/longquan-one-shot/03-lived-in-study-guan-ear-reference-locked-v5-loop.mp4",
+        videoLoop: "native",
+        motion: "none",
+        fact: "贯耳瓶借鉴古代青铜器轮廓，以长颈、对称贯耳、鼓腹和弦纹建立庄重秩序；龙泉青釉又使这种仿古器形显得温润。",
+        reconstruction: "半展卷轴、砚台、布巾、离席矮凳与窗边细枝共同构成刚有人使用过的书斋；器物比例与贯耳结构严格参照用户提供的器物资料图。",
+        sourceLabel: "用户提供器物参考图 · 龙泉窑贯耳瓶",
+        sourceUrl: "/assets/kilns/longquan-one-shot/references/03-guan-ear-vase-reference.png",
+        hotspots: [
+          {
+            id: "guan-ears",
+            label: "看贯耳",
+            title: "对称贯耳把仿古秩序带进青瓷",
+            body: "两只矩形贯耳位于颈肩之间，与外撇口、长颈和鼓腹形成纵横节奏。淡青厚釉把清楚的结构收进柔和的表面光泽。",
+            x: 66,
+            y: 61,
+          },
+        ],
+      },
+    ],
+  },
+  jun: {
+    id: "jun",
+    ariaLabel: "识窑 · 钧窑三幕",
+    vesselIntegrated: true,
+    vesselImage: "",
+    vesselFilter: "none",
+    scenes: [
+      {
+        id: "dawn-inspection",
+        number: "01",
+        title: "晨光验色",
+        tagline: "窑火退去，天青在微明里慢慢显色。",
+        vessel: "北宋钧窑天青釉碗",
+        period: "出窑 · 禹州窑场成器检看",
+        image: "/assets/kilns/jun-one-shot/01-indoor-dawn-bowl-v1.png",
+        video: "/assets/kilns/jun-one-shot/01-indoor-dawn-bowl-v1.mp4",
+        videoLoop: "native",
+        motion: "none",
+        fact: "钧窑以乳浊青釉著称，釉面常在天青、月白与蓝紫之间呈现含蓄变化；器物冷却后，厚釉的深浅与光泽才适合逐件检看。",
+        reconstruction: "画面以窑场成品暂置的室内木架为背景，将成器放回低照度、少陈设的检看环境；器物与架上素坯的具体组合属于艺术化复原。",
+        sourceLabel: "故宫博物院 · 钧窑瓷器资料",
+        sourceUrl: "https://www.dpm.org.cn/collection/ceramic.html",
+        hotspots: [
+          {
+            id: "dawn-glaze",
+            label: "看天青",
+            title: "乳浊釉把晨光收进一层柔润的青",
+            body: "近处碗壁不依赖强反光，而由灰青、天蓝与口沿微暖的薄釉层次显出体积；背景器物退入暗处，让视线停在成器本身。",
+            x: 69,
+            y: 67,
+          },
+        ],
+      },
+      {
+        id: "glaze-transformation",
+        number: "02",
+        title: "釉中万色",
+        tagline: "青蓝为底，一抹紫红在厚釉深处凝住。",
+        vessel: "北宋钧窑窑变釉碗",
+        period: "近观 · 乳浊釉与铜红呈色",
+        image: "/assets/kilns/jun-one-shot/02-glaze-colors-closeup-v1.png",
+        video: "/assets/kilns/jun-one-shot/02-glaze-colors-closeup-v1.mp4",
+        videoLoop: "native",
+        motion: "none",
+        fact: "钧釉的乳浊感与釉层中的微小分相结构有关；部分器物以铜为呈色元素，在还原气氛与高温中形成紫红斑块，与蓝色乳浊釉自然交融。",
+        reconstruction: "以近距离俯视突出碗内蓝紫窑变和不完全规整的口沿，木案仅保留必要的使用痕迹，不把器物处理成脱离环境的标本。",
+        sourceLabel: "故宫博物院 · 钧窑瓷器资料",
+        sourceUrl: "https://www.dpm.org.cn/collection/ceramic.html",
+        hotspots: [
+          {
+            id: "copper-red",
+            label: "看窑变",
+            title: "紫红不是绘上去的图案",
+            body: "碗心的紫红从蓝青釉层中自然晕开，边界柔和而不对称；颜色来自烧成中的材料变化，不是釉上彩绘。",
+            x: 54,
+            y: 62,
+          },
+        ],
+      },
+      {
+        id: "garden-flowerpot",
+        number: "03",
+        title: "花器承影",
+        tagline: "玫瑰紫落在花盆上，也把一角庭院染深。",
+        vessel: "钧窑玫瑰紫釉菱花式花盆",
+        period: "功用 · 陈设与栽植",
+        image: "/assets/kilns/jun-one-shot/03-flower-shadow-garden-v1.png",
+        video: "/assets/kilns/jun-one-shot/03-flower-shadow-garden-v1.mp4",
+        videoLoop: "native",
+        motion: "none",
+        fact: "钧窑花盆、盆托等大型陈设器常见折沿、分瓣轮廓与多足承托，釉色可由天蓝、月白过渡至海棠红、玫瑰紫等复杂层次。",
+        reconstruction: "湿润石台、太湖石与枝叶投影用于说明花器进入庭院陈设后的观看方式；植物、山石和建筑关系属于克制的艺术化复原。",
+        sourceLabel: "故宫博物院 · 钧窑花器资料",
+        sourceUrl: "https://www.dpm.org.cn/collection/ceramic.html",
+        hotspots: [
+          {
+            id: "flowerpot-form",
+            label: "看花器",
+            title: "分瓣器形把厚重釉色撑开",
+            body: "外壁纵向起伏、折沿与小足共同形成稳定而有节奏的轮廓。紫红和蓝青沿分瓣转折出现深浅，让器形与釉色彼此成全。",
+            x: 57,
+            y: 68,
+          },
+        ],
+      },
+    ],
+  },
+  yaozhou: {
+    id: "yaozhou",
+    ariaLabel: "识窑 · 耀州窑三幕",
+    vesselIntegrated: true,
+    vesselImage: "",
+    vesselFilter: "none",
+    scenes: [
+      {
+        id: "fired-inspection",
+        number: "01",
+        title: "出窑检选",
+        tagline: "成器既出，橄榄青才收住光。",
+        vessel: "北宋耀州窑青釉刻牡丹纹莱菔尊",
+        period: "出窑 · 黄堡窑场检选",
+        image: "/assets/kilns/yaozhou-one-shot/01-fired-inspection-concept-v2.png",
+        video: "/assets/kilns/yaozhou-one-shot/01-fired-inspection-v1.mp4",
+        videoLoop: "native",
+        motion: "none",
+        fact: "耀州窑位于今陕西铜川黄堡一带，北宋中期刻花工艺成熟；青釉刻牡丹纹莱菔尊是其代表器形之一，深刻纹中可见更深的积釉层次。",
+        reconstruction: "窑后检选台、窑口余温与少量完成器物，依据黄堡窑场的生产背景作艺术化复原；画面不对应某次确切出窑记录。",
+        sourceLabel: "中国国家博物馆 · 青釉刻牡丹纹莱菔尊",
+        sourceUrl: "https://www.chnmuseum.cn/zp/zpml/csp/202208/t20220811_256924.shtml",
+        hotspots: [
+          {
+            id: "laifu-zun",
+            label: "看莱菔尊",
+            title: "器形如萝卜，花纹藏在橄榄青里",
+            body: "莱菔尊因腹部的鼓圆轮廓得名。器表以刻花牡丹为主，釉料在刀痕凹处自然积聚，让纹样在同一层青釉中呈现深浅。",
+            x: 57,
+            y: 69,
+          },
+          {
+            id: "kiln-exit",
+            label: "看窑口",
+            title: "烧成之后，才有逐件检选",
+            body: "器物离开窑炉后，需要经过冷却、取出和检选。这里以低照度窑口与木台说明成器刚刚进入检看的阶段。",
+            x: 24,
+            y: 51,
+          },
+        ],
+      },
+      {
+        id: "glaze-pooling",
+        number: "02",
+        title: "刻影积釉",
+        tagline: "刀锋入泥，深处便多留一层青。",
+        vessel: "北宋耀州窑青釉刻牡丹纹碗",
+        period: "成器 · 刻花与积釉",
+        image: "/assets/kilns/yaozhou-one-shot/02-incised-peony-glaze-concept-v2.png",
+        video: "/assets/kilns/yaozhou-one-shot/02-incised-peony-glaze-v4.mp4",
+        videoLoop: "native",
+        motion: "none",
+        fact: "北宋耀州窑大口深腹碗常以内刻牡丹为主纹。斜刀刻入胎体后，橄榄青釉在凹槽中会显得更深，形成不依赖彩绘的明暗层次。",
+        reconstruction: "近距离俯看碗内刻花与检选台面的关系，用于说明刻花和积釉的材料逻辑；陪衬器物只保留为窑后检看的生活痕迹。",
+        sourceLabel: "台北故宫博物院 · 耀州窑青釉刻花牡丹纹碗",
+        sourceUrl: "https://digitalarchive.npm.gov.tw/Collection/Detail/30090?dep=U",
+        hotspots: [
+          {
+            id: "incised-peony",
+            label: "看刻花",
+            title: "斜刀入胎，牡丹从碗心舒展",
+            body: "耀州窑刻花以流畅有力的刀法组织花叶。它不是附加的凸起装饰，而是在坯体表面切入深浅不同的线与面。",
+            x: 54,
+            y: 67,
+          },
+          {
+            id: "pooled-glaze",
+            label: "看积釉",
+            title: "釉在凹处更深，纹样因此显影",
+            body: "同一层釉在深刻处堆积得更多，视觉上转为更深的橄榄绿；这种深浅并不是额外绘上的颜色。",
+            x: 69,
+            y: 57,
+          },
+        ],
+      },
+      {
+        id: "spring-tea",
+        number: "03",
+        title: "茶盏见春",
+        tagline: "一盏入日常，春光才有了停处。",
+        vessel: "北宋耀州窑青釉刻花茶碗",
+        period: "功用 · 北方日常茶事",
+        image: "/assets/kilns/yaozhou-one-shot/03-spring-tea-life-concept-v2.png",
+        video: "/assets/kilns/yaozhou-one-shot/03-spring-tea-life-v1.mp4",
+        videoLoop: "native",
+        motion: "none",
+        fact: "宋人饮茶常将细末直接放入盏中调饮。耀州窑青瓷碗兼具日用器的实用尺度与内壁刻花带来的含蓄观看层次。",
+        reconstruction: "木桌、石磨、麻布与院树构成北方民居中的日常茶事片段；器物与室内关系为艺术化推演，不对应某个传世器物的原始使用现场。",
+        sourceLabel: "蒙特利尔美术馆 · 北宋耀州窑青瓷碗",
+        sourceUrl: "https://www.mbam.qc.ca/en/works/23296/",
+        hotspots: [
+          {
+            id: "tea-bowl",
+            label: "看茶碗",
+            title: "茶不离盏，刻花藏在水色之下",
+            body: "碗不作为孤立的陈设，而是放回木桌、茶末与日光组成的使用环境；微起的釉色和花纹由近距离观看才会显现。",
+            x: 68,
+            y: 70,
+          },
+          {
+            id: "tea-mill",
+            label: "看石磨",
+            title: "茶末经碾，才可在盏中调饮",
+            body: "石质碾具提示茶叶被研磨为细末的准备过程，使茶碗进入可感知的日常生活，而不只是静置的工艺样品。",
+            x: 26,
+            y: 61,
+          },
+        ],
+      },
+    ],
+  },
+};
+
 type SphericalPanoramaProps = {
   src: string;
   yaw: number;
   pitch: number;
   motion: KilnPortalMotion;
+  enabled?: boolean;
   heatStrength: number;
   activity: number;
   emberOverlaySrc?: string;
@@ -610,6 +1346,7 @@ function SphericalPanorama({
   yaw,
   pitch,
   motion,
+  enabled = true,
   heatStrength,
   activity,
   emberOverlaySrc,
@@ -622,6 +1359,7 @@ function SphericalPanorama({
   const activityRef = useRef(activity);
   const inkHeatRef = useRef(inkHeat);
   const heatOriginRef = useRef(heatOrigin);
+  const enabledRef = useRef(enabled);
 
   useEffect(() => {
     viewRef.current = { yaw, pitch };
@@ -638,6 +1376,10 @@ function SphericalPanorama({
   useEffect(() => {
     heatOriginRef.current = heatOrigin;
   }, [heatOrigin]);
+
+  useEffect(() => {
+    enabledRef.current = enabled;
+  }, [enabled]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -1197,9 +1939,17 @@ function SphericalPanorama({
       new Uint8Array([78, 73, 65, 255]),
     );
 
+    // Scene transitions can unmount this renderer while one of the panorama
+    // textures is still decoding.  Keep a disposal flag so those async
+    // callbacks never bind a texture after it has been deleted.
+    let disposed = false;
+    let emberImage: HTMLImageElement | null = null;
+    let heatMaskImage: HTMLImageElement | null = null;
+
     const image = new Image();
     image.decoding = "async";
     image.onload = () => {
+      if (disposed) return;
       gl.activeTexture(gl.TEXTURE0);
       gl.bindTexture(gl.TEXTURE_2D, texture);
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
@@ -1227,16 +1977,18 @@ function SphericalPanorama({
       new Uint8Array([0, 0, 0, 0]),
     );
     if (emberOverlaySrc) {
-      const emberImage = new Image();
-      emberImage.decoding = "async";
-      emberImage.onload = () => {
+      const nextEmberImage = new Image();
+      emberImage = nextEmberImage;
+      nextEmberImage.decoding = "async";
+      nextEmberImage.onload = () => {
+        if (disposed) return;
         gl.activeTexture(gl.TEXTURE1);
         gl.bindTexture(gl.TEXTURE_2D, emberTexture);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, emberImage);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, nextEmberImage);
         canvas.dataset.emberReady = "true";
       };
-      emberImage.src = emberOverlaySrc;
+      nextEmberImage.src = emberOverlaySrc;
     }
 
     const heatMaskTexture = gl.createTexture();
@@ -1258,16 +2010,18 @@ function SphericalPanorama({
       new Uint8Array([0, 0, 0, 255]),
     );
     if (heatMaskSrc) {
-      const heatMaskImage = new Image();
-      heatMaskImage.decoding = "async";
-      heatMaskImage.onload = () => {
+      const nextHeatMaskImage = new Image();
+      heatMaskImage = nextHeatMaskImage;
+      nextHeatMaskImage.decoding = "async";
+      nextHeatMaskImage.onload = () => {
+        if (disposed) return;
         gl.activeTexture(gl.TEXTURE2);
         gl.bindTexture(gl.TEXTURE_2D, heatMaskTexture);
         gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, heatMaskImage);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, nextHeatMaskImage);
         canvas.dataset.heatMaskReady = "true";
       };
-      heatMaskImage.src = heatMaskSrc;
+      nextHeatMaskImage.src = heatMaskSrc;
     }
 
     const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
@@ -1296,6 +2050,11 @@ function SphericalPanorama({
     let inkHeatStartedAt: number | null = previousInkTarget > 0.5 ? startedAt : null;
     let previousTime = startedAt;
     const render = (time: number) => {
+      if (disposed) return;
+      if (!enabledRef.current) {
+        frame = window.requestAnimationFrame(render);
+        return;
+      }
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
       const nextWidth = Math.max(1, Math.round(canvas.clientWidth * ratio));
       const nextHeight = Math.max(1, Math.round(canvas.clientHeight * ratio));
@@ -1350,6 +2109,10 @@ function SphericalPanorama({
     frame = window.requestAnimationFrame(render);
 
     return () => {
+      disposed = true;
+      image.onload = null;
+      if (emberImage) emberImage.onload = null;
+      if (heatMaskImage) heatMaskImage.onload = null;
       window.cancelAnimationFrame(frame);
       gl.deleteTexture(texture);
       gl.deleteTexture(emberTexture);
@@ -1515,9 +2278,10 @@ function KilnEmbers({ preset, activity }: KilnEmbersProps) {
 
 type ClayModelIntroProps = {
   phase: IntroPhase;
+  onSettled?: () => void;
 };
 
-function ClayModelIntro({ phase }: ClayModelIntroProps) {
+function ClayModelIntro({ phase, onSettled }: ClayModelIntroProps) {
   const layerRef = useRef<HTMLDivElement | null>(null);
   const canvasHostRef = useRef<HTMLDivElement | null>(null);
   const phaseRef = useRef(phase);
@@ -1602,12 +2366,20 @@ function ClayModelIntro({ phase }: ClayModelIntroProps) {
           });
         });
         spinRoot.add(model);
+        // Compile the material program while the intro is still idle. This
+        // keeps the first user-triggered frame from paying the shader compile
+        // cost during the visible entrance transition.
+        renderer.compile(scene, camera);
         layer.dataset.ready = "true";
         setReady(true);
+        onSettled?.();
       },
       undefined,
       () => {
-        if (!disposed) layer.dataset.error = "true";
+        if (!disposed) {
+          layer.dataset.error = "true";
+          onSettled?.();
+        }
       },
     );
 
@@ -1990,6 +2762,9 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
   const rootRef = useRef<HTMLElement>(null);
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
   const audioFrameRef = useRef<number | null>(null);
+  const sceneVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const sceneVideoSecondaryRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const sceneVideoCrossfadeCleanupRef = useRef<(() => void) | null>(null);
   const arrivalTimelineRef = useRef<gsap.core.Timeline | null>(null);
   const sceneTweenRef = useRef<gsap.core.Tween | null>(null);
   const [arrivalPhase, setArrivalPhase] = useState<CizhouArrivalPhase>("transitioning");
@@ -2025,6 +2800,7 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
 
       if (reducedMotion) {
         gsap.set([cameraStage, meipingStage, meiping, shadow, light, tone, firstSceneImage, firstSceneAtmosphere, foregroundHaze, firstSceneShade], { clearProps: "all" });
+        gsap.set([firstSceneAtmosphere, foregroundHaze], { autoAlpha: 0 });
         gsap.set(meipingStage, { autoAlpha: 0 });
         setArrivalPhase("ready");
         return;
@@ -2032,18 +2808,22 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
 
       setArrivalPhase("transitioning");
       gsap.set(cameraStage, {
-        autoAlpha: 0,
-        scale: 3.18,
-        xPercent: -16.2,
-        yPercent: -10.4,
-        transformOrigin: "64% 64%",
+        // Keep a faint first-scene image under the handoff. A fully hidden
+        // camera exposes the dark parent sphere for one frame at the exact
+        // moment the Cizhou knowledge layer mounts, which reads as a black
+        // flash on mobile.
+        autoAlpha: 0.18,
+        scale: 4.05,
+        xPercent: -26.8,
+        yPercent: 1.6,
+        transformOrigin: "64% 56%",
       });
       gsap.set(firstSceneImage, { autoAlpha: 1 });
       gsap.set(meipingStage, { autoAlpha: 0 });
       gsap.set(meiping, { filter: "brightness(0.72) saturate(0.4) contrast(0.92)" });
       gsap.set([light, tone], { autoAlpha: 0 });
       gsap.set(shadow, { autoAlpha: 0, scaleX: 0.42, scaleY: 0.52 });
-      gsap.set(firstSceneAtmosphere, { autoAlpha: 0.08 });
+      gsap.set(firstSceneAtmosphere, { autoAlpha: 0 });
       gsap.set(foregroundHaze, { autoAlpha: 0.72, scale: 1.1 });
       gsap.set(firstSceneShade, { autoAlpha: 1 });
 
@@ -2051,6 +2831,7 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
         defaults: { ease: "power1.inOut" },
         onComplete: () => {
           gsap.set([cameraStage, meiping, shadow, light, tone], { clearProps: "all" });
+          gsap.set([firstSceneAtmosphere, foregroundHaze], { autoAlpha: 0, clearProps: "filter,transform" });
           gsap.set(meipingStage, { autoAlpha: 0 });
           setArrivalPhase("ready");
         },
@@ -2059,24 +2840,23 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
 
       timeline
         .addLabel("sceneReveal", 0)
-        .to(cameraStage, { autoAlpha: 1, duration: 1.05, ease: "sine.out" }, "sceneReveal")
-        .addLabel("directPullback", 0.9)
+        .to(cameraStage, { autoAlpha: 1, duration: 0.92, ease: "sine.out" }, "sceneReveal")
+        .addLabel("directPullback", 0.72)
         .to(
           cameraStage,
           {
             scale: 1,
             xPercent: 0,
             yPercent: 0,
-            duration: 5.2,
+            duration: 5.8,
             ease: "power1.inOut",
           },
           "directPullback",
         )
-        .to(firstSceneAtmosphere, { autoAlpha: 0.24, duration: 5.2, ease: "sine.inOut" }, "directPullback")
         .to(meiping, { filter: "brightness(0.84) saturate(0.46) contrast(0.92)", duration: 2.0, ease: "sine.inOut" }, "directPullback+=3.2")
         .to([light, tone], { autoAlpha: 1, duration: 1.6, ease: "sine.inOut" }, "directPullback+=3.35")
         .to(shadow, { autoAlpha: 1, scaleX: 1, scaleY: 1, duration: 1.7, ease: "sine.inOut" }, "directPullback+=3.3");
-      timeline.to(foregroundHaze, { autoAlpha: 0.16, scale: 1, duration: 2.4, ease: "sine.inOut" }, "directPullback+=2.8");
+      timeline.to(foregroundHaze, { autoAlpha: 0, scale: 1, duration: 2.4, ease: "sine.inOut" }, "directPullback+=2.8");
 
       return () => {
         timeline.kill();
@@ -2084,6 +2864,122 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
       };
     },
     { scope: rootRef },
+  );
+
+  useEffect(() => {
+    sceneVideoRefs.current.forEach((video, index) => {
+      if (!video) return;
+      const trait = cizhouTraits[index];
+      const secondary = sceneVideoSecondaryRefs.current[index];
+      const isActive = index === activeIndex && ready && !reducedMotion;
+      const usesVideoAudio = trait.audioSource === "video";
+      const videoAudioEnabled = usesVideoAudio && audioEnabled && isActive;
+      video.muted = !videoAudioEnabled;
+      video.volume = videoAudioEnabled ? 0.42 : 0;
+
+      if (isActive) {
+        if (trait.videoLoop === "trim" && trait.videoStart !== undefined) {
+          video.currentTime = trait.videoStart;
+        }
+        if (secondary) {
+          secondary.pause();
+          secondary.currentTime = trait.videoStart ?? 0;
+          secondary.style.opacity = "0";
+          secondary.muted = true;
+          secondary.volume = 0;
+        }
+        void video.play().catch(() => undefined);
+      } else {
+        video.pause();
+        video.currentTime = trait.videoStart ?? 0;
+        if (secondary) {
+          secondary.pause();
+          secondary.currentTime = trait.videoStart ?? 0;
+          secondary.style.opacity = "0";
+          secondary.muted = true;
+          secondary.volume = 0;
+        }
+      }
+    });
+  }, [activeIndex, audioEnabled, ready, reducedMotion]);
+
+  useEffect(() => {
+    sceneVideoCrossfadeCleanupRef.current?.();
+    sceneVideoCrossfadeCleanupRef.current = null;
+
+    const trait = cizhouTraits[activeIndex];
+    const primary = sceneVideoRefs.current[activeIndex];
+    const secondary = sceneVideoSecondaryRefs.current[activeIndex];
+    const shouldCrossfade = trait.id === "tavern" && trait.videoLoop === "trim" && primary && secondary && ready && !reducedMotion;
+    if (!shouldCrossfade) return;
+
+    const loopStart = trait.videoStart ?? 0;
+    const loopEnd = trait.videoEnd ?? primary.duration;
+    const loopDuration = Math.max(0.1, loopEnd - loopStart);
+    const fadeDuration = Math.min(1.12, Math.max(0.86, loopDuration * 0.2));
+    let outgoing = primary;
+    let incoming = secondary;
+    let fading = false;
+    let fadeFrom = loopEnd - fadeDuration;
+    let frame = 0;
+
+    primary.style.opacity = "1";
+    secondary.style.opacity = "0";
+    secondary.muted = true;
+    secondary.volume = 0;
+
+    const tick = () => {
+      if (!fading && outgoing.currentTime >= loopEnd - fadeDuration) {
+        fading = true;
+        fadeFrom = outgoing.currentTime;
+        incoming.currentTime = loopStart;
+        incoming.muted = !audioEnabled;
+        incoming.volume = audioEnabled ? 0.42 : 0;
+        incoming.style.opacity = "0";
+        void incoming.play().catch(() => undefined);
+      }
+
+      if (fading) {
+        const progress = clamp((outgoing.currentTime - fadeFrom) / fadeDuration, 0, 1);
+        outgoing.style.opacity = String(1 - progress);
+        incoming.style.opacity = String(progress);
+
+        if (progress >= 0.999) {
+          outgoing.pause();
+          outgoing.currentTime = loopStart;
+          outgoing.style.opacity = "0";
+          outgoing.muted = true;
+          outgoing.volume = 0;
+          incoming.style.opacity = "1";
+          const previousOutgoing = outgoing;
+          outgoing = incoming;
+          incoming = previousOutgoing;
+          fading = false;
+        }
+      }
+
+      if (!fading && Number.isFinite(outgoing.duration) && outgoing.currentTime >= loopEnd - 0.04) {
+        outgoing.currentTime = loopStart;
+      }
+
+      frame = window.requestAnimationFrame(tick);
+    };
+
+    frame = window.requestAnimationFrame(tick);
+    const cleanup = () => {
+      window.cancelAnimationFrame(frame);
+      primary.style.opacity = "1";
+      secondary.style.opacity = "0";
+    };
+    sceneVideoCrossfadeCleanupRef.current = cleanup;
+    return cleanup;
+  }, [activeIndex, audioEnabled, ready, reducedMotion]);
+
+  useEffect(
+    () => () => {
+      sceneVideoRefs.current.forEach((video) => video?.pause());
+    },
+    [],
   );
 
   useEffect(() => {
@@ -2102,6 +2998,11 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
     let moving = false;
     const sceneOriginIndex = activeIndex;
 
+    const updateMotionState = (isMoving: boolean) => {
+      moving = isMoving;
+      root.dataset.sceneMoving = isMoving ? "true" : "false";
+    };
+
     const updateScenePresentation = () => {
       const width = Math.max(1, viewport.clientWidth);
       const scenePosition = viewport.scrollLeft / width;
@@ -2116,13 +3017,13 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
         const distance = Math.abs(scenePosition - index);
         const visibility = clamp(1 - distance, 0, 1);
         layer.style.setProperty("--scene-layer-opacity", `${visibility}`);
-        layer.dataset.running = visibility > 0.03 ? "true" : "false";
+        layer.dataset.running = !moving && visibility > 0.98 ? "true" : "false";
       });
       sceneSlices.forEach((slice) => {
         const index = Number(slice.dataset.sceneSlice ?? 0);
         const visibility = clamp(1 - Math.abs(scenePosition - index), 0, 1);
         slice.style.setProperty("--scene-weight", `${visibility}`);
-        slice.dataset.running = visibility > 0.03 ? "true" : "false";
+        slice.dataset.running = !moving && visibility > 0.98 ? "true" : "false";
       });
       const nearestIndex = clamp(Math.round(scenePosition), 0, cards.length - 1);
       root.dataset.scene = cizhouTraits[nearestIndex].id;
@@ -2135,8 +3036,7 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
 
     const finishSceneChange = (nextIndex: number) => {
       snapping = false;
-      moving = false;
-      root.dataset.sceneMoving = "false";
+      updateMotionState(false);
       root.dataset.scene = cizhouTraits[nextIndex].id;
       setActiveIndex(nextIndex);
       setActiveHotspot(null);
@@ -2181,8 +3081,7 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
       requestScenePresentation();
       if (snapping) return;
       if (!moving) {
-        moving = true;
-        root.dataset.sceneMoving = "true";
+        updateMotionState(true);
         setActiveHotspot(null);
       }
       window.clearTimeout(settleTimer);
@@ -2281,8 +3180,51 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
               style={{ "--scene-layer-index": traitIndex } as CSSProperties}
             >
               <img className="cizhou-scene-layer-image" src={trait.image} alt="" draggable={false} />
+              {trait.video ? (
+                <video
+                  className="cizhou-scene-layer-video"
+                  src={trait.video}
+                  poster={trait.image}
+                  muted={trait.audioSource !== "video" || !audioEnabled || activeIndex !== traitIndex || !ready || reducedMotion}
+                  autoPlay={false}
+                  playsInline
+                  preload={activeIndex === traitIndex ? "auto" : "metadata"}
+                  aria-hidden="true"
+                  ref={(node) => {
+                    sceneVideoRefs.current[traitIndex] = node;
+                  }}
+                  onTimeUpdate={(event) => {
+                    const video = event.currentTarget;
+                    if (trait.id === "tavern") return;
+                    if (trait.videoLoop !== "trim" || !Number.isFinite(video.duration) || video.duration <= 0) return;
+                    const loopStart = trait.videoStart ?? 0;
+                    const loopEnd = Math.min(trait.videoEnd ?? video.duration, video.duration);
+                    if (loopEnd > loopStart && video.currentTime >= loopEnd - 0.08) video.currentTime = loopStart;
+                  }}
+                  onEnded={(event) => {
+                    const video = event.currentTarget;
+                    if (trait.id === "tavern") return;
+                    if (trait.videoLoop === "none") return;
+                    video.currentTime = trait.videoStart ?? 0;
+                    void video.play().catch(() => undefined);
+                  }}
+                />
+              ) : null}
+              {trait.id === "tavern" && trait.video ? (
+                <video
+                  className="cizhou-scene-layer-video cizhou-scene-layer-video-secondary"
+                  src={trait.video}
+                  poster={trait.image}
+                  muted
+                  playsInline
+                  preload={activeIndex === traitIndex ? "auto" : "metadata"}
+                  aria-hidden="true"
+                  ref={(node) => {
+                    sceneVideoSecondaryRefs.current[traitIndex] = node;
+                  }}
+                />
+              ) : null}
               <div className="cizhou-scene-layer-atmosphere" />
-              <div className="cizhou-scene-layer-motion" />
               <div className="cizhou-scene-layer-shade" />
             </div>
           ))}
@@ -2326,9 +3268,13 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
               {trait.occlusion === "cart" ? (
                 <img className="cizhou-scene-occlusion cizhou-scene-occlusion-cart" src={trait.image} alt="" draggable={false} />
               ) : null}
-              <img className="cizhou-atmosphere-raster cizhou-atmosphere-raster-a" src={trait.atmosphere} alt="" draggable={false} />
-              <img className="cizhou-atmosphere-raster cizhou-atmosphere-raster-b" src={trait.atmosphere} alt="" draggable={false} />
-              <div className="cizhou-visible-motion" aria-hidden="true" />
+              {trait.motion === "dust" ? (
+                <>
+                  <img className="cizhou-atmosphere-raster cizhou-atmosphere-raster-a" src={trait.atmosphere} alt="" draggable={false} />
+                  <img className="cizhou-atmosphere-raster cizhou-atmosphere-raster-b" src={trait.atmosphere} alt="" draggable={false} />
+                </>
+              ) : null}
+              {trait.motion !== "none" ? <div className="cizhou-visible-motion" aria-hidden="true" /> : null}
             </div>
           ))}
         </div>
@@ -2412,17 +3358,19 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
         {audioEnabled ? <SpeakerLoudIcon aria-hidden="true" /> : <SpeakerOffIcon aria-hidden="true" />}
       </button>
 
-      {cizhouTraits.map((trait, index) => (
-        <audio
-          key={trait.id}
-          ref={(node) => {
-            audioRefs.current[index] = node;
-          }}
-          src={trait.audio}
-          loop
-          preload="metadata"
-        />
-      ))}
+      {cizhouTraits.map((trait, index) =>
+        trait.audio ? (
+          <audio
+            key={trait.id}
+            ref={(node) => {
+              audioRefs.current[index] = node;
+            }}
+            src={trait.audio}
+            loop
+            preload="metadata"
+          />
+        ) : null,
+      )}
 
       {activeHotspot ? (
         <aside className="cizhou-trait-detail" role="dialog" aria-modal="false" aria-labelledby="cizhou-detail-title">
@@ -2456,6 +3404,756 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
   );
 }
 
+type KilnStoryExperienceProps = {
+  story: KilnStoryDefinition;
+  onBack: () => void;
+};
+
+function KilnStoryExperience({ story, onBack }: KilnStoryExperienceProps) {
+  const rootRef = useRef<HTMLElement>(null);
+  const dingSparkFieldRef = useRef<HTMLDivElement>(null);
+  const sceneTweenRef = useRef<gsap.core.Tween | null>(null);
+  const sceneVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const sceneVideoSecondaryRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const sceneVideoCrossfadeCleanupRef = useRef<(() => void) | null>(null);
+  const sceneAudioRefs = useRef<(HTMLAudioElement | null)[]>([]);
+  const sceneAudioFrameRef = useRef<number | null>(null);
+  const [arrivalPhase, setArrivalPhase] = useState<CizhouArrivalPhase>("transitioning");
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeHotspot, setActiveHotspot] = useState<CizhouTraitHotspot | null>(null);
+  const [sceneAudioEnabled, setSceneAudioEnabled] = useState(false);
+  const reducedMotion = useMemo(
+    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    [],
+  );
+  const activeScene = story.scenes[activeIndex];
+  const ready = arrivalPhase === "ready";
+  const hasSceneVideo = story.scenes.some((scene) => Boolean(scene.video));
+
+  const handleSceneVideoEnded = (sceneIndex: number, video: HTMLVideoElement) => {
+    const scene = story.scenes[sceneIndex];
+    if (!scene.video || scene.videoLoop === "none") return;
+    if (scene.videoLoop === "crossfade" || scene.videoLoop === "native") {
+      // Native loops are owned by the media element. The crossfade path, when
+      // used by a different story, owns its own handoff.
+      return;
+    }
+    video.currentTime = 0;
+    void video.play().catch(() => undefined);
+  };
+
+  const handleSceneVideoTimeUpdate = (sceneIndex: number, video: HTMLVideoElement) => {
+    const scene = story.scenes[sceneIndex];
+    if (scene.videoLoop !== "trim" || !Number.isFinite(video.duration) || video.duration <= 0) return;
+    // The edited loop contains a final copy of the starting frame. Jump just
+    // before it so the last moving frame connects directly to the next cycle.
+    if (video.currentTime >= video.duration - 0.085) {
+      video.currentTime = 0;
+    }
+  };
+
+  useGSAP(
+    () => {
+      const root = rootRef.current;
+      const camera = root?.querySelector<HTMLElement>(".kiln-story-camera");
+      if (!root || !camera) {
+        setArrivalPhase("ready");
+        return;
+      }
+
+      if (reducedMotion) {
+        gsap.set(camera, { clearProps: "all" });
+        setArrivalPhase("ready");
+        return;
+      }
+
+      setArrivalPhase("transitioning");
+      gsap.set(camera, {
+        autoAlpha: 0,
+        scale: story.id === "ru" ? 2.58 : 2.4,
+        xPercent: story.id === "ru" ? -16 : -13,
+        yPercent: -12,
+        transformOrigin: story.id === "ru" ? "70% 76%" : "66% 75%",
+      });
+
+      const timeline = gsap.timeline({
+        onComplete: () => {
+          gsap.set(camera, { clearProps: "all" });
+          setArrivalPhase("ready");
+        },
+      });
+      timeline
+        .to(camera, { autoAlpha: 1, duration: 0.8, ease: "sine.out" }, 0)
+        .to(
+          camera,
+          {
+            scale: 1,
+            xPercent: 0,
+            yPercent: 0,
+            duration: 4.8,
+            ease: "power1.inOut",
+          },
+          0.42,
+        );
+
+      return () => timeline.kill();
+    },
+    { scope: rootRef },
+  );
+
+  useGSAP(
+    () => {
+      const field = dingSparkFieldRef.current;
+      if (story.id !== "ding" || activeIndex !== 0 || !ready || reducedMotion || !field) return;
+
+      const sparks = Array.from(field.querySelectorAll<HTMLElement>(".kiln-story-ding-spark"));
+      sparks.forEach((spark, sparkIndex) => {
+        const spec = dingKilnSparks[sparkIndex];
+        if (!spec) return;
+
+        gsap.fromTo(
+          spark,
+          { autoAlpha: 0, x: 0, y: 0, scale: 0.72 },
+          {
+            autoAlpha: spec.alpha,
+            scale: 1,
+            duration: 0.5,
+            ease: "sine.inOut",
+            delay: spec.delay,
+            repeat: -1,
+            repeatDelay: 0.8 + (sparkIndex % 4) * 0.35,
+            yoyo: false,
+            keyframes: [
+              { x: spec.drift * 0.28, y: -spec.rise * 0.36, duration: spec.duration * 0.38, ease: "sine.inOut" },
+              { x: spec.drift, y: -spec.rise, duration: spec.duration * 0.4, ease: "sine.inOut", autoAlpha: spec.alpha * 0.78 },
+              { x: spec.drift * 1.12, y: -spec.rise * 1.06, duration: spec.duration * 0.22, ease: "sine.inOut", autoAlpha: 0 },
+            ],
+          },
+        );
+      });
+    },
+    { scope: rootRef, dependencies: [activeIndex, ready, reducedMotion, story.id] },
+  );
+
+  useEffect(() => {
+    const root = rootRef.current;
+    const viewport = root?.querySelector<HTMLDivElement>(".kiln-story-carousel");
+    const cards = viewport
+      ? Array.from(viewport.querySelectorAll<HTMLElement>(".kiln-story-card"))
+      : [];
+    const sceneLayers = Array.from(root?.querySelectorAll<HTMLElement>(".kiln-story-scene") ?? []);
+    if (!root || !viewport || cards.length === 0 || sceneLayers.length === 0) return;
+
+    let frame = 0;
+    let settleTimer = 0;
+    let snapping = false;
+    let moving = false;
+    let sceneOriginIndex = activeIndex;
+
+    const updateMotionState = (isMoving: boolean) => {
+      moving = isMoving;
+      root.dataset.sceneMoving = isMoving ? "true" : "false";
+    };
+
+    const updateScenePresentation = () => {
+      const width = Math.max(1, viewport.clientWidth);
+      const scenePosition = viewport.scrollLeft / width;
+      cards.forEach((card) => {
+        const distance = (card.offsetLeft - viewport.scrollLeft) / width;
+        const magnitude = Math.min(Math.abs(distance), 1);
+        card.style.setProperty("--story-copy-x", `${distance * 10}px`);
+        card.style.setProperty("--story-copy-opacity", `${Math.max(0, 1 - magnitude * 2.4)}`);
+      });
+      const nearestIndex = clamp(Math.round(scenePosition), 0, cards.length - 1);
+      const presentationIndex = moving || snapping ? sceneOriginIndex : nearestIndex;
+      sceneLayers.forEach((layer, index) => {
+        const visibility = index === presentationIndex ? 1 : 0;
+        layer.style.setProperty("--story-scene-opacity", `${visibility}`);
+        layer.dataset.running = !moving && !snapping && ready && visibility > 0.98 ? "true" : "false";
+      });
+      root.dataset.scene = story.scenes[presentationIndex].id;
+    };
+
+    const requestScenePresentation = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(updateScenePresentation);
+    };
+
+    const finishSceneChange = (nextIndex: number) => {
+      snapping = false;
+      updateMotionState(false);
+      root.dataset.scene = story.scenes[nextIndex].id;
+      setActiveIndex(nextIndex);
+      setActiveHotspot(null);
+      updateScenePresentation();
+    };
+
+    const settleToNearestScene = () => {
+      if (!ready) return;
+      const width = Math.max(1, viewport.clientWidth);
+      const nextIndex = clamp(Math.round(viewport.scrollLeft / width), 0, cards.length - 1);
+      const targetLeft = cards[nextIndex]?.offsetLeft ?? nextIndex * width;
+      const travel = Math.abs(targetLeft - viewport.scrollLeft) / width;
+
+      if (reducedMotion || travel < 0.002) {
+        viewport.scrollLeft = targetLeft;
+        finishSceneChange(nextIndex);
+        return;
+      }
+
+      snapping = true;
+      sceneTweenRef.current?.kill();
+      sceneTweenRef.current = gsap.to(viewport, {
+        scrollLeft: targetLeft,
+        duration: 0.46 + Math.min(travel, 0.5) * 0.38,
+        ease: "power1.out",
+        overwrite: true,
+        onUpdate: updateScenePresentation,
+        onComplete: () => {
+          sceneTweenRef.current = null;
+          finishSceneChange(nextIndex);
+        },
+      });
+    };
+
+    const handleScroll = () => {
+      if (!snapping) {
+        const previousScene = cards[Math.max(0, sceneOriginIndex - 1)]?.offsetLeft ?? 0;
+        const nextScene = cards[Math.min(cards.length - 1, sceneOriginIndex + 1)]?.offsetLeft ?? viewport.scrollWidth;
+        const constrainedLeft = clamp(viewport.scrollLeft, previousScene, nextScene);
+        if (Math.abs(viewport.scrollLeft - constrainedLeft) > 0.5) viewport.scrollLeft = constrainedLeft;
+      }
+      requestScenePresentation();
+      if (snapping) return;
+      if (!moving) {
+        updateMotionState(true);
+        setActiveHotspot(null);
+      }
+      window.clearTimeout(settleTimer);
+      settleTimer = window.setTimeout(settleToNearestScene, 34);
+    };
+
+    const handlePointerDown = () => {
+      const width = Math.max(1, viewport.clientWidth);
+      sceneOriginIndex = clamp(Math.round(viewport.scrollLeft / width), 0, cards.length - 1);
+    };
+
+    updateScenePresentation();
+    viewport.addEventListener("pointerdown", handlePointerDown, { passive: true });
+    viewport.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      viewport.removeEventListener("pointerdown", handlePointerDown);
+      viewport.removeEventListener("scroll", handleScroll);
+      window.clearTimeout(settleTimer);
+      window.cancelAnimationFrame(frame);
+      sceneTweenRef.current?.kill();
+      sceneTweenRef.current = null;
+    };
+  }, [ready, reducedMotion, story]);
+
+  useEffect(() => {
+    sceneVideoCrossfadeCleanupRef.current?.();
+    sceneVideoCrossfadeCleanupRef.current = null;
+
+    sceneVideoRefs.current.forEach((video, index) => {
+      if (!video) return;
+      const scene = story.scenes[index];
+      const secondary = sceneVideoSecondaryRefs.current[index];
+      const isActive = index === activeIndex && ready && !reducedMotion;
+      const hasDedicatedAudio = Boolean(scene.audio);
+      // A dedicated ambience track takes precedence over any generated video audio.
+      const videoAudioEnabled = !hasDedicatedAudio && sceneAudioEnabled && !reducedMotion;
+      video.muted = !videoAudioEnabled;
+      video.volume = videoAudioEnabled ? 0.24 : 0;
+
+      if (scene.videoLoop === "crossfade" && secondary) {
+        video.style.opacity = "1";
+        secondary.style.opacity = "0";
+        secondary.pause();
+        secondary.currentTime = 0;
+        secondary.muted = true;
+        secondary.volume = 0;
+        if (isActive) {
+          video.currentTime = 0;
+          void video.play().catch(() => undefined);
+        } else {
+          video.pause();
+          video.currentTime = 0;
+        }
+        return;
+      }
+
+      if (isActive) {
+        void video.play().catch(() => undefined);
+      } else {
+        video.pause();
+      }
+    });
+  }, [activeIndex, ready, reducedMotion, sceneAudioEnabled, story]);
+
+  useEffect(() => {
+    sceneVideoCrossfadeCleanupRef.current?.();
+    sceneVideoCrossfadeCleanupRef.current = null;
+
+    const scene = story.scenes[activeIndex];
+    const primary = sceneVideoRefs.current[activeIndex];
+    const secondary = sceneVideoSecondaryRefs.current[activeIndex];
+    const shouldCrossfade = scene?.videoLoop === "crossfade" && primary && secondary && ready && !reducedMotion;
+    if (!shouldCrossfade) return;
+
+    const hasDedicatedAudio = Boolean(scene.audio);
+    const videoAudioEnabled = !hasDedicatedAudio && sceneAudioEnabled;
+    // Each handoff starts a second copy at time 0 and lets it continue forward.
+    // No frames are reversed, so smoke and light never visibly flow backwards.
+    const fadeDuration = 0.78;
+    const prewarmDuration = 0.16;
+    let outgoing = primary;
+    let incoming = secondary;
+    let loopEnd = 0;
+    let incomingPrepared = false;
+    let fading = false;
+    let fadeStartedAt = 0;
+    let frame = 0;
+
+    primary.style.opacity = "1";
+    secondary.style.opacity = "0";
+    secondary.muted = true;
+    secondary.volume = 0;
+
+    const prepareIncoming = () => {
+      if (incomingPrepared) return;
+      incomingPrepared = true;
+      incoming.currentTime = 0;
+      incoming.muted = true;
+      incoming.volume = 0;
+      incoming.style.opacity = "0";
+      // Give the hidden copy several decoded frames before it becomes visible.
+      // This avoids the black/poster paint that can occur when a video is first
+      // started exactly at the crossfade boundary.
+      void incoming.play().catch(() => undefined);
+    };
+
+    const tick = () => {
+      if (loopEnd <= 0) {
+        const duration = outgoing.duration;
+        if (!Number.isFinite(duration) || duration <= 0) {
+          frame = window.requestAnimationFrame(tick);
+          return;
+        }
+        loopEnd = duration;
+      }
+
+      const fadeStart = Math.max(0, loopEnd - fadeDuration);
+      const prewarmStart = Math.max(0, fadeStart - prewarmDuration);
+      if (!incomingPrepared && outgoing.currentTime >= prewarmStart) {
+        prepareIncoming();
+      }
+
+      if (!fading && outgoing.currentTime >= fadeStart) {
+        prepareIncoming();
+        fading = true;
+        fadeStartedAt = performance.now();
+        incoming.muted = !videoAudioEnabled;
+      }
+
+      if (fading) {
+        const progress = clamp((performance.now() - fadeStartedAt) / (fadeDuration * 1000), 0, 1);
+        outgoing.style.opacity = String(1 - progress);
+        incoming.style.opacity = String(progress);
+        outgoing.volume = videoAudioEnabled ? 0.24 * (1 - progress) : 0;
+        incoming.volume = videoAudioEnabled ? 0.24 * progress : 0;
+
+        if (progress >= 0.999) {
+          outgoing.pause();
+          outgoing.currentTime = 0;
+          outgoing.style.opacity = "0";
+          outgoing.muted = true;
+          outgoing.volume = 0;
+          incoming.style.opacity = "1";
+          incoming.muted = !videoAudioEnabled;
+          incoming.volume = videoAudioEnabled ? 0.24 : 0;
+          const previousOutgoing = outgoing;
+          outgoing = incoming;
+          incoming = previousOutgoing;
+          // Read the new foreground copy's metadata on the next frame rather
+          // than carrying a possibly not-yet-ready duration across the swap.
+          loopEnd = 0;
+          incomingPrepared = false;
+          fading = false;
+        }
+      }
+      frame = window.requestAnimationFrame(tick);
+    };
+
+    frame = window.requestAnimationFrame(tick);
+    const cleanup = () => {
+      window.cancelAnimationFrame(frame);
+      primary.style.opacity = "1";
+      secondary.style.opacity = "0";
+    };
+    sceneVideoCrossfadeCleanupRef.current = cleanup;
+    return cleanup;
+  }, [activeIndex, ready, reducedMotion, sceneAudioEnabled, story]);
+
+  useEffect(() => {
+    if (sceneAudioFrameRef.current !== null) {
+      window.cancelAnimationFrame(sceneAudioFrameRef.current);
+    }
+
+    const elements = sceneAudioRefs.current;
+    const starts = elements.map((audio) => audio?.volume ?? 0);
+    const targets = elements.map((_, index) => (sceneAudioEnabled && ready && index === activeIndex ? 0.17 : 0));
+    const activeAudio = elements[activeIndex];
+    if (sceneAudioEnabled && ready && activeAudio && !reducedMotion && document.visibilityState === "visible") {
+      void activeAudio.play().catch(() => undefined);
+    }
+
+    const startedAt = performance.now();
+    const duration = reducedMotion ? 1 : 820;
+    const fade = (time: number) => {
+      const progress = clamp((time - startedAt) / duration, 0, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      elements.forEach((audio, index) => {
+        if (!audio) return;
+        audio.volume = starts[index] + (targets[index] - starts[index]) * eased;
+      });
+      if (progress < 1) {
+        sceneAudioFrameRef.current = window.requestAnimationFrame(fade);
+        return;
+      }
+      elements.forEach((audio, index) => {
+        if (audio && targets[index] === 0) audio.pause();
+      });
+      sceneAudioFrameRef.current = null;
+    };
+
+    sceneAudioFrameRef.current = window.requestAnimationFrame(fade);
+    return () => {
+      if (sceneAudioFrameRef.current !== null) {
+        window.cancelAnimationFrame(sceneAudioFrameRef.current);
+      }
+    };
+  }, [activeIndex, ready, reducedMotion, sceneAudioEnabled, story]);
+
+  useEffect(
+    () => () => {
+      if (sceneAudioFrameRef.current !== null) {
+        window.cancelAnimationFrame(sceneAudioFrameRef.current);
+      }
+      sceneAudioRefs.current.forEach((audio) => {
+        if (!audio) return;
+        audio.pause();
+        audio.currentTime = 0;
+      });
+    },
+    [],
+  );
+
+  useEffect(() => {
+    let frame = 0;
+    const monitorTrimLoop = () => {
+      sceneVideoRefs.current.forEach((video, index) => {
+        if (!video || index !== activeIndex || !ready || reducedMotion) return;
+        if (story.scenes[index].videoLoop !== "trim" || !Number.isFinite(video.duration) || video.duration <= 0) {
+          return;
+        }
+        if (video.duration - video.currentTime <= 0.06) {
+          video.currentTime = 0;
+        }
+      });
+      frame = window.requestAnimationFrame(monitorTrimLoop);
+    };
+    frame = window.requestAnimationFrame(monitorTrimLoop);
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeIndex, ready, reducedMotion, story]);
+
+  return (
+    <section
+      ref={rootRef}
+      className="kiln-story"
+      data-story={story.id}
+      data-scene={activeScene.id}
+      data-arrival-phase={arrivalPhase}
+      data-scene-moving="false"
+      data-detail-open={Boolean(activeHotspot)}
+      aria-label={story.ariaLabel}
+    >
+      <div className="kiln-story-camera">
+        <div className="kiln-story-scenes" aria-hidden="true">
+          {story.scenes.map((scene, sceneIndex) => (
+            <div
+              key={scene.id}
+              className="kiln-story-scene"
+              data-motion={scene.motion}
+              data-video={scene.video ? "true" : "false"}
+              data-video-loop={scene.videoLoop ?? "none"}
+              data-running="false"
+            >
+              <img className="kiln-story-scene-image" src={scene.image} alt="" draggable={false} />
+              {scene.video ? (
+                <video
+                  className="kiln-story-scene-video"
+                  src={scene.video}
+                  poster={scene.image}
+                  muted
+                  autoPlay
+                  loop={scene.videoLoop === "native"}
+                  playsInline
+                  preload="auto"
+                  aria-hidden="true"
+                  ref={(node) => {
+                    sceneVideoRefs.current[sceneIndex] = node;
+                  }}
+                  onTimeUpdate={(event) => handleSceneVideoTimeUpdate(sceneIndex, event.currentTarget)}
+                  onEnded={(event) => handleSceneVideoEnded(sceneIndex, event.currentTarget)}
+                />
+              ) : null}
+              {scene.video && scene.videoLoop === "crossfade" ? (
+                <video
+                  className="kiln-story-scene-video kiln-story-scene-video-secondary"
+                  src={scene.video}
+                  poster={scene.image}
+                  muted
+                  playsInline
+                  preload="auto"
+                  aria-hidden="true"
+                  ref={(node) => {
+                    sceneVideoSecondaryRefs.current[sceneIndex] = node;
+                  }}
+                  onEnded={(event) => handleSceneVideoEnded(sceneIndex, event.currentTarget)}
+                />
+              ) : null}
+              {scene.audio ? (
+                <audio
+                  src={scene.audio}
+                  loop
+                  preload="auto"
+                  aria-hidden="true"
+                  ref={(node) => {
+                    sceneAudioRefs.current[sceneIndex] = node;
+                  }}
+                />
+              ) : null}
+              <div className="kiln-story-scene-shade" />
+              <div className="kiln-story-motion">
+                {scene.motion === "ru-after-rain" ? (
+                  <>
+                    <div className="kiln-story-rain" aria-hidden="true">
+                      <span className="kiln-story-rain-layer kiln-story-rain-layer-near" />
+                      <span className="kiln-story-rain-layer kiln-story-rain-layer-far" />
+                    </div>
+                    <div className="kiln-story-chimney-smoke" aria-hidden="true">
+                      <span className="kiln-story-chimney-smoke-wisp kiln-story-chimney-smoke-wisp-a" />
+                      <span className="kiln-story-chimney-smoke-wisp kiln-story-chimney-smoke-wisp-b" />
+                      <span className="kiln-story-chimney-smoke-wisp kiln-story-chimney-smoke-wisp-c" />
+                    </div>
+                  </>
+                ) : scene.motion === "ru-river" ? (
+                  <>
+                    <div className="kiln-story-river-nature" aria-hidden="true">
+                      <span
+                        className="kiln-story-river-tree-sway kiln-story-river-tree-sway-left"
+                      />
+                      <span
+                        className="kiln-story-river-tree-sway kiln-story-river-tree-sway-far"
+                      />
+                      <span
+                        className="kiln-story-river-reflection kiln-story-river-reflection-upper"
+                      />
+                      <span
+                        className="kiln-story-river-reflection kiln-story-river-reflection-lower"
+                      />
+                      <span className="kiln-story-river-water-ripples" />
+                    </div>
+                    <div className="kiln-story-river-haze">
+                      <span className="kiln-story-river-haze-far" />
+                      <span className="kiln-story-river-haze-mid" />
+                      <span className="kiln-story-river-haze-low" />
+                    </div>
+                  </>
+                ) : scene.motion === "ru-window" ? (
+                  <div className="kiln-story-tyndall-dust-field" aria-hidden="true">
+                    <span className="kiln-story-tyndall-dust-bank kiln-story-tyndall-dust-bank-a" />
+                    <span className="kiln-story-tyndall-dust-bank kiln-story-tyndall-dust-bank-b" />
+                    <i className="kiln-story-tyndall-speck kiln-story-tyndall-speck-a" />
+                    <i className="kiln-story-tyndall-speck kiln-story-tyndall-speck-b" />
+                    <i className="kiln-story-tyndall-speck kiln-story-tyndall-speck-c" />
+                    <i className="kiln-story-tyndall-speck kiln-story-tyndall-speck-d" />
+                    <i className="kiln-story-tyndall-speck kiln-story-tyndall-speck-e" />
+                    <i className="kiln-story-tyndall-speck kiln-story-tyndall-speck-f" />
+                    <i className="kiln-story-tyndall-speck kiln-story-tyndall-speck-g" />
+                    <i className="kiln-story-tyndall-speck kiln-story-tyndall-speck-h" />
+                  </div>
+                ) : scene.motion === "ding-ash" && !scene.video ? (
+                  <>
+                    <span className="kiln-story-ding-ash-sun-shift" aria-hidden="true" />
+                    <div className="kiln-story-ding-ash-field" aria-hidden="true">
+                      {dingAshMotes.map((mote, moteIndex) => (
+                        <i
+                          key={`ding-ash-mote-${moteIndex}`}
+                          className="kiln-story-ding-ash-mote"
+                          style={
+                            {
+                              "--ash-x": mote.x,
+                              "--ash-y": mote.y,
+                              "--ash-size": mote.size,
+                              "--ash-blur": mote.blur,
+                              "--ash-dx": mote.dx,
+                              "--ash-dy": mote.dy,
+                              "--ash-mid-dx": mote.midDx,
+                              "--ash-mid-dy": mote.midDy,
+                              "--ash-duration": mote.duration,
+                              "--ash-delay": mote.delay,
+                              "--ash-alpha": mote.alpha,
+                              "--ash-low-alpha": mote.lowAlpha,
+                            } as CSSProperties
+                          }
+                        />
+                      ))}
+                    </div>
+                    <div ref={dingSparkFieldRef} className="kiln-story-ding-spark-field" aria-hidden="true">
+                      {dingKilnSparks.map((spark, sparkIndex) => (
+                        <i
+                          key={`ding-kiln-spark-${sparkIndex}`}
+                          className={`kiln-story-ding-spark kiln-story-ding-spark--${spark.tone}`}
+                          style={
+                            {
+                              "--spark-x": spark.x,
+                              "--spark-y": spark.y,
+                              "--spark-size": spark.size,
+                            } as CSSProperties
+                          }
+                        />
+                      ))}
+                    </div>
+                    <span className="kiln-story-ding-ash-fire-glow" aria-hidden="true" />
+                  </>
+                ) : scene.motion === "ding-packing" && !scene.video ? (
+                  <>
+                    <span className="kiln-story-ding-packing-blind" aria-hidden="true" />
+                    <span className="kiln-story-ding-packing-sun" aria-hidden="true" />
+                    <span className="kiln-story-ding-packing-sun-patch" aria-hidden="true" />
+                    <span className="kiln-story-ding-packing-shadow" aria-hidden="true" />
+                    <span className="kiln-story-ding-packing-straw" aria-hidden="true" />
+                  </>
+                ) : null}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {!story.vesselIntegrated ? (
+          <div className="kiln-story-vessel-stage" aria-hidden="true">
+            <div className="kiln-story-vessel-shadow" />
+            <img
+              className="kiln-story-vessel"
+              src={story.vesselImage}
+              alt=""
+              draggable={false}
+              style={{ "--story-vessel-filter": story.vesselFilter } as CSSProperties}
+            />
+            <img className="kiln-story-vessel-light" src={story.vesselImage} alt="" draggable={false} />
+          </div>
+        ) : null}
+      </div>
+
+      <Carousel
+        className="kiln-story-carousel"
+        contentClassName="kiln-story-track"
+        ariaLabel={story.ariaLabel}
+        draggingEnabled={ready && !activeHotspot}
+      >
+        {story.scenes.map((scene, sceneIndex) => (
+          <article
+            key={scene.id}
+            className="kiln-story-card"
+            data-scene-active={activeIndex === sceneIndex}
+            aria-hidden={activeIndex !== sceneIndex}
+            inert={activeIndex !== sceneIndex}
+          >
+            <header className="kiln-story-copy">
+              <span>{scene.number} / {String(story.scenes.length).padStart(2, "0")}</span>
+              <h2>{scene.title}</h2>
+              <p>{scene.tagline}</p>
+              <div className="kiln-story-vessel-label">
+                <strong>{scene.vessel}</strong>
+                <small>{scene.period}</small>
+              </div>
+            </header>
+          </article>
+        ))}
+      </Carousel>
+
+      {hasSceneVideo ? (
+        <button
+          type="button"
+          className="kiln-story-audio-toggle"
+          data-enabled={sceneAudioEnabled}
+          aria-label={sceneAudioEnabled ? "关闭场景环境音" : "开启场景环境音"}
+          onClick={() => setSceneAudioEnabled((enabled) => !enabled)}
+        >
+          {sceneAudioEnabled ? <SpeakerLoudIcon aria-hidden="true" /> : <SpeakerOffIcon aria-hidden="true" />}
+        </button>
+      ) : null}
+
+      <div className="kiln-story-hotspots" aria-label={`${activeScene.title}知识观察点`}>
+        {activeScene.hotspots.map((hotspot, hotspotIndex) => (
+          <button
+            key={`${activeScene.id}-${hotspot.id}`}
+            type="button"
+            className="kiln-story-hotspot"
+            style={{ "--hotspot-x": `${hotspot.x}%`, "--hotspot-y": `${hotspot.y}%` } as CSSProperties}
+            aria-label={`${hotspot.label}：${hotspot.title}`}
+            disabled={!ready}
+            onClick={() => setActiveHotspot(hotspot)}
+          >
+            <i aria-hidden="true">{hotspotIndex + 1}</i>
+            <span>{hotspot.label}</span>
+          </button>
+        ))}
+      </div>
+
+      <button type="button" className="kiln-story-back" onClick={onBack} aria-label="返回窑中">
+        <ArrowLeftIcon aria-hidden="true" />
+      </button>
+
+      {activeHotspot ? (
+        <aside
+          className="kiln-story-detail"
+          role="dialog"
+          aria-modal="false"
+          aria-labelledby={`${story.id}-story-detail-title`}
+        >
+          <button
+            type="button"
+            className="kiln-story-detail-close"
+            onClick={() => setActiveHotspot(null)}
+            aria-label="关闭知识详情"
+          >
+            <Cross2Icon aria-hidden="true" />
+          </button>
+          <span>{activeScene.title} · 观察点</span>
+          <h3 id={`${story.id}-story-detail-title`}>{activeHotspot.title}</h3>
+          <p>{activeHotspot.body}</p>
+          <dl>
+            <div>
+              <dt>窑口证据</dt>
+              <dd>{activeScene.fact}</dd>
+            </div>
+            <div>
+              <dt>复原边界</dt>
+              <dd>{activeScene.reconstruction}</dd>
+            </div>
+          </dl>
+          <a href={activeScene.sourceUrl} target="_blank" rel="noreferrer">
+            史料来源 · {activeScene.sourceLabel}
+          </a>
+        </aside>
+      ) : null}
+    </section>
+  );
+}
+
 export default function Prototype() {
   const keyboard = useKeyboard();
   const [yaw, setYaw] = useState(INTRO_KILN.yaw);
@@ -2467,6 +4165,7 @@ export default function Prototype() {
   const [knowledgePhase, setKnowledgePhase] = useState<KnowledgePhase>("idle");
   const [heatOrigin, setHeatOrigin] = useState<readonly [number, number]>([0, -0.14]);
   const [introPhase, setIntroPhase] = useState<IntroPhase>("idle");
+  const [introModelSettled, setIntroModelSettled] = useState(false);
   const dragRef = useRef<DragState | null>(null);
   const viewRef = useRef({ yaw: INTRO_KILN.yaw, pitch: INTRO_KILN.pitch });
   const inertiaFrameRef = useRef<number | null>(null);
@@ -2932,14 +4631,15 @@ export default function Prototype() {
           <button
             type="button"
             className="kiln-intro-core"
-            disabled={introPhase !== "idle"}
+            disabled={introPhase !== "idle" || !introModelSettled}
+            data-model-ready={introModelSettled}
             aria-label="触碰开孔泥坯，旋转进入八窑世界"
             onClick={enterKilnWorld}
             autoFocus
           >
             <span className="kiln-intro-wheel" aria-hidden="true" />
           </button>
-          <ClayModelIntro phase={introPhase} />
+          <ClayModelIntro phase={introPhase} onSettled={() => setIntroModelSettled(true)} />
           <span className="kiln-intro-transition" aria-hidden="true">
             <img
               className="kiln-intro-transition-art"
@@ -2984,6 +4684,10 @@ export default function Prototype() {
           <SphericalPanorama
             key={activeKiln.id}
             src={activeKiln.panorama}
+            // Start drawing during the final intro handoff so the first
+            // visible sphere frame is already warm; keeping it paused in the
+            // idle/accelerating phases avoids competing with the clay model.
+            enabled={introPhase === "entering" || introPhase === "hidden"}
             motion={activeKiln.panoramaMotion}
             yaw={normalizeYaw(yaw - activeKiln.yaw)}
             pitch={pitch - activeKiln.pitch}
@@ -3152,303 +4856,29 @@ export default function Prototype() {
           <small>拖动球面</small>
         </div>
 
-        {geKnowledgeOpen ? (
-          <section
-            className="ge-knowledge"
-            data-phase={knowledgePhase}
-            aria-hidden={!geKnowledgeOpen}
-            inert={!geKnowledgeOpen}
-          >
-            <div className="ge-knowledge-glaze" aria-hidden="true">
-              <img src={GE_KNOWLEDGE_PANORAMA} alt="" draggable={false} />
-            </div>
-
-            <div className="ge-knowledge-copy">
-              <span>厚釉开片 · 裂而成章</span>
-              <h2>金丝交错<br />铁线纵横</h2>
-              <p>哥窑釉层肥厚温润，烧成后的温度变化使釉与胎产生不同收缩。粗黑的大开片如铁线，细密的褐黄小开片如金丝，两重纹路交织成独有的釉面秩序。</p>
-              <div className="ge-knowledge-tags" aria-label="哥窑核心知识点">
-                <i>厚釉</i>
-                <i>金丝铁线</i>
-                <i>紫口铁足</i>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className="ge-knowledge-back"
-              onPointerDown={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-              }}
-              onClick={leaveKilnKnowledge}
-            >
-              返回窑中
-            </button>
-
-            <div className="ge-knowledge-index" aria-hidden="true">
-              <span>04</span>
-              <i />
-              <small>哥窑 · 厚釉与开片</small>
-            </div>
-          </section>
-        ) : null}
+        {geKnowledgeOpen ? <KilnStoryExperience story={kilnStories.ge} onBack={leaveKilnKnowledge} /> : null}
 
         {ruKnowledgeOpen ? (
-          <section
-            className="guan-knowledge ru-knowledge"
-            data-phase={knowledgePhase}
-            aria-hidden={!ruKnowledgeOpen}
-            inert={!ruKnowledgeOpen}
-          >
-            <div className="guan-knowledge-glaze" aria-hidden="true">
-              <img src={RU_KNOWLEDGE_PANORAMA} alt="" draggable={false} />
-            </div>
-
-            <div className="guan-knowledge-copy">
-              <span>北宋汝瓷 · 雨过天青</span>
-              <h2>云破透火<br />釉光凝结</h2>
-              <p>汝窑天青釉在高温中由铁呈色，厚薄不同的釉层让冷青、月白与暖灰在同一表面缓慢过渡。烧成后，稀疏开片藏入半透明釉层，形成雨过天青般温润而含蓄的光泽。</p>
-              <div className="guan-knowledge-tags" aria-label="汝窑核心知识点">
-                <i>雨过天青</i>
-                <i>蟹爪开片</i>
-                <i>满釉支烧</i>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className="guan-knowledge-back"
-              onPointerDown={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-              }}
-              onClick={leaveKilnKnowledge}
-            >
-              返回窑中
-            </button>
-
-            <div className="guan-knowledge-index" aria-hidden="true">
-              <span>02</span>
-              <i />
-              <small>汝窑 · 天青与开片</small>
-            </div>
-          </section>
+          <KilnStoryExperience story={kilnStories.ru} onBack={leaveKilnKnowledge} />
         ) : null}
 
-        {guanKnowledgeOpen ? (
-          <section
-            className="guan-knowledge"
-            data-phase={knowledgePhase}
-            aria-hidden={!guanKnowledgeOpen}
-            inert={!guanKnowledgeOpen}
-          >
-            <div className="guan-knowledge-glaze" aria-hidden="true">
-              <img src={GUAN_KNOWLEDGE_PANORAMA} alt="" draggable={false} />
-            </div>
-
-            <div className="guan-knowledge-copy">
-              <span>南宋官瓷 · 青玉凝光</span>
-              <h2>冰纹承火<br />厚釉如玉</h2>
-              <p>官窑以肥厚粉青釉见长。烧成时，含铁胎骨藏在半透明釉层之下，大片冰裂纹划分出深浅不同的釉面；口沿釉薄处透出紫黑胎色，圈足露胎则呈铁褐。</p>
-              <div className="guan-knowledge-tags" aria-label="官窑核心知识点">
-                <i>粉青釉</i>
-                <i>冰裂纹</i>
-                <i>紫口铁足</i>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className="guan-knowledge-back"
-              onPointerDown={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-              }}
-              onClick={leaveKilnKnowledge}
-            >
-              返回窑中
-            </button>
-
-            <div className="guan-knowledge-index" aria-hidden="true">
-              <span>05</span>
-              <i />
-              <small>官窑 · 厚釉与冰纹</small>
-            </div>
-          </section>
-        ) : null}
+        {guanKnowledgeOpen ? <KilnStoryExperience story={kilnStories.guan} onBack={leaveKilnKnowledge} /> : null}
 
         {longquanKnowledgeOpen ? (
-          <section
-            className="guan-knowledge longquan-knowledge"
-            data-phase={knowledgePhase}
-            aria-hidden={!longquanKnowledgeOpen}
-            inert={!longquanKnowledgeOpen}
-          >
-            <div className="guan-knowledge-glaze" aria-hidden="true">
-              <img src={LONGQUAN_KNOWLEDGE_PANORAMA} alt="" draggable={false} />
-            </div>
-
-            <div className="guan-knowledge-copy">
-              <span>南宋青瓷 · 青玉藏火</span>
-              <h2>釉海藏火<br />青玉将成</h2>
-              <p>龙泉窑以粉青、梅子青厚釉闻名。还原焰中，含铁釉料在高温里熔融流动，薄处透亮，厚处温润；细密釉泡与层层积釉共同形成如青玉般深厚柔和的光泽。</p>
-              <div className="guan-knowledge-tags" aria-label="龙泉窑核心知识点">
-                <i>梅子青</i>
-                <i>厚釉</i>
-                <i>还原焰</i>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className="guan-knowledge-back"
-              onPointerDown={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-              }}
-              onClick={leaveKilnKnowledge}
-            >
-              返回窑中
-            </button>
-
-            <div className="guan-knowledge-index" aria-hidden="true">
-              <span>06</span>
-              <i />
-              <small>龙泉窑 · 厚釉与还原焰</small>
-            </div>
-          </section>
+          <KilnStoryExperience story={kilnStories.longquan} onBack={leaveKilnKnowledge} />
         ) : null}
 
         {dingKnowledgeOpen ? (
-          <section
-            className="guan-knowledge ding-knowledge"
-            data-phase={knowledgePhase}
-            aria-hidden={!dingKnowledgeOpen}
-            inert={!dingKnowledgeOpen}
-          >
-            <div className="guan-knowledge-glaze" aria-hidden="true">
-              <img src={DING_KNOWLEDGE_PANORAMA} alt="" draggable={false} />
-            </div>
-
-            <div className="guan-knowledge-copy">
-              <span>北宋白瓷 · 印花藏锋</span>
-              <h2>白釉纳火<br />印花凝光</h2>
-              <p>定窑以温润象牙白釉著称，刻花、划花与印花让浅深有序的纹样藏在釉层之下。窑火熔融白釉，凹处积釉更深，花瓣与卷草因此在柔和明暗中显现出细腻层次。</p>
-              <div className="guan-knowledge-tags" aria-label="定窑核心知识点">
-                <i>象牙白釉</i>
-                <i>印花</i>
-                <i>覆烧芒口</i>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className="guan-knowledge-back"
-              onPointerDown={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-              }}
-              onClick={leaveKilnKnowledge}
-            >
-              返回窑中
-            </button>
-
-            <div className="guan-knowledge-index" aria-hidden="true">
-              <span>08</span>
-              <i />
-              <small>定窑 · 白釉与印花</small>
-            </div>
-          </section>
+          <KilnStoryExperience story={kilnStories.ding} onBack={leaveKilnKnowledge} />
         ) : null}
 
         {cizhouKnowledgeOpen ? (
           <CizhouKnowledgeExperience onBack={leaveKilnKnowledge} />
         ) : null}
 
-        {junKnowledgeOpen ? (
-          <section
-            className="jun-knowledge"
-            data-phase={knowledgePhase}
-            aria-hidden={!junKnowledgeOpen}
-            inert={!junKnowledgeOpen}
-          >
-            <div className="jun-knowledge-glaze" aria-hidden="true">
-              <img src={JUN_KILNCHANGE_PANORAMA} alt="" draggable={false} />
-            </div>
+        {junKnowledgeOpen ? <KilnStoryExperience story={kilnStories.jun} onBack={leaveKilnKnowledge} /> : null}
 
-            <div className="jun-knowledge-copy">
-              <span>高温窑变 · 云霞入釉</span>
-              <h2>入窑一色<br />出窑万彩</h2>
-              <p>钧窑以乳浊青釉为底，高温让铜红与紫斑在釉层中自然生成。天蓝、月白与玫瑰紫彼此交融，每一次烧成都留下不可复制的云霞。</p>
-              <div className="jun-knowledge-tags" aria-label="钧窑核心知识点">
-                <i>乳浊釉</i>
-                <i>铜红斑</i>
-                <i>窑变</i>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className="jun-knowledge-back"
-              onPointerDown={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-              }}
-              onClick={leaveKilnKnowledge}
-            >
-              返回窑中
-            </button>
-
-            <div className="jun-knowledge-index" aria-hidden="true">
-              <span>02</span>
-              <i />
-              <small>钧窑 · 釉色与窑变</small>
-            </div>
-          </section>
-        ) : null}
-
-        {yaozhouKnowledgeOpen ? (
-          <section
-            className="yaozhou-knowledge"
-            data-phase={knowledgePhase}
-            aria-hidden={!yaozhouKnowledgeOpen}
-            inert={!yaozhouKnowledgeOpen}
-          >
-            <div className="yaozhou-knowledge-glaze" aria-hidden="true">
-              <img src={YAOZHOU_GLAZE_PANORAMA} alt="" draggable={false} />
-            </div>
-
-            <div className="yaozhou-knowledge-copy">
-              <span>北方青瓷 · 刀下生花</span>
-              <h2>刀锋入泥<br />釉随痕聚</h2>
-              <p>耀州窑以刚劲流畅的刻花见长。烧成时，青釉在深刻凹槽中自然积聚，形成浅处黄绿、深处墨绿的层次，让牡丹纹在一层透明釉光中显出起伏。</p>
-              <div className="yaozhou-knowledge-tags" aria-label="耀州窑核心知识点">
-                <i>刻花</i>
-                <i>积釉</i>
-                <i>橄榄青</i>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className="yaozhou-knowledge-back"
-              onPointerDown={(event) => {
-                event.preventDefault();
-                event.stopPropagation();
-              }}
-              onClick={leaveKilnKnowledge}
-            >
-              返回窑中
-            </button>
-
-            <div className="yaozhou-knowledge-index" aria-hidden="true">
-              <span>03</span>
-              <i />
-              <small>耀州窑 · 刻花与积釉</small>
-            </div>
-          </section>
-        ) : null}
+        {yaozhouKnowledgeOpen ? <KilnStoryExperience story={kilnStories.yaozhou} onBack={leaveKilnKnowledge} /> : null}
 
       </main>
     </MobileScroll>

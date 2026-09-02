@@ -101,22 +101,80 @@ def create_interior(rng: np.random.Generator) -> np.ndarray:
 
 
 def create_night(rng: np.random.Generator) -> np.ndarray:
-    track = 0.022 * periodic_noise(rng, 28, 540, slope=1.75)
     time = np.arange(SAMPLE_COUNT) / SAMPLE_RATE
-    track *= 0.82 + 0.18 * np.sin(2 * np.pi * time / DURATION)
-    for cluster_start, base_pitch in [(1.1, 3_450), (4.9, 3_850), (9.2, 3_250), (14.1, 4_050), (18.0, 3_620), (21.4, 3_300)]:
-        for pulse_index in range(4):
-            duration = 0.12 + pulse_index * 0.01
-            count = int(duration * SAMPLE_RATE)
-            pulse_time = np.arange(count) / SAMPLE_RATE
-            envelope = np.sin(np.linspace(0, np.pi, count)) ** 2
-            chirp_pitch = base_pitch + pulse_index * 55
-            chirp = np.sin(2 * np.pi * chirp_pitch * pulse_time) * envelope * 0.028
-            add_event(track, chirp, cluster_start + pulse_index * 0.19)
-    for start in (7.4, 16.4):
-        count = int(1.05 * SAMPLE_RATE)
-        page = fade_event(periodic_noise(rng, 350, 3_800, slope=0.45)[:count] * 0.019, 0.2, 0.48)
-        add_event(track, page, start)
+    # A soft, low-frequency night breeze. The second band gives the wind a
+    # little air movement without turning it into cloth rustle or room noise.
+    low_wind = 0.022 * periodic_noise(rng, 20, 320, slope=2.0)
+    air_wind = 0.0038 * periodic_noise(rng, 150, 900, slope=1.3)
+    gust = (
+        0.82
+        + 0.1 * np.sin(2 * np.pi * time / 9.6 + 0.7)
+        + 0.055 * np.sin(2 * np.pi * time / 4.1 + 2.2)
+        + 0.025 * np.sin(2 * np.pi * time / 1.75 + 0.3)
+    )
+    track = (low_wind + air_wind) * np.clip(gust, 0.62, 1.08)
+
+    def add_insect_chirp(
+        start: float,
+        duration: float,
+        pitch: float,
+        sweep: float,
+        level: float,
+        overtone: float = 0.28,
+    ) -> None:
+        count = max(1, int(duration * SAMPLE_RATE))
+        pulse_time = np.arange(count) / SAMPLE_RATE
+        normalized = pulse_time / max(duration, 1e-5)
+        phase = 2 * np.pi * (pitch * pulse_time + 0.5 * sweep * pulse_time * normalized)
+        envelope = np.sin(np.linspace(0, np.pi, count)) ** 3
+        chirp = (np.sin(phase) + overtone * np.sin(phase * 2.03 + 0.6)) * envelope * level
+        add_event(track, chirp, start)
+
+    # Occasional soft calls from the near field. They are deliberately sparse
+    # and lower-pitched so the sound reads as a rural yard, not dense jungle.
+    for cluster_start in (1.4, 5.05, 8.95, 13.45, 17.85, 22.25):
+        pulse_count = int(rng.integers(1, 4))
+        base_pitch = float(rng.uniform(2_600, 3_700))
+        cursor = cluster_start
+        for pulse_index in range(pulse_count):
+            duration = float(rng.uniform(0.12, 0.24))
+            add_insect_chirp(
+                cursor,
+                duration,
+                base_pitch + pulse_index * float(rng.uniform(28, 70)),
+                float(rng.uniform(30, 160)),
+                float(rng.uniform(0.01, 0.017)),
+                overtone=0.14,
+            )
+            cursor += duration + float(rng.uniform(0.2, 0.42))
+
+    # Distant crickets sit lower in the mix, with long gaps between calls.
+    for cluster_start in (2.75, 7.15, 11.75, 16.15, 20.45):
+        pulse_count = int(rng.integers(1, 4))
+        base_pitch = float(rng.uniform(1_100, 1_900))
+        cursor = cluster_start
+        for _ in range(pulse_count):
+            duration = float(rng.uniform(0.07, 0.13))
+            add_insect_chirp(
+                cursor,
+                duration,
+                base_pitch + float(rng.uniform(-55, 75)),
+                float(rng.uniform(-45, 90)),
+                float(rng.uniform(0.008, 0.014)),
+                overtone=0.1,
+            )
+            cursor += duration + float(rng.uniform(0.24, 0.5))
+
+    # Only a few muted mid-distance calls add depth without sharp treble.
+    for start in (4.25, 10.15, 18.7):
+        add_insect_chirp(
+            start,
+            float(rng.uniform(0.22, 0.38)),
+            float(rng.uniform(2_200, 3_200)),
+            float(rng.uniform(-160, 160)),
+            float(rng.uniform(0.004, 0.008)),
+            overtone=0.08,
+        )
     return track
 
 

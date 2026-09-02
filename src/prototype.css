@@ -1947,8 +1947,8 @@
 }
 
 .cizhou-scene-layer-image,
+.cizhou-scene-layer-video,
 .cizhou-scene-layer-atmosphere,
-.cizhou-scene-layer-motion,
 .cizhou-scene-layer-shade {
   position: absolute;
   inset: 0;
@@ -1962,104 +1962,24 @@
   object-position: center;
 }
 
-.cizhou-scene-layer-atmosphere {
+.cizhou-scene-layer-video {
   z-index: 1;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+}
+
+.cizhou-scene-layer-video-secondary {
+  opacity: 0;
+}
+
+.cizhou-scene-layer-atmosphere {
+  z-index: 2;
   opacity: 0;
   mix-blend-mode: screen;
   pointer-events: none;
   will-change: opacity, transform;
-}
-
-.cizhou-scene-layer-motion {
-  z-index: 1;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.cizhou-scene-layer-motion::before,
-.cizhou-scene-layer-motion::after {
-  position: absolute;
-  content: "";
-  pointer-events: none;
-  animation-play-state: paused;
-  will-change: opacity, transform;
-}
-
-.cizhou-scene-layer[data-running="true"] .cizhou-scene-layer-motion::before,
-.cizhou-scene-layer[data-running="true"] .cizhou-scene-layer-motion::after {
-  animation-play-state: running;
-}
-
-.cizhou-scene-layer[data-scene-layer="kiln-yard"] .cizhou-scene-layer-motion::before {
-  top: 35.5%;
-  left: 70.5%;
-  width: 17%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  opacity: 0.24;
-  background: radial-gradient(circle, rgb(255 229 184 / 0.88) 0 6%, rgb(255 212 158 / 0.36) 19%, rgb(200 219 221 / 0.16) 45%, transparent 72%);
-  filter: blur(3.8px);
-  mix-blend-mode: screen;
-  transform-origin: center;
-  animation: cizhou-kiln-lantern-breathe 4.8s ease-in-out -1.2s infinite;
-}
-
-.cizhou-scene-layer[data-scene-layer="kiln-yard"] .cizhou-scene-layer-motion::after {
-  top: 28%;
-  right: 1%;
-  width: 53%;
-  height: 28%;
-  opacity: 0.14;
-  background:
-    radial-gradient(ellipse at 67% 49%, rgb(218 229 229 / 0.34), transparent 42%),
-    linear-gradient(96deg, transparent 4%, rgb(201 216 218 / 0.2) 48%, transparent 88%);
-  filter: blur(13px);
-  mix-blend-mode: screen;
-  transform-origin: 68% 52%;
-  animation: cizhou-kiln-air-sway 7.2s ease-in-out -2.6s infinite alternate;
-}
-
-.cizhou-scene-layer[data-scene-layer="northbound-cart"] .cizhou-scene-layer-motion::before {
-  top: 31%;
-  right: -4%;
-  width: 57%;
-  height: 38%;
-  opacity: 0.13;
-  background:
-    radial-gradient(ellipse at 67% 68%, rgb(231 201 153 / 0.46), transparent 46%),
-    linear-gradient(114deg, transparent 16%, rgb(226 195 149 / 0.28) 48%, transparent 79%);
-  filter: blur(12px);
-  mix-blend-mode: screen;
-  transform: translate3d(9%, 2%, 0) skewX(-7deg);
-  clip-path: polygon(29% 0, 100% 0, 100% 100%, 4% 100%);
-  animation: cizhou-road-dust-breathe 5.8s ease-in-out -2.1s infinite alternate;
-}
-
-.cizhou-scene-layer[data-scene-layer="tavern"] .cizhou-scene-layer-motion::before {
-  top: 38.5%;
-  right: -2.5%;
-  width: 24%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  opacity: 0.22;
-  background: radial-gradient(circle, rgb(255 211 126 / 0.62) 0 7%, rgb(224 137 57 / 0.28) 25%, transparent 69%);
-  filter: blur(5px);
-  mix-blend-mode: screen;
-  transform-origin: 62% 54%;
-  animation: cizhou-tavern-light-breathe 3.25s ease-in-out -0.8s infinite;
-}
-
-.cizhou-scene-layer[data-scene-layer="tavern"] .cizhou-scene-layer-motion::after {
-  top: 30%;
-  right: 0;
-  width: 63%;
-  height: 45%;
-  opacity: 0.08;
-  background: radial-gradient(ellipse at 80% 43%, rgb(229 143 65 / 0.42), transparent 59%);
-  filter: blur(18px);
-  mix-blend-mode: screen;
-  transform-origin: 80% 43%;
-  animation: cizhou-tavern-room-response 4.4s ease-in-out -1.7s infinite;
 }
 
 .cizhou-scene-layer-shade {
@@ -2188,14 +2108,7 @@
 }
 
 .cizhou-context-slice[data-motion="smoke"] .cizhou-atmosphere-raster {
-  top: 27%;
-  right: -8%;
-  width: 63%;
-  height: 34%;
-  object-fit: cover;
-  object-position: 63% 47%;
-  clip-path: ellipse(58% 52% at 61% 49%);
-  filter: brightness(0.74) saturate(0.18) contrast(0.64) blur(3px);
+  display: none;
 }
 
 .cizhou-context-slice[data-motion="smoke"] .cizhou-atmosphere-raster-a {
@@ -2209,31 +2122,28 @@
 }
 
 .cizhou-context-slice[data-motion="dust"] .cizhou-atmosphere-raster {
-  top: 23%;
-  right: -7%;
-  width: 64%;
-  height: 46%;
+  top: 18%;
+  right: -40%;
+  width: 116%;
+  height: 62%;
   object-fit: cover;
-  object-position: 73% 28%;
-  clip-path: polygon(24% 0, 100% 0, 100% 100%, 1% 100%);
-  filter: brightness(1.23) sepia(0.38) saturate(0.38) contrast(0.68) blur(1.2px);
+  object-position: 82% 32%;
+  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 62% 45%, #000 0 46%, rgb(0 0 0 / 0.72) 68%, transparent 100%);
+  mask-image: radial-gradient(ellipse 78% 72% at 62% 45%, #000 0 46%, rgb(0 0 0 / 0.72) 68%, transparent 100%);
+  filter: brightness(1.8) sepia(0.56) saturate(0.52) contrast(0.56) blur(1.8px);
 }
 
 .cizhou-context-slice[data-motion="dust"] .cizhou-atmosphere-raster-a {
-  animation: cizhou-dust-drift-a 7.4s linear infinite;
+  animation: cizhou-dust-drift-a 8.8s linear -1.4s infinite;
 }
 
 .cizhou-context-slice[data-motion="dust"] .cizhou-atmosphere-raster-b {
-  transform: translate3d(-14%, 10%, 0) scale(1.08);
-  animation: cizhou-dust-drift-b 9.8s linear -4.2s infinite;
+  transform: translate3d(22%, 7%, 0) scale(1.04);
+  animation: cizhou-dust-drift-b 11.2s linear -5.2s infinite;
 }
 
 .cizhou-context-slice[data-motion="candle"] .cizhou-atmosphere-raster {
-  right: -0.5%;
-  bottom: 38.5%;
-  width: 9%;
-  transform-origin: 54% 71%;
-  filter: grayscale(1) sepia(1) hue-rotate(-12deg) saturate(1.25) brightness(0.64) blur(0.6px);
+  display: none;
 }
 
 .cizhou-context-slice[data-motion="candle"] .cizhou-atmosphere-raster-a {
@@ -2269,80 +2179,92 @@
 }
 
 .cizhou-context-slice[data-motion="smoke"] .cizhou-visible-motion::before {
-  top: 34%;
-  right: 7.5%;
-  width: 21%;
+  top: 40.8%;
+  left: 73.05%;
+  width: 6.8%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle, rgb(255 239 193 / 0.96) 0 4%, rgb(255 210 145 / 0.52) 13%, rgb(211 225 224 / 0.2) 37%, transparent 70%);
-  filter: blur(3px);
+  background: radial-gradient(circle, rgb(255 246 214 / 0.96) 0 8%, rgb(255 214 155 / 0.56) 20%, rgb(225 231 222 / 0.2) 52%, transparent 78%);
+  filter: blur(2.2px);
   mix-blend-mode: screen;
   transform-origin: center;
-  animation: cizhou-visible-lantern 3.2s ease-in-out -0.8s infinite;
+  animation: cizhou-visible-lantern 5.6s ease-in-out -1.2s infinite;
 }
 
 .cizhou-context-slice[data-motion="smoke"] .cizhou-visible-motion::after {
-  top: 27%;
-  right: -8%;
-  width: 63%;
-  height: 31%;
+  top: 35.5%;
+  left: 54%;
+  width: 53%;
+  height: 20%;
   background:
-    radial-gradient(ellipse at 62% 52%, rgb(226 237 236 / 0.38), transparent 48%),
-    linear-gradient(98deg, transparent 5%, rgb(207 224 224 / 0.22) 48%, transparent 91%);
-  filter: blur(10px);
+    radial-gradient(ellipse at 55% 54%, rgb(231 239 237 / 0.34), transparent 55%),
+    linear-gradient(98deg, transparent 0%, rgb(214 227 227 / 0.36) 36%, rgb(225 234 232 / 0.25) 64%, transparent 100%);
+  filter: blur(7px);
   mix-blend-mode: screen;
-  animation: cizhou-visible-air 5.6s ease-in-out -2.1s infinite alternate;
+  animation: cizhou-visible-lantern-mist 7.4s ease-in-out -2.2s infinite;
+}
+
+.cizhou-context-slice[data-motion="dust"] .cizhou-visible-motion {
+  background:
+    radial-gradient(ellipse at 50% 59%, rgb(239 211 169 / 0.12), transparent 52%),
+    radial-gradient(ellipse at 69% 48%, rgb(229 194 148 / 0.1), transparent 51%),
+    radial-gradient(ellipse at 54% 76%, rgb(221 186 140 / 0.07), transparent 42%);
+  mix-blend-mode: screen;
 }
 
 .cizhou-context-slice[data-motion="dust"] .cizhou-visible-motion::before {
-  top: 27%;
-  right: -13%;
-  width: 79%;
-  height: 27%;
+  top: 22%;
+  left: 18%;
+  width: 118%;
+  height: 42%;
   background:
-    radial-gradient(ellipse at 70% 63%, rgb(245 218 174 / 0.46), transparent 42%),
-    linear-gradient(108deg, transparent 6%, rgb(224 192 145 / 0.3) 48%, transparent 88%);
-  filter: blur(7px);
+    radial-gradient(ellipse at 64% 54%, rgb(245 218 174 / 0.68), transparent 60%),
+    linear-gradient(102deg, transparent 1%, rgb(224 192 145 / 0.5) 48%, transparent 98%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 76%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 76%, transparent);
+  filter: blur(5px);
   mix-blend-mode: screen;
-  transform: translate3d(16%, 0, 0) skewX(-8deg);
-  animation: cizhou-visible-dust-a 5.2s linear -1.4s infinite;
+  transform: translate3d(28%, -2%, 0) skewX(-7deg) scale(0.92);
+  animation: cizhou-visible-dust-a 7.8s linear -1.2s infinite;
 }
 
 .cizhou-context-slice[data-motion="dust"] .cizhou-visible-motion::after {
-  top: 43%;
-  right: -18%;
-  width: 71%;
-  height: 19%;
-  background: radial-gradient(ellipse at 58% 48%, rgb(232 198 151 / 0.36), transparent 66%);
-  filter: blur(9px);
+  top: 34%;
+  left: 20%;
+  width: 112%;
+  height: 38%;
+  background: radial-gradient(ellipse at 64% 48%, rgb(232 198 151 / 0.58), transparent 74%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 72%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 72%, transparent);
+  filter: blur(6px);
   mix-blend-mode: screen;
-  transform: translate3d(20%, 0, 0) scale(0.94);
-  animation: cizhou-visible-dust-b 7.1s linear -3.3s infinite;
+  transform: translate3d(36%, -1%, 0) scale(0.92);
+  animation: cizhou-visible-dust-b 9.4s linear -4.8s infinite;
 }
 
 .cizhou-context-slice[data-motion="candle"] .cizhou-visible-motion::before {
-  top: 38%;
-  right: -1.5%;
-  width: 22%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgb(255 235 169 / 0.88) 0 4%, rgb(255 177 76 / 0.5) 17%, rgb(225 119 39 / 0.18) 40%, transparent 70%);
-  filter: blur(3.5px);
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 94% 48%, rgb(255 194 112 / 0.34), rgb(239 143 59 / 0.15) 30%, transparent 66%),
+    linear-gradient(92deg, rgb(127 68 26 / 0.02), rgb(235 136 47 / 0.16));
+  filter: blur(3px);
   mix-blend-mode: screen;
-  transform-origin: 68% 56%;
-  animation: cizhou-visible-candle 1.7s ease-in-out -0.45s infinite;
+  transform-origin: 100% 48%;
+  animation: cizhou-visible-room-fire 26.4s cubic-bezier(0.37, 0, 0.63, 1) -6.2s infinite;
 }
 
 .cizhou-context-slice[data-motion="candle"] .cizhou-visible-motion::after {
-  top: 27%;
-  right: -8%;
-  width: 68%;
-  height: 45%;
-  background: radial-gradient(ellipse at 78% 46%, rgb(236 141 57 / 0.35), transparent 61%);
-  filter: blur(15px);
-  mix-blend-mode: screen;
-  transform-origin: 78% 46%;
-  animation: cizhou-visible-room-light 3.4s ease-in-out -1.2s infinite;
+  inset: -4%;
+  background: linear-gradient(106deg, transparent 18%, rgb(63 31 13 / 0.2) 54%, transparent 92%);
+  filter: blur(16px);
+  mix-blend-mode: multiply;
+  transform-origin: center;
+  animation: cizhou-visible-room-shadow 31.8s cubic-bezier(0.37, 0, 0.63, 1) -11.4s infinite;
+}
+
+.cizhou-knowledge[data-scene-moving="true"] .cizhou-visible-motion,
+.cizhou-knowledge[data-scene-moving="true"] .cizhou-atmosphere-raster {
+  opacity: 0;
 }
 
 .cizhou-context-slice[data-running="false"] .cizhou-visible-motion::before,
@@ -2350,14 +2272,10 @@
   animation-play-state: paused;
 }
 
-.cizhou-scene-layer[data-running="false"] .cizhou-scene-layer-motion::before,
-.cizhou-scene-layer[data-running="false"] .cizhou-scene-layer-motion::after,
 .cizhou-context-slice[data-running="false"] .cizhou-atmosphere-raster {
   animation-play-state: paused;
 }
 
-.cizhou-scene-layer[data-running="true"] .cizhou-scene-layer-motion::before,
-.cizhou-scene-layer[data-running="true"] .cizhou-scene-layer-motion::after,
 .cizhou-context-slice[data-running="true"] .cizhou-atmosphere-raster {
   animation-play-state: running;
 }
@@ -2369,9 +2287,7 @@
 }
 
 .cizhou-knowledge[data-scene-moving="true"] .cizhou-transition-veil {
-  opacity: 0.18;
-  transform: translate3d(10%, 0, 0);
-  transition: opacity 140ms ease-out, transform 520ms cubic-bezier(0.18, 0.72, 0.16, 1);
+  opacity: 0;
 }
 
 .cizhou-trait-carousel .mobile-carousel-content,
@@ -2941,29 +2857,47 @@
 
 @keyframes cizhou-dust-drift-a {
   0% {
-    opacity: 0.08;
-    transform: translate3d(12%, 2%, 0) scale(1.02);
+    opacity: 0;
+    transform: translate3d(24%, 0, 0) scale(0.98);
   }
-  46% {
-    opacity: 0.24;
+  12% {
+    opacity: 0.18;
+  }
+  38% {
+    opacity: 0.4;
+  }
+  78% {
+    opacity: 0.28;
+  }
+  92% {
+    opacity: 0.12;
   }
   100% {
-    opacity: 0.09;
-    transform: translate3d(-13%, 7%, 0) scale(1.08);
+    opacity: 0;
+    transform: translate3d(-34%, 7%, 0) scale(1.12);
   }
 }
 
 @keyframes cizhou-dust-drift-b {
   0% {
-    opacity: 0.05;
-    transform: translate3d(15%, 1%, 0) scale(1.04) rotate(-0.7deg);
+    opacity: 0;
+    transform: translate3d(30%, 2%, 0) scale(0.96) rotate(-0.6deg);
   }
-  52% {
-    opacity: 0.17;
+  10% {
+    opacity: 0.14;
+  }
+  42% {
+    opacity: 0.34;
+  }
+  82% {
+    opacity: 0.22;
+  }
+  94% {
+    opacity: 0.1;
   }
   100% {
-    opacity: 0.06;
-    transform: translate3d(-10%, 9%, 0) scale(1.1) rotate(0.8deg);
+    opacity: 0;
+    transform: translate3d(-30%, 9%, 0) scale(1.1) rotate(0.7deg);
   }
 }
 
@@ -3085,100 +3019,170 @@
 @keyframes cizhou-visible-lantern {
   0%,
   100% {
-    opacity: 0.2;
-    transform: translate3d(-2px, 1px, 0) scale(0.9);
+    opacity: 0.22;
+    transform: translate3d(-0.35px, 0.35px, 0) scale(0.92);
   }
-  38% {
-    opacity: 0.58;
-    transform: translate3d(1px, -1px, 0) scale(1.12);
+  34% {
+    opacity: 0.68;
+    transform: translate3d(0.35px, -0.35px, 0) scale(1.12);
   }
-  68% {
-    opacity: 0.34;
-    transform: translate3d(3px, 0, 0) scale(0.98);
+  58% {
+    opacity: 0.48;
+    transform: scale(1.02);
+  }
+  77% {
+    opacity: 0.32;
+    transform: translate3d(-0.2px, 0.25px, 0) scale(0.96);
   }
 }
 
-@keyframes cizhou-visible-air {
-  0% {
-    opacity: 0.12;
-    transform: translate3d(-7%, 1%, 0) scaleX(0.94);
-  }
-  52% {
-    opacity: 0.3;
-  }
+@keyframes cizhou-visible-lantern-mist {
+  0%,
   100% {
-    opacity: 0.16;
-    transform: translate3d(8%, -1%, 0) scaleX(1.07);
+    opacity: 0.18;
+    transform: translate3d(-16%, 1%, 0) scaleX(0.88);
+  }
+  44% {
+    opacity: 0.52;
+    transform: translate3d(2%, -1%, 0) scaleX(1.04);
+  }
+  69% {
+    opacity: 0.28;
+    transform: translate3d(16%, 0, 0) scaleX(1.12);
   }
 }
 
 @keyframes cizhou-visible-dust-a {
   0% {
     opacity: 0;
-    transform: translate3d(18%, 1%, 0) skewX(-8deg) scale(0.92);
+    transform: translate3d(28%, -2%, 0) skewX(-7deg) scale(0.92);
   }
-  26% {
-    opacity: 0.34;
+  13% {
+    opacity: 0.18;
   }
-  66% {
-    opacity: 0.2;
+  34% {
+    opacity: 0.56;
+  }
+  76% {
+    opacity: 0.36;
+  }
+  92% {
+    opacity: 0.14;
   }
   100% {
     opacity: 0;
-    transform: translate3d(-20%, 7%, 0) skewX(-8deg) scale(1.1);
+    transform: translate3d(-68%, 9%, 0) skewX(-7deg) scale(1.16);
   }
 }
 
 @keyframes cizhou-visible-dust-b {
   0% {
     opacity: 0;
-    transform: translate3d(23%, 1%, 0) scale(0.92);
+    transform: translate3d(38%, -1%, 0) scale(0.92);
   }
-  35% {
-    opacity: 0.26;
+  11% {
+    opacity: 0.16;
   }
-  72% {
-    opacity: 0.14;
+  39% {
+    opacity: 0.5;
+  }
+  79% {
+    opacity: 0.31;
+  }
+  93% {
+    opacity: 0.12;
   }
   100% {
     opacity: 0;
-    transform: translate3d(-16%, 5%, 0) scale(1.08);
+    transform: translate3d(-72%, 10%, 0) scale(1.16);
   }
 }
 
-@keyframes cizhou-visible-candle {
+@keyframes cizhou-visible-room-fire {
   0%,
   100% {
-    opacity: 0.22;
-    transform: translate3d(-1px, 1px, 0) scale(0.9, 0.96);
+    opacity: 0.13;
+    transform: translate3d(-0.2%, 0.1%, 0) scale(0.998);
   }
-  28% {
-    opacity: 0.56;
-    transform: translate3d(1px, -1px, 0) scale(1.12, 1.18);
+  11% {
+    opacity: 0.28;
+    transform: translate3d(0.25%, -0.15%, 0) scale(1.006);
   }
-  61% {
-    opacity: 0.31;
-    transform: translate3d(-1px, 1px, 0) scale(0.96, 0.9);
+  17% {
+    opacity: 0.16;
+    transform: translate3d(-0.1%, 0.15%, 0) scale(1.001);
   }
-  79% {
-    opacity: 0.48;
-    transform: translate3d(2px, 0, 0) scale(1.06, 1.1);
+  24% {
+    opacity: 0.29;
+    transform: translate3d(0.3%, -0.18%, 0) scale(1.007);
   }
-}
-
-@keyframes cizhou-visible-room-light {
-  0%,
-  100% {
-    opacity: 0.09;
-    transform: scale(0.96);
+  29% {
+    opacity: 0.18;
+    transform: translate3d(0.05%, 0.08%, 0) scale(1.002);
   }
-  43% {
-    opacity: 0.24;
-    transform: scale(1.07);
+  35% {
+    opacity: 0.27;
+    transform: translate3d(-0.25%, -0.1%, 0) scale(1.005);
+  }
+  48% {
+    opacity: 0.14;
+    transform: translate3d(-0.1%, 0.14%, 0) scale(0.999);
+  }
+  65% {
+    opacity: 0.3;
+    transform: translate3d(0.28%, -0.2%, 0) scale(1.008);
   }
   72% {
+    opacity: 0.17;
+    transform: translate3d(0.1%, 0.1%, 0) scale(1.001);
+  }
+  87% {
+    opacity: 0.28;
+    transform: translate3d(-0.22%, -0.12%, 0) scale(1.006);
+  }
+  92% {
+    opacity: 0.15;
+    transform: translate3d(0, 0.1%, 0) scale(1);
+  }
+}
+
+@keyframes cizhou-visible-room-shadow {
+  0%,
+  100% {
+    opacity: 0.08;
+    transform: translate3d(-0.8%, 0, 0) scale(0.99);
+  }
+  14% {
     opacity: 0.14;
-    transform: scale(1.01);
+    transform: translate3d(0.4%, -0.2%, 0) scale(1.006);
+  }
+  22% {
+    opacity: 0.09;
+    transform: translate3d(-0.2%, 0.1%, 0) scale(0.998);
+  }
+  39% {
+    opacity: 0.16;
+    transform: translate3d(0.8%, -0.25%, 0) scale(1.01);
+  }
+  46% {
+    opacity: 0.1;
+    transform: translate3d(0.15%, 0.12%, 0) scale(1);
+  }
+  59% {
+    opacity: 0.15;
+    transform: translate3d(-0.55%, -0.16%, 0) scale(1.007);
+  }
+  75% {
+    opacity: 0.08;
+    transform: translate3d(-0.35%, 0.16%, 0) scale(0.995);
+  }
+  88% {
+    opacity: 0.14;
+    transform: translate3d(0.65%, -0.18%, 0) scale(1.006);
+  }
+  93% {
+    opacity: 0.1;
+    transform: translate3d(0.1%, 0.1%, 0) scale(1);
   }
 }
 
@@ -4868,7 +4872,1602 @@
   }
 }
 
+.kiln-story {
+  --story-ink: #e8eef0;
+  --story-muted: rgb(224 232 235 / 0.72);
+  --story-accent: rgb(197 220 224 / 0.84);
+  --story-panel: rgb(17 25 29 / 0.94);
+  position: absolute;
+  z-index: 31;
+  inset: 0;
+  overflow: hidden;
+  color: var(--story-ink);
+  background: #1b262a;
+  pointer-events: auto;
+}
+
+.kiln-story[data-story="ding"] {
+  --story-ink: #fff5df;
+  --story-muted: rgb(249 231 197 / 0.72);
+  --story-accent: rgb(222 183 125 / 0.9);
+  --story-panel: rgb(43 29 18 / 0.95);
+  background: #312419;
+}
+
+.kiln-story[data-story="ge"] {
+  --story-ink: #f5f0e7;
+  --story-muted: rgb(238 228 211 / 0.72);
+  --story-accent: rgb(196 165 122 / 0.9);
+  --story-panel: rgb(38 34 30 / 0.95);
+  background: #34302b;
+}
+
+.kiln-story-camera,
+.kiln-story-scenes,
+.kiln-story-scene,
+.kiln-story-scene-image,
+.kiln-story-scene-video,
+.kiln-story-scene-shade,
+.kiln-story-motion,
+.kiln-story-vessel-stage {
+  position: absolute;
+  inset: 0;
+}
+
+.kiln-story-camera {
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform-origin: 68% 76%;
+}
+
+.kiln-story-scenes {
+  z-index: 0;
+  overflow: hidden;
+  background: #43555b;
+}
+
+.kiln-story[data-story="ding"] .kiln-story-scenes {
+  background: #7a5d3d;
+}
+
+.kiln-story[data-story="ge"] .kiln-story-scenes {
+  background: #4c4944;
+}
+
+.kiln-story-scene {
+  --story-scene-opacity: 0;
+  opacity: var(--story-scene-opacity);
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.kiln-story-scene:first-child {
+  --story-scene-opacity: 1;
+}
+
+.kiln-story-scene-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.kiln-story-scene-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 1;
+  transition: opacity 420ms ease;
+}
+
+.kiln-story-scene-video-secondary {
+  opacity: 0;
+}
+
+.kiln-story-scene[data-video-loop="crossfade"] .kiln-story-scene-video {
+  transition: none;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: opacity;
+}
+
+.kiln-story-scene[data-video="true"] .kiln-story-scene-image {
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+
+.kiln-story-scene[data-video="true"].is-seam-fading .kiln-story-scene-image {
+  opacity: 1;
+}
+
+.kiln-story-scene[data-video="true"].is-seam-fading .kiln-story-scene-video {
+  opacity: 0;
+}
+
+.kiln-story-scene-shade {
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgb(8 15 18 / 0.46), transparent 42%),
+    linear-gradient(0deg, rgb(8 13 15 / 0.34), transparent 38%),
+    linear-gradient(90deg, rgb(7 13 16 / 0.18), transparent 64%);
+}
+
+.kiln-story[data-story="ding"] .kiln-story-scene-shade {
+  background:
+    linear-gradient(180deg, rgb(40 24 13 / 0.34), transparent 41%),
+    linear-gradient(0deg, rgb(30 18 10 / 0.32), transparent 38%),
+    linear-gradient(90deg, rgb(35 22 13 / 0.16), transparent 64%);
+}
+
+.kiln-story[data-story="ge"] .kiln-story-scene-shade {
+  background:
+    linear-gradient(180deg, rgb(24 22 20 / 0.42), transparent 40%),
+    linear-gradient(0deg, rgb(23 20 18 / 0.28), transparent 35%),
+    linear-gradient(90deg, rgb(25 22 19 / 0.18), transparent 62%);
+}
+
+.kiln-story-motion {
+  z-index: 2;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity 220ms linear;
+}
+
+.kiln-story-motion::before,
+.kiln-story-motion::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+  animation-play-state: paused;
+  will-change: opacity, transform;
+}
+
+.kiln-story-scene[data-running="true"] .kiln-story-motion::before,
+.kiln-story-scene[data-running="true"] .kiln-story-motion::after {
+  animation-play-state: running;
+}
+
+.kiln-story-scene[data-running="true"] .kiln-story-chimney-smoke-wisp,
+.kiln-story-scene[data-running="true"] .kiln-story-river-tree-sway,
+.kiln-story-scene[data-running="true"] .kiln-story-river-water-ripples,
+.kiln-story-scene[data-running="true"] .kiln-story-tyndall-dust-bank,
+.kiln-story-scene[data-running="true"] .kiln-story-tyndall-speck,
+.kiln-story-scene[data-running="true"] .kiln-story-ding-packing-blind,
+.kiln-story-scene[data-running="true"] .kiln-story-ding-packing-sun,
+.kiln-story-scene[data-running="true"] .kiln-story-ding-packing-sun-patch,
+.kiln-story-scene[data-running="true"] .kiln-story-ding-packing-shadow,
+.kiln-story-scene[data-running="true"] .kiln-story-ding-packing-straw {
+  animation-play-state: running;
+}
+
+.kiln-story-ding-ash-field {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  clip-path: polygon(0 18%, 12% 24%, 26% 33%, 42% 44%, 55% 55%, 62% 66%, 64% 78%, 64% 100%, 0 100%);
+  mix-blend-mode: screen;
+}
+
+.kiln-story-ding-ash-sun-shift,
+.kiln-story-ding-ash-fire-glow {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  animation-play-state: paused;
+  will-change: opacity, transform;
+  mix-blend-mode: screen;
+}
+
+.kiln-story-ding-ash-sun-shift {
+  z-index: 2;
+  inset: 0;
+  opacity: 0.08;
+  background:
+    linear-gradient(118deg, transparent 12%, rgb(255 228 178 / 0.48) 36%, rgb(255 238 202 / 0.2) 49%, transparent 70%),
+    radial-gradient(ellipse 48% 44% at 16% 58%, rgb(255 236 202 / 0.2), transparent 76%);
+  filter: blur(10px);
+  clip-path: polygon(0 17%, 13% 24%, 27% 34%, 43% 45%, 56% 56%, 63% 68%, 64% 84%, 64% 100%, 0 100%);
+  animation: kiln-story-ding-ash-sun-shift 15.8s ease-in-out -4.2s infinite alternate;
+}
+
+.kiln-story-ding-ash-fire-glow {
+  z-index: 2;
+  top: 37%;
+  right: 7%;
+  width: 29%;
+  height: 27%;
+  opacity: 0.08;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 50% 54%, rgb(255 157 68 / 0.44) 0%, rgb(222 96 25 / 0.18) 36%, transparent 72%);
+  filter: blur(13px);
+  transform-origin: 50% 58%;
+  animation: kiln-story-ding-ash-fire-glow 9.6s cubic-bezier(0.37, 0, 0.63, 1) -2.1s infinite;
+}
+
+.kiln-story-scene[data-running="true"] .kiln-story-ding-ash-sun-shift,
+.kiln-story-scene[data-running="true"] .kiln-story-ding-ash-fire-glow {
+  animation-play-state: running;
+}
+
+.kiln-story-ding-ash-mote {
+  position: absolute;
+  top: var(--ash-y);
+  left: var(--ash-x);
+  display: block;
+  width: var(--ash-size);
+  height: var(--ash-size);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgb(255 246 220 / 0.92) 0 24%, rgb(255 237 201 / 0.4) 52%, transparent 78%);
+  box-shadow: 0 0 4px rgb(255 235 196 / 0.3);
+  filter: blur(var(--ash-blur));
+  opacity: var(--ash-alpha);
+  animation: kiln-story-ding-ash-mote var(--ash-duration) ease-in-out var(--ash-delay) infinite;
+  animation-play-state: paused;
+  will-change: opacity, transform;
+}
+
+.kiln-story-scene[data-running="true"] .kiln-story-ding-ash-mote {
+  animation-play-state: running;
+}
+
+.kiln-story-ding-spark-field {
+  position: absolute;
+  z-index: 4;
+  top: 30%;
+  right: 5%;
+  width: 24%;
+  height: 24%;
+  overflow: visible;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.kiln-story-ding-spark {
+  position: absolute;
+  top: var(--spark-y);
+  left: var(--spark-x);
+  display: block;
+  width: var(--spark-size);
+  height: var(--spark-size);
+  border-radius: 58% 42% 58% 42%;
+  pointer-events: none;
+  opacity: 0;
+  transform: rotate(45deg);
+  transform-origin: 50% 50%;
+  will-change: opacity, transform;
+}
+
+.kiln-story-ding-spark--gold {
+  background: radial-gradient(circle, rgb(255 250 214 / 1) 0 24%, rgb(255 204 89 / 0.94) 47%, transparent 78%);
+  box-shadow: 0 0 7px rgb(255 220 116 / 0.84), 0 0 14px rgb(255 154 32 / 0.36);
+}
+
+.kiln-story-ding-spark--amber {
+  background: radial-gradient(circle, rgb(255 239 177 / 1) 0 24%, rgb(247 145 48 / 0.92) 47%, transparent 78%);
+  box-shadow: 0 0 7px rgb(255 169 67 / 0.82), 0 0 14px rgb(219 76 18 / 0.38);
+}
+
+.kiln-story-ding-spark--red {
+  background: radial-gradient(circle, rgb(255 225 158 / 1) 0 23%, rgb(203 66 29 / 0.9) 49%, transparent 79%);
+  box-shadow: 0 0 7px rgb(232 92 31 / 0.8), 0 0 14px rgb(156 34 19 / 0.42);
+}
+
+.kiln-story-ding-spark::after {
+  position: absolute;
+  content: "";
+  left: 50%;
+  bottom: 66%;
+  width: 0.8px;
+  height: 4px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgb(255 223 146 / 0.58), transparent);
+  filter: blur(0.35px);
+  transform: translateX(-50%);
+  transform-origin: 50% 100%;
+}
+
+.kiln-story[data-scene-moving="true"] .kiln-story-motion {
+  opacity: 0;
+}
+
+.kiln-story-scene[data-motion="ru-after-rain"] .kiln-story-motion::before {
+  top: -14%;
+  left: -18%;
+  width: 112%;
+  height: 62%;
+  opacity: 0.14;
+  background: radial-gradient(ellipse at 42% 46%, rgb(231 242 245 / 0.72), rgb(203 221 226 / 0.18) 45%, transparent 72%);
+  filter: blur(24px);
+  mix-blend-mode: screen;
+  transform: translate3d(-2%, 0, 0) scale(1);
+  animation: kiln-story-cloud-break 10.8s ease-in-out infinite alternate;
+}
+
+.kiln-story-scene[data-motion="ru-after-rain"] .kiln-story-motion::after {
+  right: -18%;
+  bottom: 4%;
+  width: 92%;
+  height: 28%;
+  opacity: 0.18;
+  background: radial-gradient(ellipse at 54% 50%, rgb(222 241 244 / 0.64), transparent 69%);
+  filter: blur(14px);
+  mix-blend-mode: screen;
+  animation: kiln-story-wet-light 7.6s ease-in-out infinite alternate;
+}
+
+.kiln-story-rain {
+  position: absolute;
+  z-index: 4;
+  inset: -12% -10%;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0 4%, #000 18% 78%, transparent 98%);
+  mask-image: linear-gradient(180deg, transparent 0 4%, #000 18% 78%, transparent 98%);
+}
+
+.kiln-story-rain-layer {
+  position: absolute;
+  inset: -16% -8%;
+  display: block;
+  pointer-events: none;
+  animation-play-state: paused;
+  will-change: opacity, transform;
+}
+
+.kiln-story-rain-layer-near {
+  opacity: 0.16;
+  background-image:
+    radial-gradient(ellipse 0.7px 6px at 15px 18px, rgb(221 237 240 / 0.76) 0 52%, transparent 68%),
+    radial-gradient(ellipse 0.6px 5px at 54px 47px, rgb(211 231 235 / 0.58) 0 50%, transparent 68%);
+  background-size: 76px 94px, 112px 128px;
+  filter: blur(0.24px);
+  mix-blend-mode: screen;
+  transform: translate3d(-1%, -12%, 0) rotate(4deg);
+  animation: kiln-story-rain-near 2.8s linear infinite;
+}
+
+.kiln-story-rain-layer-far {
+  inset: -12% -6%;
+  opacity: 0.1;
+  background-image:
+    radial-gradient(ellipse 0.5px 4px at 21px 21px, rgb(218 235 238 / 0.56) 0 48%, transparent 68%),
+    radial-gradient(ellipse 0.45px 3px at 68px 59px, rgb(208 229 233 / 0.46) 0 48%, transparent 68%);
+  background-size: 102px 118px, 138px 152px;
+  filter: blur(0.45px);
+  mix-blend-mode: screen;
+  transform: translate3d(1%, -10%, 0) rotate(4deg);
+  animation: kiln-story-rain-far 4.2s linear -1.7s infinite;
+}
+
+.kiln-story-scene[data-running="true"] .kiln-story-rain-layer {
+  animation-play-state: running;
+}
+
+.kiln-story-chimney-smoke {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 30% 38% at 36% 17%, #000 0 42%, rgb(0 0 0 / 0.62) 72%, transparent 100%);
+  mask-image: radial-gradient(ellipse 30% 38% at 36% 17%, #000 0 42%, rgb(0 0 0 / 0.62) 72%, transparent 100%);
+}
+
+.kiln-story-chimney-smoke-wisp {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  animation-play-state: paused;
+  will-change: opacity, transform;
+  border-radius: 50%;
+  filter: blur(11px);
+  mix-blend-mode: multiply;
+}
+
+.kiln-story-chimney-smoke-wisp-a {
+  top: 4%;
+  left: 25%;
+  width: 23%;
+  height: 38%;
+  opacity: 0.16;
+  background:
+    radial-gradient(ellipse at 48% 79%, rgb(102 119 124 / 0.68), transparent 43%),
+    radial-gradient(ellipse at 37% 48%, rgb(181 198 201 / 0.42), transparent 64%);
+  filter: blur(8px);
+  transform: translate3d(-1%, 16%, 0) scale(0.78, 0.64);
+  animation: kiln-story-chimney-smoke-rise-a 12.8s ease-in-out -4.8s infinite;
+}
+
+.kiln-story-chimney-smoke-wisp-b {
+  top: 1%;
+  left: 31%;
+  width: 18%;
+  height: 34%;
+  opacity: 0.13;
+  background:
+    radial-gradient(ellipse at 44% 78%, rgb(122 139 143 / 0.62), transparent 42%),
+    radial-gradient(ellipse at 58% 40%, rgb(213 226 227 / 0.36), transparent 68%);
+  filter: blur(10px);
+  transform: translate3d(2%, 21%, 0) scale(0.68, 0.58);
+  animation: kiln-story-chimney-smoke-rise-b 15.6s ease-in-out -8.2s infinite;
+}
+
+.kiln-story-chimney-smoke-wisp-c {
+  top: 9%;
+  left: 21%;
+  width: 16%;
+  height: 25%;
+  opacity: 0.14;
+  background: radial-gradient(ellipse at 58% 78%, rgb(172 192 195 / 0.58), transparent 60%);
+  filter: blur(7px);
+  transform: translate3d(0, 13%, 0) scale(0.72, 0.62);
+  animation: kiln-story-chimney-smoke-rise-c 10.4s ease-in-out -2.6s infinite;
+}
+
+.kiln-story-chimney-smoke-wisp {
+  animation-play-state: paused;
+}
+
+.kiln-story-river-nature {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.kiln-story-river-tree-sway,
+.kiln-story-river-reflection {
+  position: absolute;
+  display: block;
+  object-fit: cover;
+  pointer-events: none;
+  animation-play-state: paused;
+  will-change: opacity, transform;
+}
+
+.kiln-story-river-tree-sway {
+  z-index: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  filter: blur(8px) saturate(0.72);
+  mix-blend-mode: multiply;
+  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 28% 52%, #000 0 30%, rgb(0 0 0 / 0.72) 58%, transparent 100%);
+  mask-image: radial-gradient(ellipse 78% 72% at 28% 52%, #000 0 30%, rgb(0 0 0 / 0.72) 58%, transparent 100%);
+}
+
+.kiln-story-river-tree-sway-left {
+  top: 24%;
+  left: -9%;
+  width: 54%;
+  height: 27%;
+  opacity: 0.2;
+  background:
+    radial-gradient(ellipse 34% 58% at 12% 68%, rgb(28 51 50 / 0.46), transparent 76%),
+    radial-gradient(ellipse 30% 52% at 38% 28%, rgb(33 60 59 / 0.34), transparent 74%),
+    radial-gradient(ellipse 24% 44% at 66% 58%, rgb(39 68 66 / 0.26), transparent 78%),
+    linear-gradient(100deg, rgb(20 42 43 / 0.24), transparent 82%);
+  transform-origin: 30% 72%;
+  animation: kiln-story-river-tree-sway-left 8.8s ease-in-out -2.7s infinite alternate;
+}
+
+.kiln-story-river-tree-sway-far {
+  top: 25%;
+  left: 17%;
+  width: 68%;
+  height: 24%;
+  opacity: 0.12;
+  filter: blur(11px) saturate(0.64);
+  -webkit-mask-image: radial-gradient(ellipse 72% 70% at 48% 52%, #000 0 28%, rgb(0 0 0 / 0.64) 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 72% 70% at 48% 52%, #000 0 28%, rgb(0 0 0 / 0.64) 62%, transparent 100%);
+  background:
+    radial-gradient(ellipse 24% 56% at 18% 65%, rgb(45 72 71 / 0.38), transparent 78%),
+    radial-gradient(ellipse 21% 48% at 40% 29%, rgb(53 83 80 / 0.3), transparent 76%),
+    radial-gradient(ellipse 27% 54% at 65% 58%, rgb(37 66 65 / 0.28), transparent 78%),
+    radial-gradient(ellipse 18% 42% at 87% 32%, rgb(55 83 80 / 0.2), transparent 82%);
+  transform-origin: 48% 70%;
+  animation: kiln-story-river-tree-sway-far 11.6s ease-in-out -6.1s infinite alternate;
+}
+
+.kiln-story-river-reflection {
+  z-index: 2;
+  overflow: hidden;
+  filter: blur(2.2px) saturate(0.62);
+  mix-blend-mode: soft-light;
+  -webkit-mask-image: radial-gradient(ellipse 78% 72% at 27% 38%, #000 0 28%, rgb(0 0 0 / 0.7) 58%, transparent 100%);
+  mask-image: radial-gradient(ellipse 78% 72% at 27% 38%, #000 0 28%, rgb(0 0 0 / 0.7) 58%, transparent 100%);
+}
+
+.kiln-story-river-reflection-upper {
+  top: 48%;
+  left: -11%;
+  width: 76%;
+  height: 14%;
+  opacity: 0.13;
+  background:
+    repeating-linear-gradient(174deg, transparent 0 7px, rgb(197 224 225 / 0.34) 8px 10px, transparent 11px 17px),
+    radial-gradient(ellipse at 28% 40%, rgb(205 230 230 / 0.46), transparent 72%);
+  transform-origin: 25% 40%;
+  animation: kiln-story-river-reflection-upper 8.4s ease-in-out -1.6s infinite alternate;
+}
+
+.kiln-story-river-reflection-lower {
+  top: 58%;
+  left: -8%;
+  width: 68%;
+  height: 18%;
+  opacity: 0.09;
+  filter: blur(3.2px) saturate(0.56);
+  background:
+    repeating-linear-gradient(176deg, transparent 0 9px, rgb(171 204 206 / 0.28) 10px 12px, transparent 13px 23px),
+    radial-gradient(ellipse at 26% 32%, rgb(186 217 218 / 0.3), transparent 74%);
+  transform-origin: 22% 34%;
+  animation: kiln-story-river-reflection-lower 6.8s ease-in-out -4.2s infinite alternate;
+}
+
+.kiln-story-river-water-ripples {
+  position: absolute;
+  z-index: 2;
+  top: 46%;
+  left: -5%;
+  width: 46%;
+  height: 27%;
+  display: block;
+  opacity: 0.14;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(176deg, transparent 0 9px, rgb(224 241 242 / 0.42) 10px 11px, transparent 12px 22px),
+    radial-gradient(ellipse at 34% 48%, rgb(226 242 243 / 0.4), transparent 68%);
+  filter: blur(1.25px);
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(ellipse 92% 72% at 30% 52%, #000 0 42%, rgb(0 0 0 / 0.64) 67%, transparent 100%);
+  mask-image: radial-gradient(ellipse 92% 72% at 30% 52%, #000 0 42%, rgb(0 0 0 / 0.64) 67%, transparent 100%);
+  transform: translate3d(-4%, 0, 0) skewX(-4deg) scaleX(0.98);
+  animation: kiln-story-river-water-ripples 5.8s ease-in-out -2.1s infinite alternate;
+}
+
+.kiln-story-river-tree-sway,
+.kiln-story-river-reflection,
+.kiln-story-river-water-ripples {
+  animation-play-state: paused;
+}
+
+.kiln-story-scene[data-motion="ru-river"] .kiln-story-motion::before {
+  z-index: 2;
+  top: 27%;
+  left: -18%;
+  width: 112%;
+  height: 40%;
+  opacity: 0.34;
+  background:
+    radial-gradient(ellipse at 25% 57%, rgb(225 240 241 / 0.7), transparent 64%),
+    radial-gradient(ellipse at 58% 48%, rgb(211 231 234 / 0.38), transparent 70%),
+    linear-gradient(96deg, rgb(213 232 235 / 0.18), transparent 74%);
+  filter: blur(18px);
+  mix-blend-mode: screen;
+  -webkit-mask-image: linear-gradient(90deg, #000 0 42%, rgb(0 0 0 / 0.62) 62%, transparent 88%);
+  mask-image: linear-gradient(90deg, #000 0 42%, rgb(0 0 0 / 0.62) 62%, transparent 88%);
+  animation: kiln-story-river-fog-bank 7.8s ease-in-out infinite alternate;
+}
+
+.kiln-story-scene[data-motion="ru-river"] .kiln-story-motion::after {
+  z-index: 2;
+  top: 45%;
+  left: -10%;
+  width: 72%;
+  height: 21%;
+  opacity: 0.3;
+  background:
+    radial-gradient(ellipse at 28% 50%, rgb(229 242 243 / 0.68), transparent 62%),
+    linear-gradient(94deg, rgb(218 237 239 / 0.22), transparent 78%);
+  filter: blur(11px);
+  mix-blend-mode: screen;
+  -webkit-mask-image: linear-gradient(90deg, #000 0 58%, transparent 96%);
+  mask-image: linear-gradient(90deg, #000 0 58%, transparent 96%);
+  animation: kiln-story-river-fog-low 4.8s ease-in-out -1.7s infinite alternate;
+}
+
+.kiln-story-river-haze {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.kiln-story-river-haze {
+  overflow: hidden;
+  z-index: 3;
+}
+
+.kiln-story-river-haze > span {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  animation-play-state: paused;
+  will-change: opacity, transform;
+}
+
+.kiln-story-river-haze-far {
+  top: 29%;
+  left: -25%;
+  width: 108%;
+  height: 25%;
+  opacity: 0.28;
+  background:
+    radial-gradient(ellipse at 28% 58%, rgb(222 238 240 / 0.62), transparent 65%),
+    radial-gradient(ellipse at 68% 44%, rgb(201 224 228 / 0.32), transparent 72%);
+  filter: blur(14px);
+  mix-blend-mode: screen;
+  transform: translate3d(-10%, 0, 0) scale(1.02);
+  -webkit-mask-image: linear-gradient(90deg, #000 0 52%, rgb(0 0 0 / 0.58) 72%, transparent 93%);
+  mask-image: linear-gradient(90deg, #000 0 52%, rgb(0 0 0 / 0.58) 72%, transparent 93%);
+  animation: kiln-story-river-haze-far 7.2s ease-in-out -2.6s infinite alternate;
+}
+
+.kiln-story-river-haze-mid {
+  top: 41%;
+  left: -12%;
+  width: 78%;
+  height: 20%;
+  opacity: 0.24;
+  background:
+    radial-gradient(ellipse at 32% 50%, rgb(227 241 242 / 0.66), transparent 60%),
+    linear-gradient(95deg, rgb(210 231 234 / 0.24), transparent 82%);
+  filter: blur(11px);
+  mix-blend-mode: screen;
+  transform: translate3d(3%, 1%, 0) scale(0.98);
+  -webkit-mask-image: linear-gradient(90deg, #000 0 56%, rgb(0 0 0 / 0.46) 76%, transparent 96%);
+  mask-image: linear-gradient(90deg, #000 0 56%, rgb(0 0 0 / 0.46) 76%, transparent 96%);
+  animation: kiln-story-river-haze-mid 5.6s ease-in-out -1.8s infinite alternate;
+}
+
+.kiln-story-river-haze-low {
+  top: 50%;
+  left: -8%;
+  width: 64%;
+  height: 14%;
+  opacity: 0.19;
+  background: radial-gradient(ellipse at 30% 52%, rgb(226 240 241 / 0.62), transparent 68%);
+  filter: blur(9px);
+  mix-blend-mode: screen;
+  transform: translate3d(-4%, 0, 0) scale(1.01);
+  -webkit-mask-image: linear-gradient(90deg, #000 0 62%, transparent 94%);
+  mask-image: linear-gradient(90deg, #000 0 62%, transparent 94%);
+  animation: kiln-story-river-haze-low 4.2s ease-in-out -1.5s infinite alternate;
+}
+
+.kiln-story-scene[data-running="true"] .kiln-story-river-haze > span {
+  animation-play-state: running;
+}
+
+.kiln-story-scene[data-motion="ru-window"] .kiln-story-motion::before {
+  z-index: 1;
+  inset: -12%;
+  opacity: 0.16;
+  background:
+    radial-gradient(ellipse 48% 62% at 69% 40%, rgb(229 246 248 / 0.22) 0%, rgb(220 241 244 / 0.12) 36%, transparent 78%),
+    linear-gradient(121deg, transparent 23%, rgb(214 237 243 / 0.05) 35%, rgb(235 249 250 / 0.16) 48%, rgb(210 235 241 / 0.05) 61%, transparent 78%),
+    radial-gradient(ellipse 38% 44% at 46% 72%, rgb(215 240 242 / 0.08), transparent 78%);
+  filter: blur(21px);
+  mix-blend-mode: screen;
+  transform-origin: 100% 16%;
+  animation: kiln-story-tyndall-beam 14.8s ease-in-out infinite alternate;
+}
+
+.kiln-story-scene[data-motion="ru-window"] .kiln-story-motion::after {
+  z-index: 2;
+  inset: -16%;
+  opacity: 0.06;
+  background:
+    radial-gradient(ellipse 56% 68% at 66% 43%, rgb(223 243 246 / 0.25), transparent 72%),
+    linear-gradient(120deg, transparent 27%, rgb(218 240 243 / 0.08) 49%, transparent 73%);
+  filter: blur(34px);
+  mix-blend-mode: screen;
+  animation: kiln-story-tyndall-air 10.6s ease-in-out -2.1s infinite alternate;
+}
+
+.kiln-story-tyndall-dust-field {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 72% 58% at 48% 55%, #000 0 18%, rgb(0 0 0 / 0.88) 43%, rgb(0 0 0 / 0.42) 66%, transparent 84%);
+  mask-image: radial-gradient(ellipse 72% 58% at 48% 55%, #000 0 18%, rgb(0 0 0 / 0.88) 43%, rgb(0 0 0 / 0.42) 66%, transparent 84%);
+}
+
+.kiln-story-tyndall-dust-bank {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+  animation-play-state: paused;
+  will-change: opacity, transform;
+  mix-blend-mode: screen;
+}
+
+.kiln-story-tyndall-dust-bank-a {
+  top: 29%;
+  left: 27%;
+  width: 43%;
+  height: 51%;
+  opacity: 0.3;
+  background-image:
+    radial-gradient(circle at 12% 22%, rgb(238 248 247 / 0.54) 0 0.8px, transparent 1.8px),
+    radial-gradient(circle at 48% 38%, rgb(230 245 245 / 0.46) 0 0.7px, transparent 1.7px),
+    radial-gradient(circle at 72% 61%, rgb(245 250 247 / 0.5) 0 0.85px, transparent 1.9px),
+    radial-gradient(circle at 34% 78%, rgb(221 240 241 / 0.38) 0 0.6px, transparent 1.6px);
+  background-size: 84px 126px, 112px 148px, 134px 166px, 96px 138px;
+  filter: blur(0.45px);
+  animation: kiln-story-tyndall-dust-bank-a 6.2s ease-in-out -2.1s infinite;
+}
+
+.kiln-story-tyndall-dust-bank-b {
+  top: 35%;
+  left: 48%;
+  width: 31%;
+  height: 45%;
+  opacity: 0.22;
+  background-image:
+    radial-gradient(circle at 20% 18%, rgb(247 250 244 / 0.52) 0 0.7px, transparent 1.7px),
+    radial-gradient(circle at 62% 47%, rgb(224 243 243 / 0.42) 0 0.65px, transparent 1.7px),
+    radial-gradient(circle at 38% 79%, rgb(236 247 245 / 0.48) 0 0.75px, transparent 1.8px);
+  background-size: 74px 108px, 92px 132px, 118px 154px;
+  filter: blur(0.7px);
+  animation: kiln-story-tyndall-dust-bank-b 5.8s ease-in-out -3.1s infinite;
+}
+
+.kiln-story-tyndall-speck {
+  position: absolute;
+  display: block;
+  width: 2.1px;
+  height: 2.1px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: rgb(246 250 246 / 0.72);
+  box-shadow: 0 0 5px rgb(221 244 244 / 0.5);
+  animation-play-state: paused;
+  will-change: opacity, transform;
+  animation-name: kiln-story-tyndall-speck-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+}
+
+.kiln-story-tyndall-speck-a { top: 39%; left: 44%; animation-duration: 6.1s; animation-delay: -1.8s; }
+.kiln-story-tyndall-speck-b { top: 45%; left: 59%; width: 1px; height: 1px; opacity: 0.52; animation-duration: 6.8s; animation-delay: -3.2s; }
+.kiln-story-tyndall-speck-c { top: 52%; left: 32%; width: 1.2px; height: 1.2px; opacity: 0.48; animation-duration: 5.7s; animation-delay: -2.4s; }
+.kiln-story-tyndall-speck-d { top: 59%; left: 51%; width: 1px; height: 1px; opacity: 0.54; animation-duration: 6.6s; animation-delay: -4.1s; }
+.kiln-story-tyndall-speck-e { top: 66%; left: 27%; width: 1.2px; height: 1.2px; opacity: 0.46; animation-duration: 5.9s; animation-delay: -1.3s; }
+.kiln-story-tyndall-speck-f { top: 73%; left: 68%; width: 1px; height: 1px; opacity: 0.5; animation-duration: 7.1s; animation-delay: -2.7s; }
+.kiln-story-tyndall-speck-g { top: 43%; left: 74%; width: 1.1px; height: 1.1px; opacity: 0.46; animation-duration: 6.3s; animation-delay: -3.8s; }
+.kiln-story-tyndall-speck-h { top: 78%; left: 43%; width: 1px; height: 1px; opacity: 0.42; animation-duration: 7.4s; animation-delay: -4.9s; }
+
+.kiln-story-tyndall-dust-bank,
+.kiln-story-tyndall-speck {
+  animation-play-state: paused;
+}
+
+.kiln-story-scene[data-motion="ding-ash"] .kiln-story-motion::before {
+  display: none;
+}
+
+.kiln-story-scene[data-motion="ding-ash"] .kiln-story-motion::after {
+  display: none;
+  top: 13%;
+  left: -20%;
+  width: 82%;
+  height: 52%;
+  opacity: 0.09;
+  background: linear-gradient(118deg, transparent, rgb(255 228 178 / 0.48), transparent 72%);
+  filter: blur(18px);
+  mix-blend-mode: screen;
+  animation: kiln-story-ash-light 14s ease-in-out infinite;
+}
+
+.kiln-story-scene[data-motion="ding-sun"] .kiln-story-motion::before {
+  inset: -8% -34%;
+  opacity: 0.22;
+  background: linear-gradient(106deg, transparent 22%, rgb(255 222 166 / 0.64) 49%, transparent 74%);
+  filter: blur(20px);
+  mix-blend-mode: screen;
+  animation: kiln-story-sun-pass 12.8s ease-in-out infinite alternate;
+}
+
+.kiln-story-scene[data-motion="ding-sun"] .kiln-story-motion::after {
+  right: -14%;
+  bottom: 13%;
+  width: 92%;
+  height: 42%;
+  opacity: 0.12;
+  background: radial-gradient(ellipse at 50% 56%, rgb(255 230 187 / 0.7), transparent 68%);
+  filter: blur(16px);
+  mix-blend-mode: screen;
+  animation: kiln-story-sun-dust 9.6s ease-in-out infinite;
+}
+
+.kiln-story-scene[data-motion="ding-packing"] .kiln-story-ding-packing-blind,
+.kiln-story-scene[data-motion="ding-packing"] .kiln-story-ding-packing-sun,
+.kiln-story-scene[data-motion="ding-packing"] .kiln-story-ding-packing-sun-patch,
+.kiln-story-scene[data-motion="ding-packing"] .kiln-story-ding-packing-shadow,
+.kiln-story-scene[data-motion="ding-packing"] .kiln-story-ding-packing-straw {
+  position: absolute;
+  pointer-events: none;
+  animation-play-state: paused;
+  will-change: transform, opacity;
+}
+
+.kiln-story-scene[data-motion="ding-packing"] .kiln-story-ding-packing-sun {
+  top: 11%;
+  left: -12%;
+  width: 79%;
+  height: 67%;
+  opacity: 0.24;
+  background:
+    linear-gradient(116deg, transparent 5%, rgb(255 227 176 / 0.7) 28%, transparent 42%),
+    linear-gradient(116deg, transparent 30%, rgb(255 218 153 / 0.52) 49%, transparent 63%),
+    linear-gradient(116deg, transparent 55%, rgb(255 232 189 / 0.4) 69%, transparent 83%);
+  filter: blur(6px);
+  mix-blend-mode: screen;
+  transform-origin: 24% 66%;
+  animation: kiln-story-packing-sun 9.6s ease-in-out infinite;
+}
+
+.kiln-story-scene[data-motion="ding-packing"] .kiln-story-ding-packing-sun-patch {
+  top: 20%;
+  left: 2%;
+  width: 60%;
+  height: 58%;
+  opacity: 0.2;
+  background:
+    repeating-linear-gradient(
+      116deg,
+      transparent 0 16%,
+      rgb(255 232 191 / 0.58) 16% 23%,
+      transparent 23% 38%
+    );
+  clip-path: polygon(0 4%, 93% 26%, 100% 72%, 18% 100%);
+  filter: blur(3px);
+  mix-blend-mode: screen;
+  transform-origin: 12% 72%;
+  animation: kiln-story-packing-sun-patch 6.8s ease-in-out infinite;
+}
+
+.kiln-story-scene[data-motion="ding-packing"] .kiln-story-ding-packing-blind {
+  top: -1%;
+  right: -2%;
+  width: 30%;
+  height: 47%;
+  opacity: 0.18;
+  background: repeating-linear-gradient(90deg, rgb(64 39 20 / 0.56) 0 1px, transparent 1px 5px);
+  filter: blur(0.3px);
+  mix-blend-mode: multiply;
+  transform-origin: 100% 10%;
+  animation: kiln-story-packing-blind 7.8s ease-in-out infinite;
+}
+
+.kiln-story-scene[data-motion="ding-packing"] .kiln-story-ding-packing-shadow {
+  left: 4%;
+  bottom: 19%;
+  width: 88%;
+  height: 27%;
+  opacity: 0.18;
+  background: linear-gradient(112deg, transparent 12%, rgb(58 35 18 / 0.48) 47%, transparent 82%);
+  filter: blur(13px);
+  mix-blend-mode: multiply;
+  animation: kiln-story-packing-shadow 11.8s ease-in-out infinite;
+}
+
+.kiln-story-scene[data-motion="ding-packing"] .kiln-story-ding-packing-straw {
+  left: 31%;
+  bottom: 17%;
+  width: 43%;
+  height: 13%;
+  opacity: 0.16;
+  background: repeating-linear-gradient(108deg, transparent 0 14px, rgb(204 153 76 / 0.38) 14px 15px, transparent 15px 24px);
+  filter: blur(0.6px);
+  mix-blend-mode: screen;
+  transform-origin: 50% 80%;
+  animation: kiln-story-packing-straw 7.8s ease-in-out infinite;
+}
+
+.kiln-story-scene[data-motion="ding-lamp"][data-video="false"] .kiln-story-motion::before {
+  inset: 0;
+  opacity: 0.22;
+  background:
+    radial-gradient(ellipse at 78% 47%, rgb(255 183 91 / 0.62), rgb(213 116 39 / 0.18) 31%, transparent 64%),
+    linear-gradient(94deg, transparent 18%, rgb(190 93 31 / 0.14));
+  filter: blur(4px);
+  mix-blend-mode: screen;
+  transform-origin: 79% 47%;
+  animation: kiln-story-lamp 16.4s cubic-bezier(0.37, 0, 0.63, 1) infinite;
+}
+
+.kiln-story-scene[data-motion="ding-lamp"][data-video="false"] .kiln-story-motion::after {
+  inset: -5%;
+  opacity: 0.24;
+  background: linear-gradient(109deg, transparent 23%, rgb(43 22 10 / 0.35) 57%, transparent 91%);
+  filter: blur(13px);
+  mix-blend-mode: multiply;
+  animation: kiln-story-lamp-shadow 17.8s cubic-bezier(0.37, 0, 0.63, 1) -3.6s infinite;
+}
+
+.kiln-story-vessel-stage {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.kiln-story-vessel,
+.kiln-story-vessel-light {
+  position: absolute;
+  z-index: 2;
+  right: -2%;
+  bottom: 18%;
+  display: block;
+  width: 67%;
+  height: auto;
+  pointer-events: none;
+  transform-origin: 66% 88%;
+  transition: filter 920ms ease, opacity 920ms ease;
+}
+
+.kiln-story-vessel {
+  filter: var(--story-vessel-filter) brightness(0.88) drop-shadow(3px 10px 14px rgb(16 25 28 / 0.34));
+}
+
+.kiln-story-vessel-light {
+  z-index: 3;
+  opacity: 0.08;
+  filter: brightness(0) invert(1);
+  mix-blend-mode: screen;
+}
+
+.kiln-story-vessel-shadow {
+  position: absolute;
+  z-index: 1;
+  right: 7%;
+  bottom: 23%;
+  width: 48%;
+  height: 2.2%;
+  border-radius: 50%;
+  background: rgb(15 24 27 / 0.42);
+  filter: blur(7px);
+  transform: scaleX(0.84) skewX(-6deg);
+  transition: background 920ms ease, transform 920ms ease;
+}
+
+.kiln-story[data-story="ru"][data-scene="river-tribute"] .kiln-story-vessel {
+  filter: var(--story-vessel-filter) brightness(0.96) saturate(0.88) drop-shadow(3px 10px 14px rgb(19 31 34 / 0.34));
+}
+
+.kiln-story[data-story="ru"][data-scene="palace-study"] .kiln-story-vessel {
+  filter: var(--story-vessel-filter) brightness(0.72) saturate(0.7) contrast(1.04) drop-shadow(4px 12px 16px rgb(4 9 11 / 0.54));
+}
+
+.kiln-story[data-story="ru"][data-scene="palace-study"] .kiln-story-vessel-light {
+  opacity: 0.16;
+}
+
+.kiln-story[data-story="ding"] .kiln-story-vessel,
+.kiln-story[data-story="ding"] .kiln-story-vessel-light {
+  right: -1%;
+  bottom: 25%;
+  width: 78%;
+}
+
+.kiln-story[data-story="ding"] .kiln-story-vessel {
+  filter: var(--story-vessel-filter) brightness(0.88) contrast(0.96) drop-shadow(4px 10px 14px rgb(78 50 25 / 0.3));
+}
+
+.kiln-story[data-story="ding"] .kiln-story-vessel-light {
+  opacity: 0.1;
+}
+
+.kiln-story[data-story="ding"] .kiln-story-vessel-shadow {
+  right: 2%;
+  bottom: 30%;
+  width: 66%;
+  background: rgb(74 46 22 / 0.38);
+  transform: scaleX(0.88) skewX(-4deg);
+}
+
+.kiln-story[data-story="ding"][data-scene="packing-hall"] .kiln-story-vessel {
+  filter: var(--story-vessel-filter) brightness(0.98) sepia(0.12) drop-shadow(4px 10px 14px rgb(95 59 28 / 0.3));
+}
+
+.kiln-story[data-story="ding"][data-scene="packing-hall"] .kiln-story-vessel-stage,
+.kiln-story[data-story="ding"][data-scene="sleeping-chamber"] .kiln-story-vessel-stage {
+  display: none;
+}
+
+.kiln-story[data-story="ding"][data-scene="sleeping-chamber"] .kiln-story-vessel {
+  filter: var(--story-vessel-filter) brightness(0.6) sepia(0.38) saturate(0.7) contrast(1.04) drop-shadow(4px 12px 18px rgb(11 6 3 / 0.6));
+}
+
+.kiln-story[data-story="ding"][data-scene="sleeping-chamber"] .kiln-story-vessel-light {
+  opacity: 0.14;
+  filter: brightness(0) saturate(100%) invert(78%) sepia(53%) saturate(923%) hue-rotate(340deg) brightness(106%);
+}
+
+.kiln-story-carousel {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.kiln-story-carousel .mobile-carousel-content,
+.kiln-story-track {
+  height: 100%;
+}
+
+.kiln-story-carousel .kiln-story-track {
+  width: 300%;
+  min-width: 300%;
+}
+
+.kiln-story-card {
+  --story-copy-x: 0px;
+  --story-copy-opacity: 1;
+  position: relative;
+  flex: 0 0 33.333333%;
+  width: 33.333333%;
+  min-width: 33.333333%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+}
+
+.kiln-story-copy {
+  position: absolute;
+  z-index: 2;
+  top: calc(var(--mobile-status-bar-height, 54px) + 92px);
+  left: 7.5%;
+  width: min(72%, 305px);
+  color: var(--story-ink);
+  text-shadow: 0 3px 24px rgb(0 0 0 / 0.68);
+  opacity: 0;
+  transform: translate3d(var(--story-copy-x), 12px, 0);
+  transition: opacity 600ms ease 150ms, transform 720ms cubic-bezier(0.18, 0.72, 0.16, 1) 110ms;
+}
+
+.kiln-story[data-arrival-phase="ready"] .kiln-story-copy {
+  opacity: var(--story-copy-opacity);
+  transform: translate3d(var(--story-copy-x), 0, 0);
+}
+
+.kiln-story-copy > span {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--story-accent);
+  font-size: 8px;
+  letter-spacing: 0.24em;
+}
+
+.kiln-story-copy h2 {
+  margin: 0 0 7px;
+  font-family: "STSong", "Songti SC", "Noto Serif SC", serif;
+  font-size: clamp(34px, 10.5vw, 46px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.12em;
+}
+
+.kiln-story-copy > p {
+  margin: 0;
+  color: var(--story-muted);
+  font-family: "STSong", "Songti SC", "Noto Serif SC", serif;
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: 0.16em;
+}
+
+.kiln-story-vessel-label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 14px;
+  padding-left: 12px;
+  border-left: 1px solid color-mix(in srgb, var(--story-accent), transparent 48%);
+}
+
+.kiln-story-vessel-label strong {
+  color: color-mix(in srgb, var(--story-ink), transparent 14%);
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0.08em;
+}
+
+.kiln-story-vessel-label small {
+  color: color-mix(in srgb, var(--story-muted), transparent 18%);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+
+.kiln-story-hotspots {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 520ms ease 360ms;
+}
+
+.kiln-story[data-arrival-phase="ready"] .kiln-story-hotspots {
+  opacity: 1;
+}
+
+.kiln-story-hotspot {
+  position: absolute;
+  top: var(--hotspot-y);
+  left: var(--hotspot-x);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0;
+  border: 0;
+  color: color-mix(in srgb, var(--story-ink), transparent 8%);
+  background: transparent;
+  transform: translate(-50%, -50%);
+  text-shadow: 0 2px 12px rgb(0 0 0 / 0.72);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.kiln-story-hotspot i {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid color-mix(in srgb, var(--story-accent), transparent 16%);
+  border-radius: 50%;
+  background: rgb(17 23 24 / 0.5);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--story-accent), transparent 89%), 0 4px 20px rgb(0 0 0 / 0.32);
+  font-family: "STSong", "Songti SC", serif;
+  font-size: 11px;
+  font-style: normal;
+  backdrop-filter: blur(6px);
+  animation: cizhou-hotspot-breathe 2.8s ease-in-out infinite;
+}
+
+.kiln-story-hotspot span {
+  padding-bottom: 3px;
+  border-bottom: 1px solid color-mix(in srgb, var(--story-accent), transparent 60%);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+}
+
+.kiln-story-back {
+  position: absolute;
+  z-index: 7;
+  top: calc(var(--mobile-status-bar-height, 54px) + 42px);
+  right: 7.5%;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--story-accent), transparent 68%);
+  border-radius: 50%;
+  color: color-mix(in srgb, var(--story-ink), transparent 22%);
+  background: rgb(17 24 25 / 0.28);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-5px);
+  transition: opacity 500ms ease, transform 500ms ease;
+}
+
+.kiln-story-back svg {
+  width: 15px;
+  height: 15px;
+}
+
+.kiln-story-audio-toggle {
+  position: absolute;
+  z-index: 7;
+  top: calc(var(--mobile-status-bar-height, 54px) + 88px);
+  right: 7.5%;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--story-accent), transparent 68%);
+  border-radius: 50%;
+  color: color-mix(in srgb, var(--story-ink), transparent 18%);
+  background: rgb(17 24 25 / 0.28);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-5px);
+  transition: opacity 500ms ease, transform 500ms ease, background 220ms ease;
+}
+
+.kiln-story-audio-toggle svg {
+  width: 15px;
+  height: 15px;
+}
+
+.kiln-story-audio-toggle[data-enabled="true"] {
+  background: color-mix(in srgb, var(--story-accent), rgb(17 24 25 / 0.34) 62%);
+}
+
+.kiln-story[data-arrival-phase="ready"] .kiln-story-audio-toggle {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.kiln-story[data-arrival-phase="ready"] .kiln-story-back {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.kiln-story-detail {
+  position: absolute;
+  z-index: 10;
+  right: 6.5%;
+  bottom: calc(var(--mobile-safe-area-height) + 28px);
+  left: 6.5%;
+  max-height: 62%;
+  overflow: auto;
+  padding: 28px 24px 24px;
+  border-top: 1px solid color-mix(in srgb, var(--story-accent), transparent 48%);
+  border-bottom: 1px solid color-mix(in srgb, var(--story-accent), transparent 76%);
+  color: var(--story-ink);
+  background: var(--story-panel);
+  box-shadow: 0 20px 62px rgb(0 0 0 / 0.5);
+  backdrop-filter: blur(18px);
+  animation: cizhou-detail-enter 480ms cubic-bezier(0.18, 0.72, 0.16, 1) both;
+}
+
+.kiln-story-detail-close {
+  position: absolute;
+  top: 19px;
+  right: 19px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--story-accent), transparent 68%);
+  border-radius: 50%;
+  color: color-mix(in srgb, var(--story-ink), transparent 28%);
+  background: transparent;
+  cursor: pointer;
+}
+
+.kiln-story-detail > span {
+  color: var(--story-accent);
+  font-size: 9px;
+  letter-spacing: 0.22em;
+}
+
+.kiln-story-detail h3 {
+  margin: 12px 42px 12px 0;
+  font-family: "STSong", "Songti SC", "Noto Serif SC", serif;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: 0.08em;
+}
+
+.kiln-story-detail > p {
+  margin: 0 0 20px;
+  color: color-mix(in srgb, var(--story-ink), transparent 20%);
+  font-size: 11px;
+  line-height: 1.8;
+  letter-spacing: 0.04em;
+}
+
+.kiln-story-detail dl {
+  margin: 0;
+}
+
+.kiln-story-detail dl > div {
+  display: grid;
+  grid-template-columns: 62px 1fr;
+  gap: 12px;
+  padding: 11px 0;
+  border-top: 1px solid color-mix(in srgb, var(--story-accent), transparent 84%);
+}
+
+.kiln-story-detail dt {
+  color: var(--story-accent);
+  font-size: 8px;
+  line-height: 1.7;
+  letter-spacing: 0.13em;
+}
+
+.kiln-story-detail dd {
+  margin: 0;
+  color: color-mix(in srgb, var(--story-ink), transparent 30%);
+  font-size: 9px;
+  line-height: 1.72;
+  letter-spacing: 0.03em;
+}
+
+.kiln-story-detail > a {
+  display: inline-block;
+  margin-top: 12px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid color-mix(in srgb, var(--story-accent), transparent 60%);
+  color: var(--story-accent);
+  font-size: 8px;
+  line-height: 1.6;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.kiln-story[data-detail-open="true"] .kiln-story-hotspots {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.kiln-story-hotspot:focus-visible,
+.kiln-story-back:focus-visible,
+.kiln-story-detail-close:focus-visible,
+.kiln-story-detail > a:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--story-accent), transparent 18%);
+  outline-offset: 5px;
+}
+
+@keyframes kiln-story-cloud-break {
+  from { opacity: 0.1; transform: translate3d(-2%, 0, 0) scale(1); }
+  to { opacity: 0.2; transform: translate3d(5%, 1%, 0) scale(1.05); }
+}
+
+@keyframes kiln-story-rain-near {
+  from { opacity: 0.08; transform: translate3d(-1%, -12%, 0) rotate(4deg); }
+  to { opacity: 0.2; transform: translate3d(2%, 16%, 0) rotate(4deg); }
+}
+
+@keyframes kiln-story-rain-far {
+  from { opacity: 0.05; transform: translate3d(1%, -10%, 0) rotate(4deg); }
+  to { opacity: 0.13; transform: translate3d(-1%, 14%, 0) rotate(4deg); }
+}
+
+@keyframes kiln-story-chimney-smoke-rise-a {
+  0% { opacity: 0.03; transform: translate3d(-1%, 18%, 0) scale(0.72, 0.58) skewX(-2deg); }
+  36% { opacity: 0.12; transform: translate3d(2%, 7%, 0) scale(0.86, 0.82) skewX(1deg); }
+  72% { opacity: 0.18; transform: translate3d(6%, -5%, 0) scale(1.02, 1.04) skewX(3deg); }
+  100% { opacity: 0.02; transform: translate3d(9%, -18%, 0) scale(1.12, 1.18) skewX(5deg); }
+}
+
+@keyframes kiln-story-chimney-smoke-rise-b {
+  0% { opacity: 0.02; transform: translate3d(3%, 22%, 0) scale(0.66, 0.56) skewX(2deg); }
+  42% { opacity: 0.1; transform: translate3d(-2%, 8%, 0) scale(0.86, 0.84) skewX(-1deg); }
+  100% { opacity: 0.015; transform: translate3d(-8%, -20%, 0) scale(1.18, 1.22) skewX(-4deg); }
+}
+
+@keyframes kiln-story-chimney-smoke-rise-c {
+  0% { opacity: 0.02; transform: translate3d(0, 14%, 0) scale(0.7, 0.6); }
+  48% { opacity: 0.12; transform: translate3d(4%, 0, 0) scale(0.92, 0.94); }
+  100% { opacity: 0.02; transform: translate3d(10%, -16%, 0) scale(1.08, 1.12); }
+}
+
+@keyframes kiln-story-wet-light {
+  from { opacity: 0.1; transform: translate3d(-5%, 1%, 0) scale(0.96); }
+  to { opacity: 0.24; transform: translate3d(4%, -1%, 0) scale(1.04); }
+}
+
+@keyframes kiln-story-river-tree-sway-left {
+  from { opacity: 0.15; transform: translate3d(-0.8%, 0.2%, 0) skewX(-0.5deg) scaleX(0.995); }
+  to { opacity: 0.28; transform: translate3d(1.6%, -0.2%, 0) skewX(0.8deg) scaleX(1.012); }
+}
+
+@keyframes kiln-story-river-tree-sway-far {
+  from { opacity: 0.08; transform: translate3d(1%, 0.1%, 0) skewX(0.3deg) scaleX(0.994); }
+  to { opacity: 0.18; transform: translate3d(-1.8%, -0.2%, 0) skewX(-0.55deg) scaleX(1.008); }
+}
+
+@keyframes kiln-story-river-reflection-upper {
+  from { opacity: 0.08; transform: translate3d(-1%, 0.15%, 0) scaleX(0.992) skewX(-0.8deg); }
+  to { opacity: 0.2; transform: translate3d(2.2%, -0.3%, 0) scaleX(1.018) skewX(1.1deg); }
+}
+
+@keyframes kiln-story-river-reflection-lower {
+  from { opacity: 0.06; transform: translate3d(1.2%, -0.15%, 0) scaleX(1.012) skewX(0.9deg); }
+  to { opacity: 0.15; transform: translate3d(-2.4%, 0.28%, 0) scaleX(0.988) skewX(-1.3deg); }
+}
+
+@keyframes kiln-story-river-water-ripples {
+  from { opacity: 0.08; transform: translate3d(-5%, 0.2%, 0) skewX(-4deg) scaleX(0.98); }
+  to { opacity: 0.2; transform: translate3d(8%, -0.5%, 0) skewX(3deg) scaleX(1.04); }
+}
+
+@keyframes kiln-story-river-fog-bank {
+  from { opacity: 0.28; transform: translate3d(-12%, 0.9%, 0) scale(1.01); }
+  to { opacity: 0.44; transform: translate3d(16%, -1.3%, 0) scale(1.07); }
+}
+
+@keyframes kiln-story-river-haze-far {
+  from { opacity: 0.24; transform: translate3d(-15%, 0.4%, 0) scale(1.02); }
+  to { opacity: 0.42; transform: translate3d(18%, -0.8%, 0) scale(1.09); }
+}
+
+@keyframes kiln-story-river-haze-mid {
+  from { opacity: 0.18; transform: translate3d(8%, 1.2%, 0) scale(0.98); }
+  to { opacity: 0.36; transform: translate3d(-20%, -1%, 0) scale(1.06); }
+}
+
+@keyframes kiln-story-river-fog-low {
+  from { opacity: 0.2; transform: translate3d(-10%, 0.7%, 0) scale(1.01); }
+  to { opacity: 0.34; transform: translate3d(16%, -0.7%, 0) scale(1.08); }
+}
+
+@keyframes kiln-story-river-haze-low {
+  from { opacity: 0.16; transform: translate3d(-9%, 0.8%, 0) scale(1.01); }
+  to { opacity: 0.3; transform: translate3d(17%, -0.5%, 0) scale(1.08); }
+}
+
+@keyframes kiln-story-tyndall-beam {
+  from { opacity: 0.22; transform: translate3d(1%, -0.1%, 0) rotate(-0.2deg) scale(0.995); }
+  to { opacity: 0.31; transform: translate3d(-1.2%, 0.2%, 0) rotate(0.22deg) scale(1.012); }
+}
+
+@keyframes kiln-story-tyndall-air {
+  from { opacity: 0.04; transform: translate3d(1.5%, 0.3%, 0) scale(0.99); }
+  to { opacity: 0.1; transform: translate3d(-1.5%, -0.3%, 0) scale(1.03); }
+}
+
+@keyframes kiln-story-tyndall-dust-bank-a {
+  0% { opacity: 0.25; transform: translate3d(-2%, 1%, 0) scale(0.98); }
+  48% { opacity: 0.42; transform: translate3d(4%, -1.5%, 0) scale(1.01); }
+  100% { opacity: 0.25; transform: translate3d(-2%, 1%, 0) scale(0.98); }
+}
+
+@keyframes kiln-story-tyndall-dust-bank-b {
+  0% { opacity: 0.18; transform: translate3d(2%, 1%, 0) scale(0.97); }
+  48% { opacity: 0.32; transform: translate3d(-4%, -1%, 0) scale(1.01); }
+  100% { opacity: 0.18; transform: translate3d(2%, 1%, 0) scale(0.97); }
+}
+
+@keyframes kiln-story-tyndall-speck-drift {
+  0% { opacity: 0.24; transform: translate3d(-6px, 8px, 0) scale(0.9); }
+  48% { opacity: 0.52; transform: translate3d(0, -2px, 0) scale(1.05); }
+  100% { opacity: 0.24; transform: translate3d(-6px, 8px, 0) scale(0.9); }
+}
+
+@keyframes kiln-story-ash {
+  0%, 100% { opacity: 0.26; transform: translate3d(-1.2%, 0, 0); }
+  26% { opacity: 0.36; transform: translate3d(0.6%, 0.18%, 0); }
+  52% { opacity: 0.3; transform: translate3d(1.4%, 0.32%, 0); }
+  78% { opacity: 0.38; transform: translate3d(-0.2%, 0.12%, 0); }
+}
+
+@keyframes kiln-story-ash-light {
+  0%, 100% { opacity: 0.05; transform: translate3d(-1.2%, 0.1%, 0); }
+  50% { opacity: 0.11; transform: translate3d(1.6%, 0.25%, 0); }
+}
+
+@keyframes kiln-story-ding-ash-sun-shift {
+  0%, 100% { opacity: 0.045; transform: translate3d(-1.2%, 0.1%, 0) scale(0.99); }
+  38% { opacity: 0.085; transform: translate3d(0.6%, -0.1%, 0) scale(1.01); }
+  72% { opacity: 0.06; transform: translate3d(1.4%, 0.2%, 0) scale(1.015); }
+}
+
+@keyframes kiln-story-ding-ash-fire-glow {
+  0%, 100% { opacity: 0.045; transform: translate3d(-0.4%, 0.2%, 0) scale(0.96, 0.94); }
+  24% { opacity: 0.075; transform: translate3d(0.2%, -0.1%, 0) scale(1.01, 1.02); }
+  51% { opacity: 0.11; transform: translate3d(0.7%, 0.1%, 0) scale(1.04, 1.06); }
+  78% { opacity: 0.065; transform: translate3d(-0.3%, 0.2%, 0) scale(0.99, 1.01); }
+}
+
+@keyframes kiln-story-ding-ash-mote {
+  0%, 100% {
+    opacity: var(--ash-alpha);
+    transform: translate3d(0, 0, 0);
+  }
+  38% {
+    opacity: var(--ash-low-alpha);
+    transform: translate3d(var(--ash-mid-dx), var(--ash-mid-dy), 0);
+  }
+  72% {
+    opacity: var(--ash-alpha);
+    transform: translate3d(var(--ash-dx), var(--ash-dy), 0);
+  }
+}
+
+@keyframes kiln-story-sun-pass {
+  from { opacity: 0.08; transform: translate3d(-11%, 0, 0); }
+  to { opacity: 0.2; transform: translate3d(11%, 1%, 0); }
+}
+
+@keyframes kiln-story-sun-dust {
+  0%, 100% { opacity: 0.07; transform: translate3d(2%, 1%, 0) scale(0.98); }
+  52% { opacity: 0.16; transform: translate3d(-3%, -1%, 0) scale(1.04); }
+}
+
+@keyframes kiln-story-packing-blind {
+  0%, 100% { opacity: 0.14; transform: rotate(0deg) skewX(0deg) translate3d(0, 0, 0); }
+  38% { opacity: 0.34; transform: rotate(-1.7deg) skewX(-0.9deg) translate3d(-1.2%, 0.1%, 0); }
+  68% { opacity: 0.2; transform: rotate(1.3deg) skewX(0.7deg) translate3d(1%, 0.35%, 0); }
+}
+
+@keyframes kiln-story-packing-sun {
+  0%, 100% { opacity: 0.1; transform: translate3d(-3.2%, 0.4%, 0) skewX(-0.9deg) scaleX(0.94); }
+  42% { opacity: 0.38; transform: translate3d(3.8%, -0.6%, 0) skewX(1deg) scaleX(1.06); }
+  72% { opacity: 0.2; transform: translate3d(-0.8%, 0.2%, 0) skewX(-0.35deg) scaleX(1); }
+}
+
+@keyframes kiln-story-packing-sun-patch {
+  0%, 100% { opacity: 0.1; transform: translate3d(-3%, 0.2%, 0) rotate(-1deg) scaleX(0.96); }
+  42% { opacity: 0.34; transform: translate3d(4%, -0.6%, 0) rotate(1.4deg) scaleX(1.06); }
+  74% { opacity: 0.18; transform: translate3d(-1%, 0.3%, 0) rotate(-0.4deg) scaleX(1); }
+}
+
+@keyframes kiln-story-packing-shadow {
+  0%, 100% { opacity: 0.12; transform: translate3d(-2.2%, 0, 0) scaleX(0.95); }
+  52% { opacity: 0.32; transform: translate3d(3.4%, -0.9%, 0) scaleX(1.06); }
+}
+
+@keyframes kiln-story-packing-straw {
+  0%, 100% { opacity: 0.1; transform: translate3d(0, 0, 0) rotate(0deg); }
+  48% { opacity: 0.17; transform: translate3d(1px, -1px, 0) rotate(0.45deg); }
+  76% { opacity: 0.13; transform: translate3d(-1px, 0, 0) rotate(-0.25deg); }
+}
+
+@keyframes kiln-story-lamp {
+  0%, 100% { opacity: 0.18; transform: translate3d(0, 0, 0) scale(0.98); }
+  22% { opacity: 0.25; transform: translate3d(-0.45%, 0.12%, 0) scale(1.01); }
+  48% { opacity: 0.36; transform: translate3d(0.8%, -0.18%, 0) scale(1.04); }
+  71% { opacity: 0.28; transform: translate3d(-0.35%, 0.08%, 0) scale(1.015); }
+}
+
+@keyframes kiln-story-lamp-shadow {
+  0%, 100% { opacity: 0.14; transform: translate3d(-0.8%, 0, 0) skewX(-0.2deg); }
+  24% { opacity: 0.18; transform: translate3d(0.9%, 0.16%, 0) skewX(0.3deg); }
+  51% { opacity: 0.27; transform: translate3d(1.5%, 0.28%, 0) skewX(0.55deg); }
+  76% { opacity: 0.21; transform: translate3d(-0.6%, -0.1%, 0) skewX(-0.25deg); }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .kiln-story-motion::before,
+  .kiln-story-motion::after,
+  .kiln-story-rain-layer,
+  .kiln-story-chimney-smoke-wisp,
+  .kiln-story-river-tree-sway,
+  .kiln-story-river-reflection,
+  .kiln-story-river-water-ripples,
+  .kiln-story-river-haze > span,
+  .kiln-story-tyndall-dust-bank,
+  .kiln-story-tyndall-speck,
+  .kiln-story-ding-ash-sun-shift,
+  .kiln-story-ding-ash-fire-glow,
+  .kiln-story-ding-ash-mote,
+  .kiln-story-ding-spark,
+  .kiln-story-ding-packing-blind,
+  .kiln-story-ding-packing-sun,
+  .kiln-story-ding-packing-sun-patch,
+  .kiln-story-ding-packing-shadow,
+  .kiln-story-ding-packing-straw,
+  .kiln-story-hotspot i,
+  .kiln-story-detail {
+    animation: none !important;
+  }
+
+  .kiln-story-copy,
+  .kiln-story-back,
+  .kiln-story-hotspots,
+  .kiln-story-vessel,
+  .kiln-story-vessel-light,
+  .kiln-story-vessel-shadow {
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+  }
   .kiln-intro,
   .kiln-intro-core,
   .kiln-intro-wheel,
@@ -4911,8 +6510,6 @@
   .cizhou-atmosphere-raster,
   .cizhou-visible-motion::before,
   .cizhou-visible-motion::after,
-  .cizhou-scene-layer-motion::before,
-  .cizhou-scene-layer-motion::after,
   .cizhou-scene-visual,
   .cizhou-trait-image,
   .cizhou-trait-heat,
@@ -4961,13 +6558,4 @@
     opacity: 0.1;
   }
 
-  .cizhou-scene-layer[data-scene-layer="kiln-yard"] .cizhou-scene-layer-motion::before {
-    opacity: 0.14;
-  }
-
-  .cizhou-scene-layer[data-scene-layer="northbound-cart"] .cizhou-scene-layer-motion::before,
-  .cizhou-scene-layer[data-scene-layer="tavern"] .cizhou-scene-layer-motion::before,
-  .cizhou-scene-layer-motion::after {
-    opacity: 0.04;
-  }
 }
