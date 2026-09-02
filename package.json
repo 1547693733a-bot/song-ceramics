@@ -11,7 +11,7 @@
     "predev": "npm run check:runtime",
     "dev": "vite",
     "prebuild": "npm run check:runtime",
-    "build": "tsc && vite build && node scripts/prepare-sites-build.mjs"
+    "build": "tsc && vite build && node scripts/prepare-sites-build.mjs && node scripts/prune-sites-assets.mjs"
   },
   "dependencies": {
     "@fontsource/roboto": "5.2.10",
