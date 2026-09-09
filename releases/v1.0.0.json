@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "date": "2026-09-09",
+  "gitTag": "v1.0.0",
+  "archive": "song-ceramics-web-1.0.0.zip",
+  "archiveSha256": "3527b9d205f9e30cf33b2876cdcc5067b20c4bc54956e7fb16364edcc37472da",
+  "runtimeFiles": 109,
+  "uncompressedBytes": 89185297,
+  "validation": {
+    "nodeTests": 39,
+    "runtimeBrowserTests": 8,
+    "productionBrowserTests": 3,
+    "typecheck": "passed",
+    "build": "passed",
+    "runtimeIntegrity": "passed"
+  }
+}

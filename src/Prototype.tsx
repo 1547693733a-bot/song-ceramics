@@ -12,13 +12,8 @@ import * as THREE from "three";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import {
-  ArrowLeftIcon,
-  Cross2Icon,
-  SpeakerLoudIcon,
-  SpeakerOffIcon,
-} from "@radix-ui/react-icons";
-import { Carousel, MobileScroll, useKeyboard } from "./mobile";
+import { BottomSheet, Carousel, MobileScroll, useKeyboard } from "./mobile";
+import { KilnUiIcon } from "./KilnUiIcon";
 
 gsap.registerPlugin(useGSAP);
 
@@ -101,8 +96,8 @@ const kilns: Kiln[] = [
     portalMotion: "ge",
     name: "哥窑",
     vessel: "双耳瓶",
-    feature: "乳浊厚釉 · 交错开片",
-    description: "传世哥窑器多见灰青或米黄厚釉与深浅相间的开片；其烧造年代和窑址归属，学界至今仍有讨论。",
+    feature: "乳浊厚釉 · 金丝铁线",
+    description: "米黄与灰青之间，深浅开片交织成纹，因而有了“金丝铁线”的称谓。传世哥窑以这份含蓄的釉面层次为人珍视，器物留存至今，其年代与窑址归属仍待研究。",
     image: "/assets/ceramics/01-double-ear-original.webp",
     shape: "tall",
     yaw: 0,
@@ -127,9 +122,9 @@ const kilns: Kiln[] = [
     id: "ru",
     portalMotion: "ru",
     name: "汝窑",
-    vessel: "莲花式碗",
-    feature: "天青釉色 · 支钉烧造",
-    description: "北宋晚期汝窑以温润天青釉、细密开片和细小支钉痕著称，主要发现于河南宝丰清凉寺窑址。",
+    vessel: "莲花式温碗",
+    feature: "天青釉色 · 满釉支烧",
+    description: "北宋晚期，河南宝丰清凉寺的窑火烧成了供御汝瓷。天青釉覆盖器身，细小支钉在底部留下痕迹；花瓣般的温碗，则把柔和的器形带进了酒事。",
     image: "/assets/ceramics/03-lotus-bowl.webp",
     shape: "low",
     yaw: -72,
@@ -154,9 +149,9 @@ const kilns: Kiln[] = [
     id: "guan",
     portalMotion: "guan",
     name: "官窑",
-    vessel: "方琮式瓶",
+    vessel: "琮式瓶",
     feature: "粉青厚釉 · 仿古器形",
-    description: "南宋官窑重视釉色与器形，常见粉青、灰青厚釉和开片，并以瓶、洗及仿青铜礼器等形制见长。",
+    description: "南宋官窑以厚釉与仿古器形见长。铜器的弦纹、玉器的轮廓，经泥与火化为青瓷，凝润釉色之下，仍可辨认古器的端庄气度。杭州郊坛下遗址，保存着这一制瓷传统的踪迹。",
     image: "/assets/ceramics/04-square-vase.webp",
     shape: "tall",
     yaw: 70,
@@ -181,9 +176,9 @@ const kilns: Kiln[] = [
     id: "cizhou",
     portalMotion: "cizhou",
     name: "磁州窑",
-    vessel: "牡丹梅瓶",
-    feature: "白地黑花 · 民间绘事",
-    description: "磁州窑以白色化妆土配合铁质黑彩形成鲜明装饰，题材贴近日常生活，是宋金时期北方重要民窑体系。",
+    vessel: "白地黑花梅瓶",
+    feature: "白地黑花 · 彩绘剔划",
+    description: "一层白色化妆土衬起黑彩，花叶在笔锋与刀痕之间舒展。磁州窑以河北磁县观台、邯郸彭城等窑场为代表，宋金元时期的白地黑花，将鲜明而朴实的趣味留在日用器物之上。",
     image: "/assets/ceramics/02-cizhou-original.webp",
     shape: "tall",
     yaw: -132,
@@ -209,8 +204,8 @@ const kilns: Kiln[] = [
     portalMotion: "longquan",
     name: "龙泉窑",
     vessel: "花卉盖罐",
-    feature: "粉青梅子青 · 厚釉如玉",
-    description: "龙泉窑兴起于北宋，南宋至元达到高峰；粉青、梅子青厚釉与简洁器形共同形成温润如玉的审美。",
+    feature: "粉青梅子青 · 厚釉青瓷",
+    description: "粉青柔和，梅子青青翠，龙泉青瓷的色泽蕴于凝厚釉层之中。南宋至元代，浙江龙泉一带窑场兴盛，素面瓶的圆转、贴花洗的起伏，都在一色青釉里各得其韵。",
     image: "/assets/ceramics/05-lidded-jar.webp",
     shape: "round",
     yaw: 132,
@@ -237,7 +232,7 @@ const kilns: Kiln[] = [
     name: "钧窑",
     vessel: "玫瑰紫花盆",
     feature: "乳浊青釉 · 铜红窑变",
-    description: "钧窑釉色以天青、月白为基础，部分器物在高温烧成中呈现蓝、紫、红交融的自然窑变。",
+    description: "青蓝乳浊釉中，铜红晕开深浅不一的紫色，构成钧瓷鲜明的面貌。河南禹州一带的窑工以配釉与烧成成就这份变化；日用碗盘与陈设花器，则各有不同的时代线索。",
     image: "/assets/ceramics/06-jun-original.webp",
     shape: "low",
     yaw: -45,
@@ -263,8 +258,8 @@ const kilns: Kiln[] = [
     portalMotion: "yaozhou",
     name: "耀州窑",
     vessel: "凤首提梁壶",
-    feature: "橄榄青釉 · 刻印花纹",
-    description: "北宋中晚期耀州窑青瓷以刻花最具特色，斜刀形成深浅起伏，釉料在凹处积聚后显出清晰层次。",
+    feature: "橄榄青釉 · 刻花印花",
+    description: "陕西铜川黄堡的窑工以刀刻花，让花叶随器壁舒展。凹处积釉较深，凸处色泽稍浅，同一层青釉便有了浓淡。北宋耀州窑的刻花与印花，由此呈现鲜明的装饰风格。",
     image: "/assets/ceramics/07-phoenix-ewer.webp",
     shape: "round",
     yaw: 46,
@@ -290,8 +285,8 @@ const kilns: Kiln[] = [
     portalMotion: "ding",
     name: "定窑",
     vessel: "孩儿枕",
-    feature: "温润白釉 · 刻划印塑",
-    description: "河北曲阳定窑在北宋达到高峰，以温润白釉和刻花、划花、印花、捏塑等多样装饰见长。",
+    feature: "牙白釉色 · 刻划模印",
+    description: "河北曲阳的定窑以白瓷著称，宋金时期尤为兴盛。牙白釉色衬出刻划与印纹的细部，孩儿枕又将伏卧的童子塑入寝具，素净之中自有生趣。",
     image: "/assets/ceramics/08-boy-pillow.webp",
     shape: "wide",
     yaw: 180,
@@ -317,14 +312,14 @@ const kilns: Kiln[] = [
 const INTRO_KILN_INDEX = 3;
 const INTRO_KILN = kilns[INTRO_KILN_INDEX];
 const portalLabels: Record<KilnPortalMotion, string> = {
-  ge: "触火 · 观裂",
-  ru: "观云 · 入窑",
-  guan: "触火 · 观釉",
-  cizhou: "触火 · 烧成",
-  longquan: "循青 · 入窑",
-  jun: "触火 · 入窑",
-  yaozhou: "寻刻 · 入窑",
-  ding: "纳火 · 凝光",
+  ge: "轻触焰心 · 识哥瓷",
+  ru: "轻触焰心 · 识汝瓷",
+  guan: "轻触焰心 · 识官瓷",
+  cizhou: "轻触焰心 · 识磁州",
+  longquan: "轻触焰心 · 识龙泉",
+  jun: "轻触焰心 · 识钧瓷",
+  yaozhou: "轻触焰心 · 识耀州",
+  ding: "轻触焰心 · 识定瓷",
 };
 const INTRO_MODEL_URL = "/assets/kilns/intro-3d/opened-clay.glb";
 const INTRO_PORTAL_URL = "/assets/kilns/intro-v2/cavity-spiral-transition.webp";
@@ -386,6 +381,17 @@ const normalizeYaw = (value: number) => ((value + 540) % 360) - 180;
 
 const wrapIndex = (value: number, length: number) => ((value % length) + length) % length;
 
+const KILN_VIEW_YAW_LIMIT = 22;
+const KILN_VIEW_PITCH_LIMIT = 14;
+const KILN_VIEW_EDGE_OVERSHOOT = 3.2;
+
+const applyKilnViewResistance = (offset: number, limit: number) => {
+  const magnitude = Math.abs(offset);
+  if (magnitude <= limit) return offset;
+  const overshoot = Math.min(KILN_VIEW_EDGE_OVERSHOOT, (magnitude - limit) * 0.1);
+  return Math.sign(offset) * (limit + overshoot);
+};
+
 const angularDistanceToKiln = (yaw: number, pitch: number, kiln: Kiln) => {
   const viewPitch = (pitch * Math.PI) / 180;
   const kilnPitch = (kiln.pitch * Math.PI) / 180;
@@ -417,6 +423,8 @@ type DragState = {
   startY: number;
   startYaw: number;
   startPitch: number;
+  axis: "x" | "y" | null;
+  targetIndex: number | null;
   tapTarget: "portal" | "vessel" | null;
   moved: boolean;
 };
@@ -458,6 +466,7 @@ type CizhouTrait = {
   reconstruction: string;
   sourceLabel: string;
   sourceUrl: string;
+  additionalSources?: readonly { label: string; url: string }[];
   hotspots: readonly CizhouTraitHotspot[];
 };
 
@@ -466,34 +475,34 @@ const cizhouTraits: readonly CizhouTrait[] = [
     id: "kiln-yard",
     number: "01",
     title: "出匣初明",
-    tagline: "匣钵护火，黑彩成器。",
+    tagline: "白地承黑彩，花叶出窑新。",
     vessel: "磁州窑白地黑花梅瓶",
-    period: "出窑 · 匣钵、垫饼与检选",
+    period: "宋金时期",
     image: "/assets/kilns/cizhou-one-shot/01-kiln-yard-closeup-song-v4.webp",
     video: "/assets/kilns/cizhou-one-shot/cizhou-vase-in-kiln-interior-v1.mp4",
     videoLoop: "trim",
     atmosphere: "/assets/kilns/cizhou-one-shot/atmosphere-smoke-v1.webp",
     motion: "none",
     audio: "/assets/kilns/cizhou-traits/audio/02-carved-interior-v1.m4a",
-    soundscape: "窑体余温、窑口轻烟与清晨院落风声",
-    fact: "观台磁州窑宋金地层出土匣钵、垫饼、支钉等装烧窑具；匣钵是器物入窑烧成时真正所属的保护空间。",
-    reconstruction: "窑门外低矮冷却检选台、匣钵与窑具位置，是依据观台窑址出土窑具和北方窑炉流程完成的克制复原；不对应某次具体出窑记录。",
-    sourceLabel: "北京大学 · 观台磁州窑址发掘简报",
-    sourceUrl: "https://ir.pku.edu.cn/handle/20.500.11897/7267",
+    soundscape: "窑场风声与低缓炉声",
+    fact: "白地黑花通常是在坯体上施白色化妆土，以含铁彩料绘纹，再罩透明釉烧成。化妆土是细土调成的泥浆，用于改善器表底色，并不是白色釉料。",
+    reconstruction: "画面表现烧成后的窑边检看。梅瓶、窑具与工作台的组合为艺术复原，不是某次发掘的原位记录；入口火焰与纹样变化也不是实际烧造过程的逐步演示。",
+    sourceLabel: "故宫博物院 · 磁州窑白地黑花花卉纹梅瓶（同类工艺）",
+    sourceUrl: "https://www.dpm.org.cn/collection/ceramic/227567.html",
     hotspots: [
       {
         id: "saggar",
-        label: "看窑具",
-        title: "匣钵护器，隔开窑火与落灰",
-        body: "匣钵把器物包在耐火窑具中烧成，减少火焰与窑灰直接侵扰。出窑后，器物才会被逐件取出检选。",
+        label: "看黑彩",
+        title: "白地黑花",
+        body: "梅瓶上的黑花藏在透明釉下。工匠先以细泥调成的白色化妆土铺底，再用含铁彩料绘出花叶，罩釉烧成。白地衬起深色笔意，枝蔓的转折与疏密，至今仍留着落笔时的意趣。",
         x: 64,
         y: 61,
       },
       {
         id: "firing-pad",
-        label: "看垫饼",
-        title: "一枚垫饼，托住器底",
-        body: "垫饼等支烧窑具承托器底、控制器物与窑具的接触。它们留下的痕迹，也是辨认烧造方法的重要线索。",
+        label: "看梅瓶",
+        title: "梅瓶之形",
+        body: "小口、短颈、丰肩，腹部向下渐收，是梅瓶鲜明的轮廓。宋代这类瓶已有盛酒用途，器名虽带一个“梅”字，身世却不止花事。丰润的肩腹，也为白地黑花留下一片从容舒展的天地。",
         x: 68,
         y: 72,
       },
@@ -502,10 +511,10 @@ const cizhouTraits: readonly CizhouTrait[] = [
   {
     id: "northbound-cart",
     number: "02",
-    title: "车辙北行",
-    tagline: "一车载瓷，器走北方。",
+    title: "装载启程",
+    tagline: "草衬轻拥，瓶上花枝如故。",
     vessel: "磁州窑白地黑花梅瓶",
-    period: "流通 · 北方陆路车载",
+    period: "白地黑花瓷",
     image: "/assets/kilns/cizhou-one-shot/02-cizhou-land-loading-v3-meiping-tree.webp",
     video: "/assets/kilns/cizhou-one-shot/02-cizhou-land-loading-v3-meiping-tree.mp4",
     videoLoop: "trim",
@@ -513,24 +522,24 @@ const cizhouTraits: readonly CizhouTrait[] = [
     atmosphere: "/assets/kilns/cizhou-one-shot/atmosphere-dust-v1.webp",
     motion: "none",
     soundscape: "窑场院落微风、树叶沙沙、竹篾与草衬轻响",
-    fact: "宋代绘画保存了牛车和载重车辆在山路、驿路间运输的图像。重货北行依靠车体、牵引和道路共同完成。",
-    reconstruction: "梅瓶置于已捆扎货包上方，瓶底以草窝承托，外设竹编护架与颈部柔性垫护，表现最后封盖前的陆路装运准备；具体包装结构属于结合同时代陶瓷运输材料的艺术推断。",
-    sourceLabel: "台北故宫博物院 · 雪栈牛车图",
-    sourceUrl: "https://digitalarchive.npm.gov.tw/Collection/Detail/1474?dep=P",
+    fact: "磁州窑的影响不限于一个窑场。河南、山西等地多个窑场也烧造白地黑花等品种，形成具有共同装饰特征的磁州窑系；这不等于所有同类器都产自磁县。",
+    reconstruction: "车上的梅瓶以草衬和竹编承护，表现封装前的备运状态。具体包装、行车方向与目的地均为情境推演，没有证据将它们认定为磁州窑固定的运输制度。",
+    sourceLabel: "中国国家博物馆 · 白地黑花开光鱼纹梅瓶（窑系资料）",
+    sourceUrl: "https://www.chnmuseum.cn/zp/zpml/csp/202203/t20220309_254241.shtml",
     hotspots: [
       {
         id: "cart-load",
         label: "看车载",
-        title: "车板承重，木轮走远路",
-        body: "梅瓶不再被当作市场摆设，而是成为货车上的易碎载荷。车板、车轮和牵引方向共同交代它正在北运。",
+        title: "瓷行四方",
+        body: "白地黑花不只见于磁县一地，河南、山西等地的窑场也曾烧造相近品种，共同构成磁州窑系的面貌。相似的花叶留在不同器物上，细察胎釉与笔法，仍能读出各自的性情。",
         x: 64,
         y: 61,
       },
       {
         id: "packing",
         label: "看包裹",
-        title: "草束填塞，绳索稳住器身",
-        body: "低矮护套围住瓶底，草绳从两侧收紧；柔性填塞吸收车板震动，避免完整器物无遮拦地立在车上。",
+        title: "柔草护瓷",
+        body: "梅瓶肩腹丰润，口颈细小，坚硬的瓷质也需轻放。草衬填在瓶身与竹编之间，分隔相触的硬面，绳索再将外部货包束稳。草木的柔韧，恰好护住了瓷器的清脆。",
         x: 68,
         y: 78,
       },
@@ -540,9 +549,9 @@ const cizhouTraits: readonly CizhouTrait[] = [
     id: "tavern",
     number: "03",
     title: "酒肆入席",
-    tagline: "瓶中有酒，瓷上有人间。",
-    vessel: "磁州窑剔黑玉壶春瓶",
-    period: "功用 · 宋代盛酒器",
+    tagline: "瓶腹藏花，席间留韵。",
+    vessel: "磁州窑白地剔划黑花玉壶春瓶",
+    period: "北宋器式",
     image: "/assets/kilns/cizhou-one-shot/03-wine-shop-yuhuchunping-reference-with-white-black-bowl-v6.webp",
     video: "/assets/kilns/cizhou-one-shot/cizhou-tavern-generated-v2.mp4",
     videoLoop: "trim",
@@ -551,24 +560,25 @@ const cizhouTraits: readonly CizhouTrait[] = [
     atmosphere: "/assets/kilns/cizhou-one-shot/atmosphere-candle-v1.webp",
     motion: "none",
     soundscape: "门外微风、酒旗布面轻响、树叶沙沙与稀疏鸟鸣",
-    fact: "中国国家博物馆所藏北宋磁州窑剔黑玉壶春瓶，撇口、细颈、下垂腹、浅圈足，通体黑釉，瓶身剔黑缠枝牡丹花，肩部剔卷叶纹；白地黑花碗类则以白色化妆土和铁黑彩形成黑白对比。",
-    reconstruction: "酒肆门槛、木格门、酒旗和木案构成宋代生活场景；主瓶严格参考馆藏剔黑玉壶春瓶，旁置一只白地黑彩小碗，木勺和布巾仅作为非陶瓷酒铺用具。",
-    sourceLabel: "中国国家博物馆、故宫博物院 · 磁州窑器物资料",
+    fact: "主瓶参考中国国家博物馆藏北宋白地剔划黑花玉壶春瓶：口外撇，颈细长，腹部下垂，花叶以剔划技法表现。它与前两幕的梅瓶是不同器式，不能混称。",
+    reconstruction: "酒肆与小碗用于说明器物进入生活的可能语境，不表示馆藏原物曾在此使用。小碗是依据白地黑花工艺配置的同类器，不对应一件已确认的馆藏原件。",
+    sourceLabel: "中国国家博物馆 · 磁州窑白地剔划黑花玉壶春瓶",
     sourceUrl: "https://www.chnmuseum.cn/zp/zpml/csp/202203/t20220315_254286.shtml",
+    additionalSources: [{ label: "故宫博物院 · 白地黑花工艺", url: "https://www.dpm.org.cn/collection/ceramic/227567.html" }],
     hotspots: [
       {
         id: "shape",
         label: "看器形",
-        title: "撇口细颈，腹部下垂",
-        body: "玉壶春瓶的撇口、细颈、下垂腹与浅圈足形成流畅的承酒器形；黑釉剔花让缠枝牡丹和卷叶纹在器表显出黑白层次。",
+        title: "刀笔留花",
+        body: "玉壶春瓶口沿外撇，细颈渐接下垂的腹部，与丰肩短颈的梅瓶各有姿态。这件器式以剔划黑花见长，花叶边缘留有刀工的转折，黑白相间处，线条既清劲又婉转。",
         x: 64,
         y: 61,
       },
       {
         id: "wine-cup",
         label: "看小碗",
-        title: "白地黑彩，黑白相映",
-        body: "桌面的小碗采用白色化妆土与铁黑彩的黑白对比，仅作为与剔黑玉壶春瓶并置的饮酒小器，不增加未经核实的瓷器。",
+        title: "黑白相映",
+        body: "一只白地黑彩小碗，容得下日常饮食，也容得下简练的花叶。彩绘以笔施料，剔划则用工具处理装饰层；同样的黑白相映，在磁州窑工手中，可以写成不同的面貌。",
         x: 13,
         y: 70,
       },
@@ -602,6 +612,7 @@ type KilnStoryScene = {
   reconstruction: string;
   sourceLabel: string;
   sourceUrl: string;
+  additionalSources?: readonly { label: string; url: string }[];
   hotspots: readonly CizhouTraitHotspot[];
 };
 
@@ -681,23 +692,24 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "fish-ear-censer",
         number: "01",
         title: "鱼耳承古",
-        tagline: "一炉承古，厚釉把晨光收进静处。",
+        tagline: "鱼耳相对，古意静生。",
         vessel: "传世哥窑鱼耳炉",
-        period: "陈设 · 宫廷式香事空间",
+        period: "传世哥窑",
         image: "/assets/kilns/ge-one-shot/01-fish-ear-censer-palace-v1.webp",
         video: "/assets/kilns/ge-one-shot/01-fish-ear-censer-palace-v2-loop.mp4",
         videoLoop: "native",
         motion: "none",
-        fact: "故宫博物院所述传世哥窑器多见乳浊的灰青或米黄釉，器类包括炉、瓶、碗、盘、洗等；鱼耳炉属于借鉴古代礼器形制的陈设器。",
-        reconstruction: "哥窑的烧造年代与窑址归属尚无定论。画面仅依据传世哥窑器的分类和宫廷式陈设语境进行艺术复原，不指认具体窑场。",
-        sourceLabel: "故宫博物院 · 哥窑与传世哥窑研究",
-        sourceUrl: "https://www.dpm.org.cn/lemmas/239358.html",
+        fact: "鱼耳炉借鉴古代青铜簋的形制，以鱼形双耳、鼓腹和圈足构成轮廓。传世哥窑器多见灰青或米黄色乳浊釉；其烧造年代和窑址归属仍是研究议题。",
+        reconstruction: "室内焚香情境为艺术复原，不指认某处宋代宫室，也不据此确认传世哥窑的产地。器物名称沿用传世品分类，不能视为窑址已确定。",
+        sourceLabel: "故宫博物院 · 哥窑青釉鱼耳炉（同类器）",
+        sourceUrl: "https://www.dpm.org.cn/collection/ceramic/226733.html",
+        additionalSources: [{ label: "故宫博物院 · 哥窑学术研讨会", url: "https://www.dpm.org.cn/research_institute/activity/detail/250550.html" }],
         hotspots: [
           {
             id: "fish-ears",
             label: "看鱼耳",
-            title: "仿古之形，先由双耳建立器物秩序",
-            body: "双鱼形耳与炉身共同构成对称的仿古轮廓。厚釉覆盖器表后，开片会随釉层状态自然形成，而不是后加的规则纹样。",
+            title: "鱼耳承古",
+            body: "鱼形双耳分列鼓腹两侧，圈足稳稳承起炉身，轮廓承袭古代青铜簋的意味。原属盛食礼器的形制，后来也化作焚香之器。乳浊釉与细密开片相映，是传世哥窑的特色；其年代与窑址归属，仍有待进一步厘清。",
             x: 52,
             y: 66,
           },
@@ -707,23 +719,23 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "long-neck-crackle",
         number: "02",
         title: "开片之纹",
-        tagline: "冷光缓行，金丝铁线才从厚釉里浮现。",
+        tagline: "深浅成纹，疏密有致。",
         vessel: "传世哥窑长颈瓶",
-        period: "赏鉴 · 宫廷式书斋陈设",
+        period: "传世哥窑",
         image: "/assets/kilns/ge-one-shot/02-long-neck-bottle-crackle-v1.webp",
         video: "/assets/kilns/ge-one-shot/02-long-neck-bottle-crackle-v2-loop.mp4",
         videoLoop: "native",
         motion: "none",
-        fact: "传世哥窑器常见粗深与细浅两类开片交错，后世以“金丝铁线”概括其视觉效果；这是一种对釉面开片层次的描述，并非金属装饰。",
-        reconstruction: "场景以稳定侧光帮助观察器表开片，木案、素布与格窗仅承担赏鉴语境，不代表某件传世瓶的确切历史摆放位置。",
-        sourceLabel: "故宫博物院 · 哥窑与传世哥窑研究",
+        fact: "开片是釉层中的裂纹，与胎、釉热膨胀及冷却收缩的差异有关。“金丝铁线”形容细浅与粗深纹路交织的外观，不是以金丝或铁线镶入器表。",
+        reconstruction: "长颈瓶与木案构成近观釉面的赏鉴情境，不对应原物的确切使用地点。光线变化帮助辨认已有纹路，不表示裂纹正在受热生成。",
+        sourceLabel: "故宫博物院 · 金丝铁线：哥窑瓷器展",
         sourceUrl: "https://www.dpm.org.cn/show/246117.html",
         hotspots: [
           {
             id: "double-crackle",
             label: "看开片",
-            title: "粗线为骨，细线在其间继续生长",
-            body: "长颈与圆腹提供了连续釉面，使粗深开片和细密暖色纹路能够同时被侧光读出；动态只改变反射，不让裂纹本身移动。",
+            title: "金丝铁线",
+            body: "瓶身粗深的纹路与细浅的开片交织，因色泽与层次而有“金丝铁线”之称。它们是胎釉冷却收缩差异留下的釉层裂纹，并非金属镶嵌。纹路行至颈腹转折处，自有疏密，素面也因而耐看。",
             x: 51,
             y: 61,
           },
@@ -733,23 +745,24 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "lobed-bowl",
         number: "03",
         title: "紫口铁足",
-        tagline: "釉薄处露骨，口沿与足端留下胎色。",
+        tagline: "一线深沿，半碗含青。",
         vessel: "传世哥窑葵口碗",
-        period: "日用 · 宫廷式内室清供",
+        period: "传世哥窑",
         image: "/assets/kilns/ge-one-shot/03-lobed-bowl-purple-rim-v1.webp",
         video: "/assets/kilns/ge-one-shot/03-lobed-bowl-purple-rim-v2-loop.mp4",
         videoLoop: "native",
         motion: "none",
-        fact: "部分传世哥窑器在口沿等薄釉处透出较深胎色，足端露胎亦呈深色，后世常以“紫口铁足”概括这一类外观。",
-        reconstruction: "漆案、素布与木匙用于补足安静的生活痕迹；画面是基于传世器物特征的宫廷式使用想象，不对应某一历史房间。",
-        sourceLabel: "故宫博物院 · 哥窑与传世哥窑研究",
-        sourceUrl: "https://www.dpm.org.cn/lemmas/239358.html",
+        fact: "部分哥窑及官窑器的薄釉口沿透出深色胎骨，未施釉的足端也呈深色，常以“紫口铁足”概括。这一外观并非哥窑独有，传世哥窑的胎色也并不完全一致。",
+        reconstruction: "葵口碗置于生活化室内，便于比较口沿、釉面与圈足。陈设属于艺术复原，不据此确认它曾作何种具体用途或属于哪一处宫廷空间。",
+        sourceLabel: "故宫博物院 · 官窑青釉圆洗（紫口铁足释义）",
+        sourceUrl: "https://www.dpm.org.cn/collection/ceramic/226749.html",
+        additionalSources: [{ label: "故宫博物院 · 哥窑瓷器展", url: "https://www.dpm.org.cn/show/246117.html" }],
         hotspots: [
           {
             id: "rim-foot",
             label: "看口足",
-            title: "一圈薄釉，把胎骨从青灰釉色中显出来",
-            body: "葵口边缘的褐紫色与圈足的深胎色互相呼应。暖光只沿口沿和漆桌反射缓慢移动，器物、布与木匙都保持静止。",
+            title: "口足之间",
+            body: "葵瓣口沿釉层较薄，隐约透出深色胎骨，圈足底缘的露胎处也见深色，故有“紫口铁足”的说法。它并非哥窑独有，却让浅淡釉色有了清楚的收束。沿口至足，一器的胎与釉，在深浅之间相互映衬。",
             x: 52,
             y: 63,
           },
@@ -768,21 +781,21 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "kiln-rain",
         number: "01",
         title: "雨歇开窑",
-        tagline: "雨过天青，釉从火里醒来。",
-        vessel: "北宋汝窑莲花式碗",
-        period: "出窑 · 清凉寺窑场检选",
+        tagline: "雨歇天青，釉色初见。",
+        vessel: "北宋汝窑青釉莲花式温碗",
+        period: "北宋晚期",
         image: "/assets/kilns/ru-one-shot/01-kiln-after-rain-integrated-v2.webp",
         motion: "ru-after-rain",
-        fact: "清凉寺窑址所见汝器以厚润青釉、细密开片与支钉烧造痕迹著称；传世汝器的生产年代集中在北宋晚期。",
-        reconstruction: "雨后窑场、石案与远处工匠为依据清凉寺窑址环境完成的克制复原，画面不对应某一件传世器物的确切出窑记录。",
-        sourceLabel: "大英博物馆 · 北宋汝窑碗",
-        sourceUrl: "https://www.britishmuseum.org/collection/object/A_PDF-3",
+        fact: "台北故宫博物院藏莲花式温碗为北宋汝窑器，底部留有五处支痕；河南宝丰清凉寺窑址亦发现同类器标本。满釉支烧以细小支点承托器物，烧后会留下接触痕迹。",
+        reconstruction: "窑场检选为艺术复原，不对应这件温碗的出窑记录。雨后天气是环境设定，不能解释为天青釉必须在雨天烧成。支钉痕位于器底，本镜头没有展示底部。",
+        sourceLabel: "台北故宫博物院 · 汝窑莲花式温碗",
+        sourceUrl: "https://www.npm.gov.tw/Articles.aspx?l=2&sno=04012814",
         hotspots: [
           {
             id: "glaze",
             label: "看釉色",
-            title: "天青不是平涂，是厚釉里浮出的冷光",
-            body: "汝釉在灰青、淡蓝与微带紫意的乳浊层之间缓慢过渡。细开片只在近看时出现，不应该压过器形本身。",
+            title: "天青初见",
+            body: "汝瓷的天青色蕴于烧成后的釉层，并不取决于开窑时的天气。这类莲花式温碗以细小支钉承托烧造，使器表尽可能覆釉，底部留下轻微支痕。温润的青色之外，那些细小接触处，也记着窑工的用心。",
             x: 67,
             y: 72,
           },
@@ -791,24 +804,25 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
       {
         id: "river-tribute",
         number: "02",
-        title: "水路入京",
-        tagline: "器物离窑，水运连接产地与都城。",
-        vessel: "北宋汝窑莲花式碗",
-        period: "流通 · 北宋水路运输复原",
+        title: "水路运瓷",
+        tagline: "水声在岸，瓷色藏箱。",
+        vessel: "北宋汝窑器物运输情境",
+        period: "汝瓷水运意境",
         image: "/assets/kilns/ru-one-shot/02-river-transport-no-people-v2.webp",
         video: "/assets/kilns/ru-one-shot/02-river-transport-no-people-v2.mp4",
         videoLoop: "trim",
         motion: "ru-river",
-        fact: "清凉寺窑址出土器与传世汝器表明，汝窑在北宋晚期曾烧造宫廷用瓷；其生产延续时间较短，传世完整器数量有限。",
-        reconstruction: "目前没有材料能够证明画面中的某一次具体运输。码头、货船和装匣方式依据北宋水运条件作情境化复原，用于说明器物离开窑场后的流通环节。",
-        sourceLabel: "故宫博物院 · 汝窑瓷器专题",
-        sourceUrl: "https://www.dpm.org.cn/show/226231.html",
+        fact: "传世汝器与清凉寺窑址出土标本的比较，是认识供御汝瓷的重要依据。器形、胎釉、装烧痕迹可以相互参照，但这些材料不能直接还原每一件器物的运送路线。",
+        reconstruction: "码头、货船与包装表现离窑后的水运情境，不是某次宫廷贡运的实录。本篇不将汴水、指定目的地或具体货箱结构认定为已证实的汝瓷运输路线与制度。",
+        sourceLabel: "故宫博物院 · 汝窑",
+        sourceUrl: "https://www.dpm.org.cn/lemmas/239400.html",
+        additionalSources: [{ label: "台北故宫博物院 · 传世温碗与清凉寺同类器", url: "https://www.npm.gov.tw/Articles.aspx?l=2&sno=04012814" }],
         hotspots: [
           {
             id: "packing",
-            label: "看奉运",
-            title: "稀少不只来自烧造，也来自长途保存",
-            body: "厚釉与纤细器形在运输中需要稳固承托。画面以草衬木匣缓冲碰撞，再用绳扎货箱、跳板与货船串起沿汴水奉运的完整路径。",
+            label: "看装运",
+            title: "护瓷远行",
+            body: "船板随水轻动，货物却需要安稳。易碎的瓷器经由承托、分隔与捆束，才能减少彼此碰撞。北宋晚期汝瓷曾为宫廷烧造，今天可由清凉寺窑址与传世器相互参照，至于一器曾循哪段水路而行，仍有未解的空白。",
             x: 68,
             y: 82,
           },
@@ -818,21 +832,21 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "palace-study",
         number: "03",
         title: "清供照影",
-        tagline: "宫窗微明，器物只留一层静气。",
-        vessel: "北宋汝窑莲花式碗",
-        period: "宫用 · 北宋内廷清供",
+        tagline: "莲瓣含青，窗前凝静。",
+        vessel: "北宋汝窑青釉莲花式温碗",
+        period: "北宋晚期",
         image: "/assets/kilns/ru-one-shot/03-palace-study-sunlight-v1.webp",
         motion: "ru-window",
-        fact: "故宫博物院相关展览将传世汝器与清凉寺窑址出土器对照研究，并以支钉痕、釉色和器形等特征说明其宫廷用瓷属性。",
-        reconstruction: "宫中书斋与清供台面以格窗强光、少陈设和近景器物表现汝器釉面的含蓄反光；具体陈设关系属于艺术复原。",
-        sourceLabel: "故宫博物院 · 汝窑瓷器专题",
-        sourceUrl: "https://www.dpm.org.cn/show/226231.html",
+        fact: "温碗是一类与执壶配合使用的酒器，可借碗中的温水为壶内酒液保温。莲花式温碗将口沿与碗壁做成连续瓣形，不只是普通饭碗或专用插花器。",
+        reconstruction: "窗前单独陈放温碗，是为了展示瓣形和釉色，并未复原完整温酒操作。画面没有执壶，不应据此把馆藏温碗改释为书斋专用清供。",
+        sourceLabel: "台北故宫博物院 · 莲花式温碗的器形与用途",
+        sourceUrl: "https://www.npm.gov.tw/Articles.aspx?l=2&sno=04012814",
         hotspots: [
           {
             id: "quiet-light",
-            label: "看清供",
-            title: "器物越静，窗光越能显出釉层深浅",
-            body: "侧窗冷光沿莲瓣口缘移动，厚釉处仍保留天青体色，薄处只出现一线柔亮，不做金属般的高光。",
+            label: "看莲瓣",
+            title: "莲瓣温酒",
+            body: "起伏的口沿延伸为层层瓣形，莲花的轮廓被收进一只温碗。宋代温碗可与执壶配合，以碗中温水暖护壶内酒液。柔和的青釉覆在凹凸器壁上，花形、器用与釉色，在一器之中相合。",
             x: 67,
             y: 72,
           },
@@ -851,22 +865,22 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "kiln-inspection",
         number: "01",
         title: "火退牙白",
-        tagline: "窑火收住，白釉才显出温度。",
+        tagline: "牙白映衣褶，童颜带浅笑。",
         vessel: "北宋定窑白釉孩儿枕",
-        period: "出窑 · 曲阳窑场检选",
+        period: "北宋",
         image: "/assets/kilns/ding-one-shot/01-kiln-inspection-firelight-v1.webp",
         audio: "/assets/kilns/ding-one-shot/audio/01-kiln-inspection-ambience-v1.m4a",
         motion: "ding-ash",
-        fact: "北宋定窑以白釉瓷器为主，常见划花、刻花、印花与捏塑装饰；孩儿枕把捏塑器形与牙白釉结合在一起。",
-        reconstruction: "窑后检选、匣钵与浅色工坊依据曲阳定窑烧造背景完成艺术复原，不对应故宫藏品的确切出窑现场。",
+        fact: "定窑位于河北曲阳，以白瓷著称。孩儿枕把人物造型与牙白釉结合，衣饰和榻座还有印纹等装饰；它不是以白色化妆土衬黑花的磁州窑产品。",
+        reconstruction: "画面为窑边成品检看情境，不是馆藏孩儿枕的确切出窑现场。背景炉光与火星仅交代窑场环境，前景成品并非直接放在火中再次烧制。",
         sourceLabel: "故宫博物院 · 定窑白釉孩儿枕",
         sourceUrl: "https://www.dpm.org.cn/collection/ceramic/226760.html",
         hotspots: [
           {
             id: "ivory-glaze",
             label: "看白釉",
-            title: "象牙白不是冷白，而是火后留下的柔暖",
-            body: "牙白釉把人物面部、衣褶和榻座纹样收进同一层温润光泽，细部依靠浅阴影而不是强色差出现。",
+            title: "牙白生趣",
+            body: "定窑孩儿枕以略带暖意的白釉衬出面容与衣褶，光泽随形体轻轻转折。河北曲阳的窑工善用刻划、印纹等装饰，少了浓彩，细部仍自有层次。一个伏卧的姿态，也让素净白瓷添了亲切的生趣。",
             x: 66,
             y: 62,
           },
@@ -875,24 +889,24 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
       {
         id: "packing-hall",
         number: "02",
-        title: "印花成型",
-        tagline: "模印入坯，纹样在白釉之下定形。",
+        title: "草衬护器",
+        tagline: "草间安卧，衣上花纹犹清。",
         vessel: "北宋定窑白釉孩儿枕",
-        period: "工艺 · 模印与捏塑",
+        period: "北宋",
         image: "/assets/kilns/ding-one-shot/02-packing-decoration-integrated-v1.webp",
         video: "/assets/kilns/ding-one-shot/02-bamboo-blind-seamless-v4.mp4",
         videoLoop: "trim",
         motion: "ding-packing",
-        fact: "定窑装饰技法包括划花、刻花、印花和捏塑。印花通常在坯体尚未烧成时压印纹样，再施透明釉烧成，纹样由凹凸和积釉深浅显现。",
-        reconstruction: "画面将成品孩儿枕与半干白瓷坯样并置，用以区分捏塑成形和模印装饰；木案、印模与竹帘属于工艺说明性的艺术复原。",
+        fact: "故宫藏孩儿枕将人物塑形与衣饰、榻座的纹样结合。塑造枕体与压印花纹是不同环节，均需在烧成前完成；不能在烧好的瓷枕上再压出凹凸印花。",
+        reconstruction: "竹编护架和草衬表现成品暂置、准备搬运的状态，具体结构为艺术复原。器表印纹在烧造前制作，本幕展示的是烧成后的保护与搬运情境。",
         sourceLabel: "故宫博物院 · 定窑孩儿枕",
         sourceUrl: "https://intl.dpm.org.cn/Ceramicsis/64068.html",
         hotspots: [
           {
             id: "relief",
-            label: "看成形",
-            title: "捏塑成形与模印纹样是两类工艺",
-            body: "孩儿枕以人物身体构成完整枕体，属于塑形；旁侧坯样上的纹样则由印模压出。二者都在施釉、烧成前完成。",
+            label: "看纹饰",
+            title: "衣上纹样",
+            body: "孩童的姿态与衣褶由立体塑形而成，衣饰、榻座上的重复花纹又见印纹之巧。这些细部都在烧成前完成，出窑后便凝定于白釉之下。柔草承住枕体，也护住了手足与衣角细小的起伏。",
             x: 66,
             y: 62,
           },
@@ -902,24 +916,24 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "sleeping-chamber",
         number: "03",
         title: "枕上清凉",
-        tagline: "灯影渐短，瓷枕真正进入日常。",
+        tagline: "灯影渐低，童子静卧。",
         vessel: "北宋定窑白釉孩儿枕",
-        period: "功用 · 宋人寝具",
+        period: "北宋",
         image: "/assets/kilns/ding-one-shot/03-sleeping-chamber-integrated-v1.webp",
         video: "/assets/kilns/ding-one-shot/03-sleeping-chamber-candle-v1-no-music.mp4",
         videoLoop: "trim",
         audio: "/assets/kilns/cizhou-traits/audio/03-painted-pillow-night-v1.m4a",
         motion: "ding-lamp",
-        fact: "宋代瓷枕较为流行，常见几何形、人物形和动物形。故宫所藏定窑孩儿枕以伏卧孩童的背部构成枕面，兼具实用与塑像意味。",
-        reconstruction: "寝榻、竹帘与远处灯盏用来解释瓷枕的日常功能，室内布局并非某一历史居所的复原图。",
+        fact: "宋代多处窑场烧造瓷枕，造型包括几何形、人物形和动物形。孩儿枕以伏卧孩童的背部作为承枕面；故宫藏品底部未施釉，并留有通气孔。",
+        reconstruction: "寝榻与灯盏表现瓷枕的寝居用途，不对应原物的使用者或居所。文献中关于瓷枕清凉、明目的说法属于古人认识，不能当作已证实的保健功效。",
         sourceLabel: "故宫博物院 · 定窑白釉孩儿枕",
         sourceUrl: "https://www.dpm.org.cn/collection/ceramic/226760.html",
         hotspots: [
           {
             id: "pillow-use",
             label: "看枕用",
-            title: "瓷枕的清凉，来自材质与中空结构",
-            body: "孩童伏卧的背部承担枕面，底部中空并留通气孔。它既是雕塑，也是实际进入寝居的器具。",
+            title: "枕中童趣",
+            body: "孩儿枕既是人物塑像，也是寝具。童子伏卧，背部微微隆起，正是承枕之处；衣褶与榻座的纹饰，让日常起居也有可赏的细节。宋代瓷枕形制多样，这一件以孩童的安然姿态，留下寝居中的温柔趣味。",
             x: 66,
             y: 62,
           },
@@ -938,23 +952,24 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "finished-goods-house",
         number: "01",
         title: "成品静置",
-        tagline: "出窑之后，粉青在侧光里沉静下来。",
-        vessel: "南宋官窑粉青釉瓶与青釉洗",
-        period: "成品堆放屋 · 郊坛下窑场",
+        tagline: "窑火已歇，粉青渐明。",
+        vessel: "官窑粉青釉弦纹瓶与青釉洗",
+        period: "南宋",
         image: "/assets/kilns/guan-one-shot/01-jiaotanxia-finished-goods-house-lived-in-v10.webp",
         video: "/assets/kilns/guan-one-shot/01-finished-goods-house-v10.mp4",
         videoLoop: "native",
         motion: "guan-storage",
-        fact: "郊坛下官窑作坊遗址包含成品堆放屋、修坯上釉工房、釉缸、素烧炉和排水沟等生产遗迹。",
-        reconstruction: "画面依据成品堆放屋与三开间作坊遗迹进行艺术化复原；器物、草垫与竹帘表现出窑后收置和检看的生活痕迹，不对应某一次考古原位记录。",
-        sourceLabel: "杭州南宋官窑博物馆 · 郊坛下作坊遗址",
-        sourceUrl: "https://z.hangzhou.cn/2020/rwwhql/content/content_7746554.htm",
+        fact: "郊坛下窑址发现制坯、素烧、施釉和成品收置等生产遗迹。参考瓶以弦纹装饰长颈与圆腹，足部有穿带孔；瓶与洗的造型、釉层各有观察重点。",
+        reconstruction: "以郊坛下作坊资料为背景复原成品收置空间。器物摆位、草垫和室内光线为艺术安排，不将这件传世瓶认定为该房间的原位出土物。",
+        sourceLabel: "杭州南宋官窑博物馆 · 郊坛下遗址介绍（杭州网刊载）",
+        sourceUrl: "https://z.hangzhou.com.cn/2020/rwwhql/content/content_7746554.htm",
+        additionalSources: [{ label: "故宫博物院 · 官窑粉青釉弦纹瓶", url: "https://www.dpm.org.cn/collection/ceramic/226843.html" }, { label: "故宫博物院 · 官窑青釉圆洗", url: "https://www.dpm.org.cn/collection/ceramic/226749.html" }],
         hotspots: [
           {
             id: "finished-glaze",
-            label: "看粉青",
-            title: "厚釉器物先在成品屋里安静下来",
-            body: "粉青釉瓶与青釉洗不再紧贴窑火，而是在有遮护的成品堆放空间里等待检看。侧光掠过开片和低足，器形、釉色与使用痕迹同时被看见。",
+            label: "看弦纹",
+            title: "弦纹含青",
+            body: "一圈圈弦纹沿瓶颈与腹部展开，借来古铜器的秩序，又被粉青釉柔和包覆。南宋官窑重视仿古器形与厚釉质感，杭州郊坛下遗址留有成品收置等生产遗迹。火候退去，器形的端正与釉面的细润，才得以静静显露。",
             x: 68,
             y: 70,
           },
@@ -963,25 +978,26 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
       {
         id: "glaze-settling-workshop",
         number: "02",
-        title: "釉色初定",
-        tagline: "粉青入釉，器形在侧光中显出深浅。",
-        vessel: "南宋官窑粉青釉葵花式洗",
-        period: "修坯上釉工房 · 郊坛下窑场",
+        title: "厚釉凝青",
+        tagline: "釉色凝润，葵瓣轻舒。",
+        vessel: "南宋官窑粉青釉葵口洗",
+        period: "南宋",
         image: "/assets/kilns/guan-one-shot/02-glaze-settling-workshop-v3-vessel-closeup.webp",
         video: "/assets/kilns/guan-one-shot/02-glaze-settling-workshop-v4-forward-loop-source.mp4",
         videoLoop: "native",
         audio: "/assets/kilns/guan-one-shot/02-glaze-settling-workshop-ambience.m4a",
         motion: "none",
-        fact: "郊坛下作坊遗址可见釉料缸、素烧炉、排水沟等生产遗迹；官窑粉青釉器以厚釉、开片和素面器形见长。",
-        reconstruction: "画面以釉料工房和器物检看为依据的艺术化复原；葵花式洗、釉缸与木台的相对位置不对应某一次考古原位记录。",
-        sourceLabel: "杭州南宋官窑博物馆 · 郊坛下作坊遗址",
-        sourceUrl: "https://z.hangzhou.cn/2020/rwwhql/content/content_7746554.htm",
+        fact: "南宋官窑制瓷采用素烧、施釉后再烧成等工序。素烧是先以较低温度预烧未施釉的坯体；施釉次数、釉层厚度与烧成条件共同影响成器效果，粉青不是直接涂上的青色颜料。",
+        reconstruction: "工房中的葵口洗已是烧成品，作为理解厚釉效果的参照，不表示正在给它再次上釉。釉缸、木台与器物的相对位置属于艺术复原。",
+        sourceLabel: "天津博物馆 · 官窑青釉暗龙纹洗（烧造工艺）",
+        sourceUrl: "https://www.tjbwg.cn/cn/collectionInfo.aspx?Id=2537",
+        additionalSources: [{ label: "杭州南宋官窑博物馆 · 作坊遗迹", url: "https://z.hangzhou.com.cn/2020/rwwhql/content/content_7746554.htm" }],
         hotspots: [
           {
             id: "glaze-close",
             label: "看厚釉",
-            title: "粉青厚釉把光藏在器物内部",
-            body: "葵花式洗的粉青釉面以厚薄变化收住侧光，细密开片和低矮器形在近距离才显出层次；周围的釉料缸与木台只作工房语境，不抢走器物的第一视线。",
+            title: "厚釉凝青",
+            body: "葵口洗的瓣缘轻轻起伏，粉青釉覆于其上，光泽含蓄而凝润。南宋官窑采用素烧后施釉、再行烧成等工序，以施釉与火候成就厚釉效果。厚的是釉层，未必是胎壁，莹润的外表之下，藏着制瓷工序的分寸。",
             x: 58,
             y: 64,
           },
@@ -990,25 +1006,25 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
       {
         id: "ritual-side-hall",
         number: "03",
-        title: "香烟入礼",
-        tagline: "礼器无声，香烟把粉青送入静处。",
+        title: "簋式承古",
+        tagline: "簋形承古，青釉凝香。",
         vessel: "南宋官窑粉青釉簋式炉",
-        period: "礼仪侧厅 · 郊坛近旁",
+        period: "南宋",
         image: "/assets/kilns/guan-one-shot/03-ritual-side-hall-incense-v3-vessel-closeup.webp",
         video: "/assets/kilns/guan-one-shot/03-ritual-side-hall-incense-v5.mp4",
         videoLoop: "native",
         audio: "/assets/kilns/guan-one-shot/03-ritual-side-hall-incense-ambience.m4a",
         motion: "none",
-        fact: "南宋官窑青瓷簋式炉见于郊坛下窑址出土资料，被用于宫廷礼仪活动；官窑器物亦供宫廷祭祀与陈设。",
-        reconstruction: "画面以郊坛近旁的礼仪准备空间作艺术化复原，不对应某一处宫殿或祭坛的精确原位；香烟与烛火作为礼仪使用的时间线索。",
+        fact: "郊坛下窑址出土有南宋官窑青瓷簋式炉。簋原属古代青铜盛食礼器，后世瓷炉借用其形制；出土地点与器式可考，并不等于每件器物的实际使用场合都已确定。",
+        reconstruction: "室内焚香表现仿古瓷炉的一种使用情境，不是南宋某次祭祀的实录。不能仅因窑址名为“郊坛下”，就认定画面位于祭坛旁或所烧器物都用于祭祀。",
         sourceLabel: "西湖博物馆 · 南宋官窑青瓷簋式炉",
-        sourceUrl: "https://westlakemuseum.com/index.php/gcjp/jpzs2/854-gcjp-008.html",
+        sourceUrl: "https://www.westlakemuseum.com/index.php/gcjp/jpzs2/854-gcjp-008.html",
         hotspots: [
           {
             id: "ritual-smoke",
-            label: "看香烟",
-            title: "簋式炉让器形成为礼仪的一部分",
-            body: "簋式炉的粉青釉、厚胎与低矮比例在薄烟中更显安定；烟气缓慢上行，提示它已经从窑场成品进入礼仪侧厅，而不是孤立的器物陈列。",
+            label: "看炉形",
+            title: "古器新用",
+            body: "簋本是古代青铜盛食礼器，后世瓷炉借用其形，保留端稳的轮廓，另有焚香之用。郊坛下窑址出土的官窑簋式炉，留下南宋仿古制瓷的线索。青釉代替铜色，器形中那份肃静，却仍可辨认。",
             x: 58,
             y: 64,
           },
@@ -1027,23 +1043,23 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "inspection-shed",
         number: "01",
         title: "出窑初青",
-        tagline: "山雾穿棚，粉青在微明里安静下来。",
+        tagline: "素面凝青，清润如玉。",
         vessel: "南宋龙泉窑粉青釉盘口瓶",
-        period: "出窑 · 龙泉窑场检选",
+        period: "南宋",
         image: "/assets/kilns/longquan-one-shot/01-inspection-shed-reference-locked-v2.webp",
         video: "/assets/kilns/longquan-one-shot/01-inspection-shed-reference-locked-v4.mp4",
         videoLoop: "native",
         motion: "none",
-        fact: "南宋龙泉窑青瓷以厚润的粉青、梅子青釉见长。盘口瓶以浅盘口、长颈、折肩和近筒形腹构成清楚而克制的轮廓。",
-        reconstruction: "开放式检选棚、木台、匣钵与远处窑棚依据龙泉山地窑场的生产语境作艺术化复原；器物形制严格参照用户提供的盘口瓶资料图。",
+        fact: "龙泉窑在南宋发展出著名的粉青、梅子青釉。石灰碱釉在高温时黏度较大，有利于形成凝厚釉层；盘口瓶以盘状口沿、长颈和简洁瓶身体现素面青瓷的特点。",
+        reconstruction: "窑场检选棚与木台为艺术复原，表现成品冷却后检看的环节。瓶形参照器物资料图；馆藏同类器提供釉色与工艺依据，不意味着画面是该器的出土现场。",
         sourceLabel: "故宫博物院 · 龙泉窑青釉盘口瓶",
         sourceUrl: "https://www.dpm.org.cn/collection/ceramic/227552.html",
         hotspots: [
           {
             id: "dish-mouth-vase",
             label: "看粉青",
-            title: "长颈折肩，让粉青釉拥有完整的停光路径",
-            body: "盘口、长直颈与近筒形腹把器形分成清楚的转折。柔光从口沿落到肩部，再沉入厚润的粉青釉面，器形与釉色因此同时被看见。",
+            title: "粉青如玉",
+            body: "盘口舒展，长颈直立，素净瓶身以釉色取胜。南宋龙泉窑发展出粉青与梅子青，石灰碱釉在高温时黏度较大，有利于形成凝厚的釉层。粉青柔和，梅子青青翠，各有深浅，都是窑工在胎釉与火候之间求得的清润。",
             x: 68,
             y: 64,
           },
@@ -1053,23 +1069,23 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "double-fish-washer",
         number: "02",
         title: "双鱼映水",
-        tagline: "水纹轻起，两尾模印藏在青釉之下。",
+        tagline: "双鱼相向，一洗涵青。",
         vessel: "南宋龙泉窑青釉双鱼洗",
-        period: "日用 · 书斋清供",
+        period: "南宋",
         image: "/assets/kilns/longquan-one-shot/02-double-fish-washer-reference-locked-v2.webp",
         video: "/assets/kilns/longquan-one-shot/02-double-fish-washer-reference-locked-v3.mp4",
         videoLoop: "native",
         motion: "none",
-        fact: "龙泉窑青瓷器类丰富，南宋粉青、梅子青厚釉最具代表性。双鱼洗以浅腹、宽沿和器心模印双鱼为主要特征，纹饰与器体同施青釉。",
-        reconstruction: "暗木案、薄水、布巾和墨条构成克制的书斋使用片段；双鱼洗的侧面比例与器心鱼纹分别参照用户提供的两张器物资料图。",
-        sourceLabel: "故宫博物院 · 龙泉窑青瓷概述",
-        sourceUrl: "https://www.dpm.org.cn/collection/ceramic/227139.html",
+        fact: "国博藏龙泉窑青釉双鱼洗具有宽沿、弧壁、圈足，外饰莲瓣，内底凸起双鱼。鱼纹先用模具制出，再贴附于器内并施釉烧成，属于模印贴花，而非直接在碗底刻出两条鱼。",
+        reconstruction: "书案与浅水用于展示器内浮起的鱼纹，是使用情境的艺术复原。仅凭“洗”的名称，不能断定所有同类器都专用于洗笔。",
+        sourceLabel: "中国国家博物馆 · 龙泉窑青釉双鱼洗",
+        sourceUrl: "https://www.chnmuseum.cn/zp/zpml/csp/202203/t20220307_254177.shtml",
         hotspots: [
           {
             id: "molded-fish",
             label: "看双鱼",
-            title: "鱼在器底，不在水中游动",
-            body: "两尾鱼是模印在浅洗器心的陶瓷纹饰。清水和窗影只改变观看时的折射，鱼纹本身始终与器物连为一体。",
+            title: "釉下双鱼",
+            body: "双鱼微微浮起于洗底，鳍尾的转折被青釉柔和包覆。鱼纹先以模具制出，再贴附于器内，随后施釉烧成；外壁莲瓣与内底双鱼，一同隐现于厚釉之下。一池水意，留在青瓷之间。",
             x: 55,
             y: 66,
           },
@@ -1079,23 +1095,23 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "guan-ear-study",
         number: "03",
         title: "贯耳入室",
-        tagline: "一枝受风，青玉般的器身留在静处。",
+        tagline: "贯耳承古，一枝入室。",
         vessel: "南宋龙泉窑粉青釉贯耳瓶",
-        period: "陈设 · 南宋书斋",
+        period: "南宋",
         image: "/assets/kilns/longquan-one-shot/03-lived-in-study-guan-ear-reference-locked-v2.webp",
         video: "/assets/kilns/longquan-one-shot/03-lived-in-study-guan-ear-reference-locked-v5-loop.mp4",
         videoLoop: "native",
         motion: "none",
-        fact: "贯耳瓶借鉴古代青铜器轮廓，以长颈、对称贯耳、鼓腹和弦纹建立庄重秩序；龙泉青釉又使这种仿古器形显得温润。",
-        reconstruction: "半展卷轴、砚台、布巾、离席矮凳与窗边细枝共同构成刚有人使用过的书斋；器物比例与贯耳结构严格参照用户提供的器物资料图。",
-        sourceLabel: "故宫博物院 · 龙泉窑青瓷概述",
-        sourceUrl: "https://www.dpm.org.cn/collection/ceramic/227139.html",
+        fact: "贯耳瓶借鉴古代青铜壶式样，颈侧对称的管状耳是命名线索。环绕颈腹的弦纹属于横向线条装饰，和釉面的细微纹理不是同一概念。",
+        reconstruction: "瓶与卷轴、砚台及枝叶共同构成书斋陈设的艺术复原。插枝是此处的情境安排，不表示该器仅为插花而制，也不指认某位宋人的书房。",
+        sourceLabel: "故宫博物院 · 龙泉窑青釉贯耳弦纹瓶（同类器）",
+        sourceUrl: "https://www.dpm.org.cn/collection/ceramic/227558.html",
         hotspots: [
           {
             id: "guan-ears",
             label: "看贯耳",
-            title: "对称贯耳把仿古秩序带进青瓷",
-            body: "两只矩形贯耳位于颈肩之间，与外撇口、长颈和鼓腹形成纵横节奏。淡青厚釉把清楚的结构收进柔和的表面光泽。",
+            title: "贯耳古韵",
+            body: "长颈两侧各出一段中空管状耳，因可贯通而称“贯耳”。这一瓶式取意于古代青铜壶，颈腹弦纹又添几分端整。龙泉窑以粉青釉柔化古器的轮廓，枝影相伴时，庄重之中也有清雅。",
             x: 66,
             y: 61,
           },
@@ -1114,23 +1130,23 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "dawn-inspection",
         number: "01",
         title: "晨光验色",
-        tagline: "窑火退去，天青在微明里慢慢显色。",
-        vessel: "北宋钧窑天青釉碗",
-        period: "出窑 · 禹州窑场成器检看",
+        tagline: "晨色初匀，一碗含青。",
+        vessel: "钧窑天青釉碗",
+        period: "钧窑日用瓷",
         image: "/assets/kilns/jun-one-shot/01-indoor-dawn-bowl-v1.webp",
         video: "/assets/kilns/jun-one-shot/01-indoor-dawn-bowl-v1.mp4",
         videoLoop: "native",
         motion: "none",
-        fact: "钧窑以乳浊青釉著称，釉面常在天青、月白与蓝紫之间呈现含蓄变化；器物冷却后，厚釉的深浅与光泽才适合逐件检看。",
-        reconstruction: "画面以窑场成品暂置的室内木架为背景，将成器放回低照度、少陈设的检看环境；器物与架上素坯的具体组合属于艺术化复原。",
-        sourceLabel: "故宫博物院 · 钧窑概述与陈设器",
-        sourceUrl: "https://www.dpm.org.cn/collection/ceramic/227007.html",
+        fact: "钧窑日用碗可见乳浊青蓝釉和略带黄褐色的口沿，并非件件都有红紫斑。相关器物的断代须结合具体资料：故宫藏天蓝釉墩式碗的年代标注即保留“北宋？”的疑问。",
+        reconstruction: "木架与器物组成成品检看的艺术复原，不对应某处窑址的精确室内格局。参考碗的年代未能逐件确认，因此以器类和釉质为主要观察内容。",
+        sourceLabel: "故宫博物院 · 钧窑天蓝釉墩式碗（同类器与断代提示）",
+        sourceUrl: "https://www.dpm.org.cn/collection/ceramic/227931.html",
         hotspots: [
           {
             id: "dawn-glaze",
             label: "看天青",
-            title: "乳浊釉把晨光收进一层柔润的青",
-            body: "近处碗壁不依赖强反光，而由灰青、天蓝与口沿微暖的薄釉层次显出体积；背景器物退入暗处，让视线停在成器本身。",
+            title: "一碗天青",
+            body: "敛口圆腹收住柔和的青蓝，口沿釉薄处略泛黄褐，是钧窑日用碗可见的面貌。乳浊釉并非透明如水，而以含蓄的色泽见长；即便没有红紫彩斑，一碗清青也自成气韵。同类器的具体年代，仍需分别考订。",
             x: 69,
             y: 67,
           },
@@ -1140,23 +1156,23 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "glaze-transformation",
         number: "02",
         title: "釉中万色",
-        tagline: "青蓝为底，一抹紫红在厚釉深处凝住。",
-        vessel: "北宋钧窑窑变釉碗",
-        period: "近观 · 乳浊釉与铜红呈色",
+        tagline: "青蓝深处，紫意漫生。",
+        vessel: "钧窑青釉紫红斑碗",
+        period: "钧窑日用瓷",
         image: "/assets/kilns/jun-one-shot/02-glaze-colors-closeup-v1.webp",
         video: "/assets/kilns/jun-one-shot/02-glaze-colors-closeup-v1.mp4",
         videoLoop: "native",
         motion: "none",
-        fact: "钧釉的乳浊感与釉层中的微小分相结构有关；部分器物以铜为呈色元素，在还原气氛与高温中形成紫红斑块，与蓝色乳浊釉自然交融。",
-        reconstruction: "以近距离俯视突出碗内蓝紫窑变和不完全规整的口沿，木案仅保留必要的使用痕迹，不把器物处理成脱离环境的标本。",
-        sourceLabel: "故宫博物院 · 钧窑概述与陈设器",
-        sourceUrl: "https://www.dpm.org.cn/collection/ceramic/227007.html",
+        fact: "钧瓷的紫红呈色与含铜釉料及高温还原烧成有关。“还原气氛”是窑内影响金属呈色状态的烧成条件；釉料的施用与烧成变化共同作用，并非颜色凭空出现。",
+        reconstruction: "近观碗内彩斑，展示已经烧成的釉色。光线变化只改变观看效果，不代表常温下釉色仍在流动或继续窑变；本幕不模拟实际窑炉反应。",
+        sourceLabel: "中国国家博物馆 · 钧窑镂空座四兽面双螭耳瓷瓶（铜红呈色）",
+        sourceUrl: "https://www.chnmuseum.cn/zp/zpml/kgfjp/202111/t20211116_252340.shtml",
         hotspots: [
           {
             id: "copper-red",
             label: "看窑变",
-            title: "紫红不是绘上去的图案",
-            body: "碗心的紫红从蓝青釉层中自然晕开，边界柔和而不对称；颜色来自烧成中的材料变化，不是釉上彩绘。",
+            title: "青中见紫",
+            body: "碗内青蓝与紫红相接，斑色边缘自然晕散。钧瓷的紫红与含铜釉料及高温还原烧成有关，既有工匠配釉施料的选择，也有窑中条件带来的变化。那些浓淡相融的色泽，出窑时便已凝定，近看却仍如云霞舒展。",
             x: 54,
             y: 62,
           },
@@ -1166,23 +1182,24 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "garden-flowerpot",
         number: "03",
         title: "花器承影",
-        tagline: "玫瑰紫落在花盆上，也把一角庭院染深。",
+        tagline: "紫蓝相映，花影轻移。",
         vessel: "钧窑玫瑰紫釉菱花式花盆",
-        period: "功用 · 陈设与栽植",
+        period: "钧窑陈设瓷",
         image: "/assets/kilns/jun-one-shot/03-flower-shadow-garden-v1.webp",
         video: "/assets/kilns/jun-one-shot/03-flower-shadow-garden-v1.mp4",
         videoLoop: "native",
         motion: "none",
-        fact: "钧窑花盆、盆托等大型陈设器常见折沿、分瓣轮廓与多足承托，釉色可由天蓝、月白过渡至海棠红、玫瑰紫等复杂层次。",
-        reconstruction: "湿润石台、太湖石与枝叶投影用于说明花器进入庭院陈设后的观看方式；植物、山石和建筑关系属于克制的艺术化复原。",
-        sourceLabel: "故宫博物院 · 钧窑概述与陈设器",
-        sourceUrl: "https://www.dpm.org.cn/collection/ceramic/227007.html",
+        fact: "钧窑陈设花器的断代存在传统著录与考古研究的差异。部分馆藏仍著录为宋，另有研究根据钧台窑材料将相关花器置于元末明初或明代早中期，不能全部归为北宋。",
+        reconstruction: "山石、苔藓与花盆组成庭院陈设的艺术复原，不作为北宋盆景的直接证据。器形、釉色参照传世花器，底款、排水孔等未展示部位不作画面推断。",
+        sourceLabel: "故宫博物院 · 钧窑玫瑰紫釉菱花式花盆（器形）",
+        sourceUrl: "https://www.dpm.org.cn/collection/ceramic/227967.html",
+        additionalSources: [{ label: "故宫博物院院刊 · 钧窑概念的形成及其产品时代辨析（PDF）", url: "https://www.dpm.org.cn/Uploads/File/2018/05/31/u5b0fbd8e2d5e4.pdf" }],
         hotspots: [
           {
             id: "flowerpot-form",
             label: "看花器",
-            title: "分瓣器形把厚重釉色撑开",
-            body: "外壁纵向起伏、折沿与小足共同形成稳定而有节奏的轮廓。紫红和蓝青沿分瓣转折出现深浅，让器形与釉色彼此成全。",
+            title: "花器流霞",
+            body: "菱花式口沿向下延为分瓣，棱线与腹壁之间，玫瑰紫和青蓝各见浓淡。钧窑花器以轮廓与釉色相映成趣，山石花木也因之多了一层衬色。这类传世花器的年代仍有讨论，考古研究已提出元末明初及明代的解释。",
             x: 57,
             y: 68,
           },
@@ -1201,31 +1218,31 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "fired-inspection",
         number: "01",
         title: "出窑检选",
-        tagline: "成器既出，橄榄青才收住光。",
+        tagline: "刀痕入釉，花叶成青。",
         vessel: "北宋耀州窑青釉刻牡丹纹莱菔尊",
-        period: "出窑 · 黄堡窑场检选",
+        period: "北宋",
         image: "/assets/kilns/yaozhou-one-shot/01-fired-inspection-concept-v2.webp",
         video: "/assets/kilns/yaozhou-one-shot/01-fired-inspection-v1.mp4",
         videoLoop: "native",
         motion: "none",
-        fact: "耀州窑位于今陕西铜川黄堡一带，北宋中期刻花工艺成熟；青釉刻牡丹纹莱菔尊是其代表器形之一，深刻纹中可见更深的积釉层次。",
-        reconstruction: "窑后检选台、窑口余温与少量完成器物，依据黄堡窑场的生产背景作艺术化复原；画面不对应某次确切出窑记录。",
+        fact: "耀州窑以陕西铜川黄堡窑场为代表，北宋中期刻花技术成熟。莱菔即萝卜，莱菔尊因整体轮廓近似而得名，属陈设器，并不是盛放萝卜的容器。",
+        reconstruction: "窑旁工作台表现成品冷却后的检看环节，是依据窑场生产背景作的艺术复原。器物与窑口的具体位置，不对应某次出土或开窑记录。",
         sourceLabel: "中国国家博物馆 · 青釉刻牡丹纹莱菔尊",
         sourceUrl: "https://www.chnmuseum.cn/zp/zpml/csp/202208/t20220811_256924.shtml",
         hotspots: [
           {
             id: "laifu-zun",
             label: "看莱菔尊",
-            title: "器形如萝卜，花纹藏在橄榄青里",
-            body: "莱菔尊因腹部的鼓圆轮廓得名。器表以刻花牡丹为主，釉料在刀痕凹处自然积聚，让纹样在同一层青釉中呈现深浅。",
+            title: "莱菔成器",
+            body: "“莱菔”读作 lái fú，即萝卜。此类尊因轮廓相似而得名，是别具形趣的陈设器。肩腹之间刻出牡丹，凹处积釉显深，花叶便在青色中分出层次，留下耀州窑工运刀的清劲。",
             x: 57,
             y: 69,
           },
           {
             id: "kiln-exit",
             label: "看窑口",
-            title: "烧成之后，才有逐件检选",
-            body: "器物离开窑炉后，需要经过冷却、取出和检选。这里以低照度窑口与木台说明成器刚刚进入检看的阶段。",
+            title: "窑火之后",
+            body: "耀州窑以陕西铜川黄堡窑场为代表，北宋刻花青瓷尤具特色。器形先由泥成，花纹再以刀就，施釉烧成之后，刀痕与青釉才相映成色。窑火留下的，不只是一件坚实的器物，也有花叶的深浅与起伏。",
             x: 24,
             y: 51,
           },
@@ -1235,31 +1252,31 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "glaze-pooling",
         number: "02",
         title: "刻影积釉",
-        tagline: "刀锋入泥，深处便多留一层青。",
-        vessel: "北宋耀州窑青釉刻牡丹纹碗",
-        period: "成器 · 刻花与积釉",
+        tagline: "花随刀起，青向深处。",
+        vessel: "北宋耀州窑青釉划花牡丹纹碗",
+        period: "北宋",
         image: "/assets/kilns/yaozhou-one-shot/02-incised-peony-glaze-concept-v2.webp",
         video: "/assets/kilns/yaozhou-one-shot/02-incised-peony-glaze-v4.mp4",
         videoLoop: "native",
         motion: "none",
-        fact: "北宋耀州窑大口深腹碗常以内刻牡丹为主纹。斜刀刻入胎体后，橄榄青釉在凹槽中会显得更深，形成不依赖彩绘的明暗层次。",
-        reconstruction: "近距离俯看碗内刻花与检选台面的关系，用于说明刻花和积釉的材料逻辑；陪衬器物只保留为窑后检看的生活痕迹。",
-        sourceLabel: "台北故宫博物院 · 耀州窑青釉刻花牡丹纹碗",
+        fact: "参考器为台北故宫藏北宋耀州窑青瓷划花牡丹纹碗。花叶以斜刀深划，并辅以细密线纹；橄榄青釉在凹槽处积聚较厚，形成近似阴影的深色轮廓。",
+        reconstruction: "俯视成品碗用于比较花叶凹凸与积釉，不是正在刻坯或施釉的现场。木案及陪衬器物为艺术复原；花纹在烧成后已经固定。",
+        sourceLabel: "台北故宫博物院 · 耀州窑青瓷划花牡丹纹碗",
         sourceUrl: "https://digitalarchive.npm.gov.tw/Collection/Detail/30090?dep=U",
         hotspots: [
           {
             id: "incised-peony",
             label: "看刻花",
-            title: "斜刀入胎，牡丹从碗心舒展",
-            body: "耀州窑刻花以流畅有力的刀法组织花叶。它不是附加的凸起装饰，而是在坯体表面切入深浅不同的线与面。",
+            title: "刀下牡丹",
+            body: "牡丹沿碗壁舒展，花叶轮廓以斜刀刻划，细密线纹补足叶脉与瓣理。纹饰先成于未烧的坯体，再施青釉入窑；刀锋的轻重与转折，便留在一碗浓淡相间的青色之中。",
             x: 54,
             y: 67,
           },
           {
             id: "pooled-glaze",
             label: "看积釉",
-            title: "釉在凹处更深，纹样因此显影",
-            body: "同一层釉在深刻处堆积得更多，视觉上转为更深的橄榄绿；这种深浅并不是额外绘上的颜色。",
+            title: "积釉见深",
+            body: "花叶凹槽中积釉较厚，颜色便较周围深些，看似阴影，却是刀工与釉层共同留下的层次。耀州窑刻花的妙处，正在这同色之间的浓淡：花纹不靠另添黑彩，已能清楚浮现。",
             x: 69,
             y: 57,
           },
@@ -1269,31 +1286,32 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
         id: "spring-tea",
         number: "03",
         title: "茶盏见春",
-        tagline: "一盏入日常，春光才有了停处。",
-        vessel: "北宋耀州窑青釉刻花茶碗",
-        period: "功用 · 北方日常茶事",
+        tagline: "茶末初匀，盏中见春。",
+        vessel: "耀州窑青釉刻花碗",
+        period: "宋代茶事",
         image: "/assets/kilns/yaozhou-one-shot/03-spring-tea-life-concept-v2.webp",
         video: "/assets/kilns/yaozhou-one-shot/03-spring-tea-life-v1.mp4",
         videoLoop: "native",
         motion: "none",
-        fact: "宋人饮茶常将细末直接放入盏中调饮。耀州窑青瓷碗兼具日用器的实用尺度与内壁刻花带来的含蓄观看层次。",
-        reconstruction: "木桌、石磨、麻布与院树构成北方民居中的日常茶事片段；器物与室内关系为艺术化推演，不对应某个传世器物的原始使用现场。",
-        sourceLabel: "蒙特利尔美术馆 · 北宋耀州窑青瓷碗",
-        sourceUrl: "https://www.mbam.qc.ca/en/works/23296/",
+        fact: "宋代流行的点茶法将茶研为细末，入盏以少量水调膏，再注水、用茶筅或茶匙击拂。碾磨是制备茶末的环节，不能把点茶等同于今天直接冲泡整叶茶。",
+        reconstruction: "木桌、石磨和青瓷碗组成日常茶事的艺术复原，并未展示完整点茶步骤。青瓷碗借此进入生活语境，不表示所有耀州窑刻花碗都是专用茶具。",
+        sourceLabel: "故宫博物院 · 点茶成画",
+        sourceUrl: "https://www.dpm.org.cn/subject_tea/single/detail/260797.html",
+        additionalSources: [{ label: "蒙特利尔美术馆 · 北宋陕西青瓷碗（同类器）", url: "https://www.mbam.qc.ca/en/works/23296/" }],
         hotspots: [
           {
             id: "tea-bowl",
             label: "看茶碗",
-            title: "茶不离盏，刻花藏在水色之下",
-            body: "碗不作为孤立的陈设，而是放回木桌、茶末与日光组成的使用环境；微起的釉色和花纹由近距离观看才会显现。",
+            title: "青瓷伴茶",
+            body: "青釉碗以刻花装点器内，盛物之用与赏纹之趣相随。宋代点茶盛行，茶末先调膏，再注水击拂，盏中渐起细沫。茶事给青瓷添了一重生活意味，而一只碗的用途，原也不必尽于茶席。",
             x: 68,
             y: 70,
           },
           {
             id: "tea-mill",
             label: "看石磨",
-            title: "茶末经碾，才可在盏中调饮",
-            body: "石质碾具提示茶叶被研磨为细末的准备过程，使茶碗进入可感知的日常生活，而不只是静置的工艺样品。",
+            title: "细末成茶",
+            body: "石磨将茶研细，筛罗再取匀净茶末，这是宋代点茶的准备。入盏后以少量水调膏，继而注水，用茶筅或茶匙击拂。由细末至轻沫，杯盏间的片刻清闲，原有一番细致工夫。",
             x: 26,
             y: 61,
           },
@@ -1305,8 +1323,9 @@ const kilnStories: Record<KilnStoryDefinition["id"], KilnStoryDefinition> = {
 
 type SphericalPanoramaProps = {
   src: string;
-  yaw: number;
-  pitch: number;
+  view: { current: { yaw: number; pitch: number } };
+  originYaw: number;
+  originPitch: number;
   motion: KilnPortalMotion;
   enabled?: boolean;
   heatStrength: number;
@@ -1341,8 +1360,9 @@ const fireMotionPreset = {
 
 function SphericalPanorama({
   src,
-  yaw,
-  pitch,
+  view: viewRef,
+  originYaw,
+  originPitch,
   motion,
   enabled = true,
   heatStrength,
@@ -1353,15 +1373,10 @@ function SphericalPanorama({
   inkHeat,
 }: SphericalPanoramaProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const viewRef = useRef({ yaw, pitch });
   const activityRef = useRef(activity);
   const inkHeatRef = useRef(inkHeat);
   const heatOriginRef = useRef(heatOrigin);
   const enabledRef = useRef(enabled);
-
-  useEffect(() => {
-    viewRef.current = { yaw, pitch };
-  }, [pitch, yaw]);
 
   useEffect(() => {
     activityRef.current = activity;
@@ -2077,7 +2092,10 @@ function SphericalPanorama({
         return;
       }
 
-      const nextView = viewRef.current;
+      const nextView = {
+        yaw: normalizeYaw(viewRef.current.yaw - originYaw),
+        pitch: viewRef.current.pitch - originPitch,
+      };
       const viewIsMoving = Math.abs(nextView.yaw - lastDrawYaw) > 0.0001 || Math.abs(nextView.pitch - lastDrawPitch) > 0.0001;
       const minimumFrameInterval = viewIsMoving || inkHeatRef.current > 0.5 ? 14 : 30;
       if (time - lastDrawTime < minimumFrameInterval) {
@@ -2160,7 +2178,7 @@ function SphericalPanorama({
       gl.deleteShader(fragmentShader);
       gl.deleteProgram(program);
     };
-  }, [emberOverlaySrc, heatMaskSrc, heatStrength, motion, src]);
+  }, [emberOverlaySrc, heatMaskSrc, heatStrength, motion, src, originYaw, originPitch, viewRef]);
 
   return <canvas ref={canvasRef} className="sphere-panorama" aria-hidden="true" />;
 }
@@ -2578,9 +2596,13 @@ function LivingFire({ src, motion }: LivingFireProps) {
       antialias: false,
       depth: false,
       premultipliedAlpha: false,
+      preserveDrawingBuffer: true,
       powerPreference: "high-performance",
     });
     if (!gl) return;
+    // The flow hash exceeds mediump's reliable range on some mobile GPUs.
+    // Use full precision, or retain the unchanged source flame as fallback.
+    if (!gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.HIGH_FLOAT)?.precision) return;
 
     const vertexSource = `
       attribute vec2 a_position;
@@ -2591,7 +2613,7 @@ function LivingFire({ src, motion }: LivingFireProps) {
       }
     `;
     const fragmentSource = `
-      precision mediump float;
+      precision highp float;
       varying vec2 v_uv;
       uniform sampler2D u_texture;
       uniform float u_time;
@@ -2752,6 +2774,13 @@ function LivingFire({ src, motion }: LivingFireProps) {
 
     let disposed = false;
     let textureReady = false;
+    let firstFramePresented = false;
+    const handleContextLost = () => {
+      firstFramePresented = false;
+      canvas.dataset.ready = "false";
+      setReady(false);
+    };
+    canvas.addEventListener("webglcontextlost", handleContextLost);
     const image = new Image();
     image.decoding = "async";
     image.onload = () => {
@@ -2760,39 +2789,61 @@ function LivingFire({ src, motion }: LivingFireProps) {
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
       textureReady = true;
-      canvas.dataset.ready = "true";
-      setReady(true);
     };
     image.src = src;
 
     let frame = 0;
     let width = 0;
     let height = 0;
-    const startedAt = performance.now();
+    let resizeDirty = true;
+    let previousTime = performance.now();
+    let elapsed = 0;
+    const ratio = Math.min(window.devicePixelRatio || 1, 1.6);
+    const observer = new ResizeObserver(() => { resizeDirty = true; });
+    observer.observe(canvas);
     const render = (time: number) => {
-      const ratio = Math.min(window.devicePixelRatio || 1, 1.6);
-      const nextWidth = Math.max(1, Math.round(canvas.clientWidth * ratio));
-      const nextHeight = Math.max(1, Math.round(canvas.clientHeight * ratio));
-      if (nextWidth !== width || nextHeight !== height) {
-        width = nextWidth;
-        height = nextHeight;
-        canvas.width = width;
-        canvas.height = height;
-        gl.viewport(0, 0, width, height);
+      if (disposed || document.hidden || gl.isContextLost()) return;
+      elapsed += Math.min(50, Math.max(0, time - previousTime));
+      previousTime = time;
+      if (resizeDirty) {
+        width = Math.max(1, Math.round(canvas.clientWidth * ratio));
+        height = Math.max(1, Math.round(canvas.clientHeight * ratio));
+        if (canvas.width !== width || canvas.height !== height) {
+          canvas.width = width;
+          canvas.height = height;
+          gl.viewport(0, 0, width, height);
+        }
+        resizeDirty = false;
       }
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
       if (textureReady) {
-        gl.uniform1f(timeLocation, (time - startedAt) / 1000);
+        gl.uniform1f(timeLocation, elapsed / 1000);
         gl.drawArrays(gl.TRIANGLES, 0, 6);
+        if (!firstFramePresented && !gl.isContextLost()) {
+          firstFramePresented = true;
+          canvas.dataset.ready = "true";
+          setReady(true);
+        }
       }
       frame = window.requestAnimationFrame(render);
     };
+    const onVisibility = () => {
+      window.cancelAnimationFrame(frame);
+      if (!document.hidden && !disposed) {
+        previousTime = performance.now();
+        frame = window.requestAnimationFrame(render);
+      }
+    };
+    document.addEventListener("visibilitychange", onVisibility);
     frame = window.requestAnimationFrame(render);
 
     return () => {
       disposed = true;
       image.onload = null;
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", onVisibility);
+      canvas.removeEventListener("webglcontextlost", handleContextLost);
       window.cancelAnimationFrame(frame);
       gl.deleteTexture(texture);
       gl.deleteBuffer(buffer);
@@ -2814,6 +2865,317 @@ type CizhouKnowledgeExperienceProps = {
   onBack: () => void;
 };
 
+/** App-owned presentation only; the protected Carousel still owns touch physics. */
+function installSceneNavigation({ root, prefix, sceneIds, initialIndex, reducedMotion, onCommit, onMove }: {
+  root: HTMLElement;
+  prefix: "cizhou" | "story";
+  sceneIds: string[];
+  initialIndex: number;
+  reducedMotion: boolean;
+  onCommit: (index: number) => void;
+  onMove: () => void;
+}) {
+  const cizhou = prefix === "cizhou";
+  const viewport = root.querySelector<HTMLElement>(cizhou ? ".cizhou-trait-carousel" : ".kiln-story-carousel");
+  const track = viewport?.querySelector<HTMLElement>(cizhou ? ".cizhou-trait-track" : ".kiln-story-track");
+  if (!viewport || !track) return;
+  const cards = Array.from(track.children) as HTMLElement[];
+  const layers = Array.from(root.querySelectorAll<HTMLElement>(cizhou ? ".cizhou-scene-layer" : ".kiln-story-scene"));
+  const slices = Array.from(root.querySelectorAll<HTMLElement>("[data-scene-slice]"));
+  const count = sceneIds.length;
+  let width = Math.max(1, viewport.clientWidth);
+  let origin = initialIndex + 1;
+  let position = origin;
+  let frame = 0;
+  let settleTimer = 0;
+  let wrappingFrame = 0;
+  let wheelTimer = 0;
+  let pointer: number | null = null;
+  let gestureAccepted = false;
+  let released = false;
+  let moving = false;
+  let wrapping = false;
+  let disposed = false;
+  let tween: gsap.core.Tween | null = null;
+  const setTrackX = gsap.quickSetter(track, "x", "px");
+  const logical = (physical: number) => wrapIndex(physical - 1, count);
+  const weight = (index: number) => {
+    const distance = Math.abs(position - 1 - index);
+    return clamp(1 - Math.min(distance, Math.abs(distance - count)), 0, 1);
+  };
+  const present = () => {
+    frame = 0;
+    if (disposed) return;
+    cards.forEach((card, index) => {
+      const distance = index - position;
+      const stem = cizhou ? "--scene" : "--story";
+      card.style.setProperty(`${stem}-copy-x`, `${distance * 10}px`);
+      card.style.setProperty(`${stem}-copy-opacity`, `${Math.max(0, 1 - Math.abs(distance) * 2.4)}`);
+      if (cizhou) card.style.setProperty("--scene-content-opacity", `${Math.max(0, 1 - Math.abs(distance) * 2.1)}`);
+    });
+    // Source-over alpha is not additive. Keep the lower contributing image
+    // opaque so a 50/50 dissolve never exposes 25% of the dark parent.
+    let accumulated = 0;
+    layers.forEach((layer, index) => {
+      const contribution = weight(index);
+      accumulated += contribution;
+      const alpha = contribution > 0 ? contribution / accumulated : 0;
+      layer.style.setProperty(cizhou ? "--scene-layer-opacity" : "--story-scene-opacity", `${alpha}`);
+      layer.style.visibility = contribution > 0 ? "visible" : "hidden";
+      layer.dataset.running = !moving && contribution > 0.98 ? "true" : "false";
+    });
+    slices.forEach((slice) => {
+      const contribution = weight(Number(slice.dataset.sceneSlice ?? 0));
+      slice.style.setProperty("--scene-weight", `${contribution}`);
+      slice.dataset.running = !moving && contribution > 0.98 ? "true" : "false";
+    });
+    root.dataset.scene = sceneIds[logical(Math.round(position))];
+  };
+  const requestPresentation = () => {
+    // Do not pass present(position) directly to RAF: RAF supplies a timestamp.
+    if (!frame) frame = window.requestAnimationFrame(() => present());
+  };
+  const markMoving = () => {
+    if (moving) return;
+    moving = true;
+    root.dataset.sceneMoving = "true";
+    onMove();
+  };
+  const reconcile = () => {
+    wrapping = true;
+    viewport.scrollLeft = position * width;
+    setTrackX(0);
+    window.cancelAnimationFrame(wrappingFrame);
+    wrappingFrame = window.requestAnimationFrame(() => { wrapping = false; });
+  };
+  const finish = (physical: number) => {
+    tween = null;
+    const index = logical(physical);
+    released = true;
+    position = origin = index + 1;
+    reconcile();
+    moving = false;
+    root.dataset.sceneMoving = "false";
+    present();
+    onCommit(index);
+  };
+  const settle = (target = Math.round(position)) => {
+    if (disposed || pointer !== null || tween) return;
+    const start = position;
+    const destination = clamp(target, Math.max(0, origin - 1), Math.min(count + 1, origin + 1));
+    const travel = Math.abs(destination - start);
+    if (reducedMotion || travel < 0.002) { finish(destination); return; }
+    markMoving();
+    const value = { position: start };
+    tween = gsap.to(value, {
+      position: destination, duration: 0.24 + Math.min(travel, 1) * 0.1,
+      ease: "power1.out",
+      onUpdate: () => {
+        position = value.position;
+        // Runtime inertia can continue underneath; it cannot move the chosen page.
+        setTrackX(viewport.scrollLeft - position * width);
+        present();
+      },
+      onComplete: () => finish(destination),
+    });
+  };
+  const scheduleSettle = () => {
+    window.clearTimeout(settleTimer);
+    if (pointer === null && !tween && !released) settleTimer = window.setTimeout(() => settle(), 34);
+  };
+  const onScroll = () => {
+    if (wrapping) return;
+    if (released || tween) {
+      setTrackX(viewport.scrollLeft - position * width);
+      if (!tween) {
+        window.clearTimeout(settleTimer);
+        settleTimer = window.setTimeout(() => reconcile(), 80);
+      }
+      return;
+    }
+    const nextPosition = clamp(viewport.scrollLeft / width, Math.max(0, origin - 1), Math.min(count + 1, origin + 1));
+    if (Math.abs(nextPosition - position) < 0.0001) {
+      setTrackX(viewport.scrollLeft - position * width);
+      return;
+    }
+    position = nextPosition;
+    setTrackX(viewport.scrollLeft - position * width);
+    markMoving();
+    requestPresentation();
+    scheduleSettle();
+  };
+  const onDown = (event: PointerEvent) => {
+    if (pointer !== null || (event.pointerType === "mouse" && event.button !== 0)) return;
+    pointer = event.pointerId;
+    // Do not queue another scene while the previous short snap is completing.
+    gestureAccepted = !tween;
+    if (!gestureAccepted) return;
+    window.clearTimeout(settleTimer);
+    released = false;
+    origin = Math.round(position);
+    // Runs before Carousel's own pointer-down, so its next drag starts here.
+    reconcile();
+    window.cancelAnimationFrame(wrappingFrame);
+    wrapping = false;
+  };
+  const onUp = (event: PointerEvent) => {
+    if (event.pointerId !== pointer) return;
+    pointer = null;
+    if (!gestureAccepted) return;
+    gestureAccepted = false;
+    position = clamp(viewport.scrollLeft / width, Math.max(0, origin - 1), Math.min(count + 1, origin + 1));
+    const delta = position - origin;
+    // A deliberate light swipe (24–32 layout px) advances one neighbour.
+    // Decide before Carousel adds release velocity, never from that momentum.
+    const threshold = clamp(width * 0.07, 24, 32) / width;
+    const target = event.type === "pointercancel" || Math.abs(delta) < threshold ? origin : origin + Math.sign(delta);
+    released = true;
+    if (moving || Math.abs(delta) > 0.001) settle(target);
+  };
+  const onWheel = () => {
+    if (!wheelTimer && !tween && pointer === null) {
+      released = false;
+      origin = Math.round(position);
+      reconcile();
+    }
+    window.clearTimeout(wheelTimer);
+    wheelTimer = window.setTimeout(() => { wheelTimer = 0; }, 180);
+  };
+  const onKey = (event: KeyboardEvent) => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(event.key) || root.dataset.detailOpen === "true") return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (tween || pointer !== null || event.repeat) return;
+    window.clearTimeout(settleTimer);
+    released = true;
+    settle(origin + (event.key === "ArrowRight" ? 1 : -1));
+  };
+  const resize = new ResizeObserver(() => {
+    const nextWidth = Math.max(1, viewport.clientWidth);
+    if (nextWidth === width) return;
+    width = nextWidth;
+    tween?.kill(); tween = null;
+    pointer = null;
+    finish(Math.round(position));
+  });
+  viewport.tabIndex = 0;
+  viewport.setAttribute("aria-roledescription", "循环场景浏览");
+  reconcile(); present(); resize.observe(viewport);
+  viewport.addEventListener("scroll", onScroll, { passive: true });
+  viewport.addEventListener("pointerdown", onDown, { passive: true });
+  viewport.addEventListener("wheel", onWheel, { passive: true });
+  window.addEventListener("pointerup", onUp, true);
+  window.addEventListener("pointercancel", onUp, true);
+  root.addEventListener("keydown", onKey);
+  return () => {
+    disposed = true;
+    tween?.kill(); resize.disconnect();
+    window.clearTimeout(settleTimer);
+    window.clearTimeout(wheelTimer);
+    window.cancelAnimationFrame(frame);
+    window.cancelAnimationFrame(wrappingFrame);
+    viewport.removeEventListener("scroll", onScroll);
+    viewport.removeEventListener("pointerdown", onDown);
+    viewport.removeEventListener("wheel", onWheel);
+    window.removeEventListener("pointerup", onUp, true);
+    window.removeEventListener("pointercancel", onUp, true);
+    root.removeEventListener("keydown", onKey);
+    gsap.set(track, { clearProps: "transform" });
+  };
+}
+
+const SCENE_NUMERALS = ["一", "二", "三"] as const;
+
+function KilnKnowledgeSheet({ hotspot, scene, onClose }: {
+  hotspot: CizhouTraitHotspot | null;
+  scene: { title: string };
+  onClose: () => void;
+}) {
+  const lastHotspot = useRef(hotspot);
+  if (hotspot) lastHotspot.current = hotspot;
+  const content = hotspot ?? lastHotspot.current;
+  return (
+    <BottomSheet open={Boolean(hotspot)} onOpenChange={(open) => { if (!open) onClose(); }}
+      title={content?.title ?? scene.title} snap={0.56}>
+      <div className="kiln-knowledge-content">
+        <button className="kiln-knowledge-close" type="button" onClick={onClose} aria-label="关闭知识详情">
+          <KilnUiIcon kind="close" />
+        </button>
+        <MobileScroll className="kiln-knowledge-scroll">
+          <div className="kiln-knowledge-body">
+            <p>{content?.body}</p>
+          </div>
+        </MobileScroll>
+      </div>
+    </BottomSheet>
+  );
+}
+
+/** A slow connection or blocked autoplay must not look like a broken scene. */
+function ScenePlaybackStatus({ videoRefs, secondaryRefs, activeIndex, enabled }: {
+  videoRefs: { current: (HTMLVideoElement | null)[] };
+  secondaryRefs?: { current: (HTMLVideoElement | null)[] };
+  activeIndex: number;
+  enabled: boolean;
+}) {
+  const [status, setStatus] = useState<"quiet" | "loading" | "blocked" | "error">("quiet");
+  useEffect(() => {
+    setStatus("quiet");
+    const videos = [videoRefs.current[activeIndex], secondaryRefs?.current[activeIndex]]
+      .filter((video): video is HTMLVideoElement => Boolean(video));
+    if (!enabled || !videos.length) return;
+    const foreground = () => videos.reduce((front, video) =>
+      Number(video.style.opacity || 1) > Number(front.style.opacity || 1) ? video : front);
+    let timer = 0;
+    const quiet = () => { window.clearTimeout(timer); setStatus("quiet"); };
+    const wait = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        if (document.hidden) return;
+        // A loop may hand off to its second element while the first is paused.
+        if (videos.some((video) => !video.paused && !video.ended && video.readyState >= 3)) {
+          setStatus("quiet");
+          return;
+        }
+        const video = foreground();
+        setStatus(video.error ? "error" : video.readyState < 3 ? "loading" : video.paused ? "blocked" : "quiet");
+      }, 1200);
+    };
+    videos.forEach((video) => {
+      video.addEventListener("playing", quiet);
+      video.addEventListener("waiting", wait);
+      video.addEventListener("canplay", wait);
+      video.addEventListener("pause", wait);
+      video.addEventListener("error", wait);
+    });
+    wait();
+    return () => {
+      window.clearTimeout(timer);
+      videos.forEach((video) => {
+        video.removeEventListener("playing", quiet);
+        video.removeEventListener("waiting", wait);
+        video.removeEventListener("canplay", wait);
+        video.removeEventListener("pause", wait);
+        video.removeEventListener("error", wait);
+      });
+    };
+  }, [activeIndex, enabled, videoRefs, secondaryRefs]);
+  if (!enabled || status === "quiet") return null;
+  const retry = () => {
+    const primary = videoRefs.current[activeIndex];
+    const secondary = secondaryRefs?.current[activeIndex];
+    const video = secondary && Number(secondary.style.opacity || 0) > Number(primary?.style.opacity || 1) ? secondary : primary;
+    if (!video) return;
+    setStatus("loading");
+    if (video.error) video.load();
+    void video.play().then(() => setStatus("quiet")).catch(() => setStatus(video.error ? "error" : "blocked"));
+  };
+  return <div className="scene-playback-status" role="status" aria-live="polite">
+    {status === "loading" ? <span>动态加载中 · 可继续浏览</span> :
+      <button type="button" onClick={retry}>{status === "error" ? "动态暂未载入 · 重试" : "轻触播放动态"}</button>}
+  </div>;
+}
+
 function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
   const rootRef = useRef<HTMLElement>(null);
   const audioRefs = useRef<(HTMLAudioElement | null)[]>([]);
@@ -2822,7 +3184,6 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
   const sceneVideoSecondaryRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const sceneVideoCrossfadeCleanupRef = useRef<(() => void) | null>(null);
   const arrivalTimelineRef = useRef<gsap.core.Timeline | null>(null);
-  const sceneTweenRef = useRef<gsap.core.Tween | null>(null);
   const [arrivalPhase, setArrivalPhase] = useState<CizhouArrivalPhase>("transitioning");
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeHotspot, setActiveHotspot] = useState<CizhouTraitHotspot | null>(null);
@@ -2974,13 +3335,13 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
     if (!shouldCrossfade) return;
 
     const loopStart = trait.videoStart ?? 0;
-    const loopEnd = trait.videoEnd ?? primary.duration;
-    const loopDuration = Math.max(0.1, loopEnd - loopStart);
-    const fadeDuration = Math.min(1.12, Math.max(0.86, loopDuration * 0.2));
+    let loopEnd = 0;
+    let fadeDuration = 0;
     let outgoing = primary;
     let incoming = secondary;
     let fading = false;
-    let fadeFrom = loopEnd - fadeDuration;
+    let preparing = false;
+    let fadeFrom = 0;
     let frame = 0;
 
     primary.style.opacity = "1";
@@ -2989,9 +3350,20 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
     secondary.volume = 0;
 
     const tick = () => {
-      if (!fading && outgoing.currentTime >= loopEnd - fadeDuration) {
-        fading = true;
-        fadeFrom = outgoing.currentTime;
+      // Inactive videos use preload="none": duration may still be NaN on entry.
+      // Resolve it after metadata arrives instead of freezing an invalid seam.
+      if (loopEnd <= loopStart) {
+        const duration = outgoing.duration;
+        if (!Number.isFinite(duration) || duration <= loopStart) {
+          frame = window.requestAnimationFrame(tick);
+          return;
+        }
+        loopEnd = Math.min(trait.videoEnd ?? duration, duration);
+        const loopDuration = Math.max(0.1, loopEnd - loopStart);
+        fadeDuration = Math.min(loopDuration * 0.5, 1.12, Math.max(0.86, loopDuration * 0.2));
+      }
+      if (!preparing && outgoing.currentTime >= loopEnd - fadeDuration - 0.2) {
+        preparing = true;
         incoming.currentTime = loopStart;
         incoming.muted = !audioEnabled;
         incoming.volume = audioEnabled ? 0.42 : 0;
@@ -2999,8 +3371,14 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
         void incoming.play().catch(() => undefined);
       }
 
+      // Never replace a decoded frame with an unready or rejected copy.
+      if (!fading && preparing && incoming.readyState >= 2 && !incoming.paused && outgoing.currentTime >= loopEnd - fadeDuration) {
+        fading = true;
+        fadeFrom = loopEnd - fadeDuration;
+      }
+
       if (fading) {
-        const progress = clamp((outgoing.currentTime - fadeFrom) / fadeDuration, 0, 1);
+        const progress = outgoing.ended ? 1 : clamp((outgoing.currentTime - fadeFrom) / fadeDuration, 0, 1);
         outgoing.style.opacity = String(1 - progress);
         incoming.style.opacity = String(progress);
 
@@ -3015,11 +3393,14 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
           outgoing = incoming;
           incoming = previousOutgoing;
           fading = false;
+          preparing = false;
         }
       }
 
       if (!fading && Number.isFinite(outgoing.duration) && outgoing.currentTime >= loopEnd - 0.04) {
         outgoing.currentTime = loopStart;
+        if (outgoing.paused) void outgoing.play().catch(() => undefined);
+        preparing = false;
       }
 
       frame = window.requestAnimationFrame(tick);
@@ -3044,154 +3425,13 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
 
   useEffect(() => {
     const root = rootRef.current;
-    const viewport = rootRef.current?.querySelector<HTMLDivElement>(".cizhou-trait-carousel");
-    const cards = viewport
-      ? Array.from(viewport.querySelectorAll<HTMLElement>(".cizhou-trait-card"))
-      : [];
-    const sceneLayers = Array.from(root?.querySelectorAll<HTMLElement>(".cizhou-scene-layer") ?? []);
-    const sceneSlices = Array.from(root?.querySelectorAll<HTMLElement>("[data-scene-slice]") ?? []);
-    if (!root || !viewport || cards.length === 0 || sceneLayers.length === 0) return;
-
-    let frame = 0;
-    let settleTimer = 0;
-    let snapping = false;
-    let moving = false;
-    let wrapping = false;
-    const sceneCount = cizhouTraits.length;
-    let sceneOriginPhysical = activeIndex + 1;
-
-    const logicalFromPhysical = (physicalIndex: number) => wrapIndex(physicalIndex - 1, sceneCount);
-    const cyclicDistance = (logicalPosition: number, index: number) =>
-      Math.min(
-        Math.abs(logicalPosition - index),
-        Math.abs(logicalPosition - index + sceneCount),
-        Math.abs(logicalPosition - index - sceneCount),
-      );
-
-    const updateMotionState = (isMoving: boolean) => {
-      moving = isMoving;
-      root.dataset.sceneMoving = isMoving ? "true" : "false";
-    };
-
-    const updateScenePresentation = () => {
-      const width = Math.max(1, viewport.clientWidth);
-      const physicalPosition = viewport.scrollLeft / width;
-      const logicalPosition = physicalPosition - 1;
-      cards.forEach((card, cardIndex) => {
-        const distance = cardIndex - physicalPosition;
-        const magnitude = Math.min(Math.abs(distance), 1);
-        card.style.setProperty("--scene-copy-x", `${distance * 10}px`);
-        card.style.setProperty("--scene-copy-opacity", `${Math.max(0, 1 - magnitude * 2.4)}`);
-        card.style.setProperty("--scene-content-opacity", `${Math.max(0, 1 - magnitude * 2.1)}`);
-      });
-      sceneLayers.forEach((layer, index) => {
-        const distance = cyclicDistance(logicalPosition, index);
-        const visibility = clamp(1 - distance, 0, 1);
-        layer.style.setProperty("--scene-layer-opacity", `${visibility}`);
-        layer.dataset.running = !moving && visibility > 0.98 ? "true" : "false";
-      });
-      sceneSlices.forEach((slice) => {
-        const index = Number(slice.dataset.sceneSlice ?? 0);
-        const visibility = clamp(1 - cyclicDistance(logicalPosition, index), 0, 1);
-        slice.style.setProperty("--scene-weight", `${visibility}`);
-        slice.dataset.running = !moving && visibility > 0.98 ? "true" : "false";
-      });
-      const nearestPhysical = clamp(Math.round(physicalPosition), 0, cards.length - 1);
-      root.dataset.scene = cizhouTraits[logicalFromPhysical(nearestPhysical)].id;
-    };
-
-    const requestScenePresentation = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(updateScenePresentation);
-    };
-
-    const finishSceneChange = (physicalIndex: number) => {
-      const nextIndex = logicalFromPhysical(physicalIndex);
-      const canonicalPhysical = nextIndex + 1;
-      wrapping = physicalIndex !== canonicalPhysical;
-      if (wrapping) viewport.scrollLeft = canonicalPhysical * Math.max(1, viewport.clientWidth);
-      sceneOriginPhysical = canonicalPhysical;
-      updateMotionState(false);
-      root.dataset.scene = cizhouTraits[nextIndex].id;
-      setActiveIndex(nextIndex);
-      setActiveHotspot(null);
-      updateScenePresentation();
-      snapping = false;
-      if (wrapping) {
-        window.requestAnimationFrame(() => {
-          wrapping = false;
-        });
-      }
-    };
-
-    const settleToNearestScene = () => {
-      if (!ready) return;
-      const width = Math.max(1, viewport.clientWidth);
-      const nextIndex = clamp(Math.round(viewport.scrollLeft / width), 0, cards.length - 1);
-      const targetLeft = nextIndex * width;
-      const travel = Math.abs(targetLeft - viewport.scrollLeft) / width;
-
-      if (reducedMotion || travel < 0.002) {
-        viewport.scrollLeft = targetLeft;
-        finishSceneChange(nextIndex);
-        return;
-      }
-
-      snapping = true;
-      sceneTweenRef.current?.kill();
-      sceneTweenRef.current = gsap.to(viewport, {
-        scrollLeft: targetLeft,
-        duration: 0.46 + Math.min(travel, 0.5) * 0.38,
-        ease: "power1.out",
-        overwrite: true,
-        onUpdate: updateScenePresentation,
-        onComplete: () => {
-          sceneTweenRef.current = null;
-          finishSceneChange(nextIndex);
-        },
-      });
-    };
-
-    const handleScroll = () => {
-      if (wrapping) {
-        requestScenePresentation();
-        return;
-      }
-      if (!snapping) {
-        const width = Math.max(1, viewport.clientWidth);
-        const previousScene = Math.max(0, sceneOriginPhysical - 1) * width;
-        const nextScene = Math.min(cards.length - 1, sceneOriginPhysical + 1) * width;
-        const constrainedLeft = clamp(viewport.scrollLeft, previousScene, nextScene);
-        if (Math.abs(viewport.scrollLeft - constrainedLeft) > 0.5) viewport.scrollLeft = constrainedLeft;
-      }
-      requestScenePresentation();
-      if (snapping) return;
-      if (!moving) {
-        updateMotionState(true);
-        setActiveHotspot(null);
-      }
-      window.clearTimeout(settleTimer);
-      settleTimer = window.setTimeout(settleToNearestScene, 34);
-    };
-
-    const handlePointerDown = () => {
-      const width = Math.max(1, viewport.clientWidth);
-      sceneOriginPhysical = clamp(Math.round(viewport.scrollLeft / width), 0, cards.length - 1);
-    };
-
-    updateMotionState(false);
-    viewport.scrollLeft = sceneOriginPhysical * Math.max(1, viewport.clientWidth);
-    updateScenePresentation();
-    viewport.addEventListener("pointerdown", handlePointerDown, { passive: true });
-    viewport.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      viewport.removeEventListener("pointerdown", handlePointerDown);
-      viewport.removeEventListener("scroll", handleScroll);
-      window.clearTimeout(settleTimer);
-      window.cancelAnimationFrame(frame);
-      sceneTweenRef.current?.kill();
-      sceneTweenRef.current = null;
-    };
+    if (!root || !ready) return;
+    return installSceneNavigation({
+      root, prefix: "cizhou", sceneIds: cizhouTraits.map((scene) => scene.id),
+      initialIndex: activeIndex, reducedMotion,
+      onCommit: (index) => { setActiveIndex(index); setActiveHotspot(null); },
+      onMove: () => setActiveHotspot(null),
+    });
   }, [ready, reducedMotion]);
 
   useEffect(() => {
@@ -3268,7 +3508,7 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
       data-transitioning={!ready}
       data-detail-open={Boolean(activeHotspot)}
       data-scene={activeTrait.id}
-      aria-label="识窑 · 磁州三章"
+      aria-label="识窑 · 磁州三幕"
     >
       <div className="cizhou-arrival-camera">
         <div className="cizhou-scene-stack" aria-hidden="true">
@@ -3392,7 +3632,7 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
       <Carousel
         className="cizhou-trait-carousel"
         contentClassName="cizhou-trait-track"
-        ariaLabel="磁州窑三项窑口特性"
+        ariaLabel="磁州窑三幕场景，左右滑动切换"
         draggingEnabled={ready && !activeHotspot}
       >
         {loopedTraits.map((trait, physicalIndex) => {
@@ -3409,7 +3649,7 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
             inert={hidden}
           >
             <header className="cizhou-trait-copy">
-              <span>{trait.number} / {String(cizhouTraits.length).padStart(2, "0")}</span>
+              <span aria-label={`第${trait.number}幕，共三幕`}>{SCENE_NUMERALS[traitIndex]} · 三</span>
               <h2>{trait.title}</h2>
               <p>{trait.tagline}</p>
               <div className="cizhou-trait-vessel">
@@ -3418,8 +3658,8 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
               </div>
             </header>
 
-            <div className="cizhou-trait-hotspots" aria-label={`${trait.title}知识观察点`}>
-              {trait.hotspots.map((hotspot, hotspotIndex) => (
+            <div className="cizhou-trait-hotspots" aria-label={`${trait.title}器物解读`}>
+              {trait.hotspots.map((hotspot) => (
                 <button
                   key={hotspot.id}
                   type="button"
@@ -3428,7 +3668,7 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
                   aria-label={`${hotspot.label}：${hotspot.title}`}
                   onClick={() => setActiveHotspot(hotspot)}
                 >
-                  <i aria-hidden="true">{hotspotIndex + 1}</i>
+                  <i aria-hidden="true"><KilnUiIcon kind="read" /></i>
                   <span>{hotspot.label}</span>
                 </button>
               ))}
@@ -3439,8 +3679,8 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
         })}
       </Carousel>
 
-      <div className="cizhou-scene-hotspots" aria-label={`${activeTrait.title}知识观察点`}>
-        {activeTrait.hotspots.map((hotspot, hotspotIndex) => (
+      <div className="cizhou-scene-hotspots" aria-label={`${activeTrait.title}器物解读`}>
+        {activeTrait.hotspots.map((hotspot) => (
           <button
             key={`${activeTrait.id}-${hotspot.id}`}
             type="button"
@@ -3450,25 +3690,26 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
             disabled={!ready}
             onClick={() => setActiveHotspot(hotspot)}
           >
-            <i aria-hidden="true">{hotspotIndex + 1}</i>
+            <i aria-hidden="true"><KilnUiIcon kind="read" /></i>
             <span>{hotspot.label}</span>
           </button>
         ))}
       </div>
 
-      <button type="button" className="cizhou-knowledge-back" onClick={onBack} aria-label="返回窑中">
-        <ArrowLeftIcon aria-hidden="true" />
+      <button type="button" className="cizhou-knowledge-back" onClick={onBack} aria-label="返回窑口">
+        <KilnUiIcon kind="back" />
       </button>
 
       <button
         type="button"
         className="cizhou-audio-toggle"
         data-enabled={audioEnabled}
+        aria-pressed={audioEnabled}
         disabled={!ready}
         onClick={() => setAudioEnabled((enabled) => !enabled)}
-        aria-label={audioEnabled ? `关闭${activeTrait.title}声境` : `开启${activeTrait.title}声境`}
+        aria-label={audioEnabled ? "关闭场景环境音" : "开启场景环境音"}
       >
-        {audioEnabled ? <SpeakerLoudIcon aria-hidden="true" /> : <SpeakerOffIcon aria-hidden="true" />}
+        <KilnUiIcon kind={audioEnabled ? "sound" : "muted"} />
       </button>
 
       {cizhouTraits.map((trait, index) =>
@@ -3480,39 +3721,13 @@ function CizhouKnowledgeExperience({ onBack }: CizhouKnowledgeExperienceProps) {
             }}
             src={trait.audio}
             loop
-            preload="metadata"
+            preload={index === activeIndex && audioEnabled ? "metadata" : "none"}
           />
         ) : null,
       )}
 
-      {activeHotspot ? (
-        <aside className="cizhou-trait-detail" role="dialog" aria-modal="false" aria-labelledby="cizhou-detail-title">
-          <button
-            type="button"
-            className="cizhou-trait-detail-close"
-            onClick={() => setActiveHotspot(null)}
-            aria-label="关闭知识详情"
-          >
-            <Cross2Icon aria-hidden="true" />
-          </button>
-          <span className="cizhou-trait-detail-kicker">{activeTrait.title} · 观察点</span>
-          <h3 id="cizhou-detail-title">{activeHotspot.title}</h3>
-          <p>{activeHotspot.body}</p>
-          <dl>
-            <div>
-              <dt>器物依据</dt>
-              <dd>{activeTrait.fact}</dd>
-            </div>
-            <div>
-              <dt>场景说明</dt>
-              <dd>{activeTrait.reconstruction}</dd>
-            </div>
-          </dl>
-          <a className="cizhou-trait-source" href={activeTrait.sourceUrl} target="_blank" rel="noreferrer">
-            资料来源 · {activeTrait.sourceLabel}
-          </a>
-        </aside>
-      ) : null}
+      <ScenePlaybackStatus videoRefs={sceneVideoRefs} secondaryRefs={sceneVideoSecondaryRefs} activeIndex={activeIndex} enabled={ready && !reducedMotion} />
+      <KilnKnowledgeSheet hotspot={activeHotspot} scene={activeTrait} onClose={() => setActiveHotspot(null)} />
     </section>
   );
 }
@@ -3525,7 +3740,6 @@ type KilnStoryExperienceProps = {
 function KilnStoryExperience({ story, onBack }: KilnStoryExperienceProps) {
   const rootRef = useRef<HTMLElement>(null);
   const dingSparkFieldRef = useRef<HTMLDivElement>(null);
-  const sceneTweenRef = useRef<gsap.core.Tween | null>(null);
   const sceneVideoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const sceneVideoSecondaryRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const sceneVideoCrossfadeCleanupRef = useRef<(() => void) | null>(null);
@@ -3654,145 +3868,13 @@ function KilnStoryExperience({ story, onBack }: KilnStoryExperienceProps) {
 
   useEffect(() => {
     const root = rootRef.current;
-    const viewport = root?.querySelector<HTMLDivElement>(".kiln-story-carousel");
-    const cards = viewport
-      ? Array.from(viewport.querySelectorAll<HTMLElement>(".kiln-story-card"))
-      : [];
-    const sceneLayers = Array.from(root?.querySelectorAll<HTMLElement>(".kiln-story-scene") ?? []);
-    if (!root || !viewport || cards.length === 0 || sceneLayers.length === 0) return;
-
-    let frame = 0;
-    let settleTimer = 0;
-    let snapping = false;
-    let moving = false;
-    let wrapping = false;
-    const sceneCount = story.scenes.length;
-    let sceneOriginPhysical = activeIndex + 1;
-
-    const logicalFromPhysical = (physicalIndex: number) => wrapIndex(physicalIndex - 1, sceneCount);
-    const cyclicDistance = (logicalPosition: number, index: number) =>
-      Math.min(
-        Math.abs(logicalPosition - index),
-        Math.abs(logicalPosition - index + sceneCount),
-        Math.abs(logicalPosition - index - sceneCount),
-      );
-
-    const updateMotionState = (isMoving: boolean) => {
-      moving = isMoving;
-      root.dataset.sceneMoving = isMoving ? "true" : "false";
-    };
-
-    const updateScenePresentation = () => {
-      const width = Math.max(1, viewport.clientWidth);
-      const physicalPosition = viewport.scrollLeft / width;
-      const logicalPosition = physicalPosition - 1;
-      cards.forEach((card, cardIndex) => {
-        const distance = cardIndex - physicalPosition;
-        const magnitude = Math.min(Math.abs(distance), 1);
-        card.style.setProperty("--story-copy-x", `${distance * 10}px`);
-        card.style.setProperty("--story-copy-opacity", `${Math.max(0, 1 - magnitude * 2.4)}`);
-      });
-      sceneLayers.forEach((layer, index) => {
-        const visibility = clamp(1 - cyclicDistance(logicalPosition, index), 0, 1);
-        layer.style.setProperty("--story-scene-opacity", `${visibility}`);
-        layer.dataset.running = !moving && !snapping && ready && visibility > 0.98 ? "true" : "false";
-      });
-      const nearestPhysical = clamp(Math.round(physicalPosition), 0, cards.length - 1);
-      root.dataset.scene = story.scenes[logicalFromPhysical(nearestPhysical)].id;
-    };
-
-    const requestScenePresentation = () => {
-      window.cancelAnimationFrame(frame);
-      frame = window.requestAnimationFrame(updateScenePresentation);
-    };
-
-    const finishSceneChange = (physicalIndex: number) => {
-      const nextIndex = logicalFromPhysical(physicalIndex);
-      const canonicalPhysical = nextIndex + 1;
-      wrapping = physicalIndex !== canonicalPhysical;
-      if (wrapping) viewport.scrollLeft = canonicalPhysical * Math.max(1, viewport.clientWidth);
-      sceneOriginPhysical = canonicalPhysical;
-      updateMotionState(false);
-      root.dataset.scene = story.scenes[nextIndex].id;
-      setActiveIndex(nextIndex);
-      setActiveHotspot(null);
-      updateScenePresentation();
-      snapping = false;
-      if (wrapping) {
-        window.requestAnimationFrame(() => {
-          wrapping = false;
-        });
-      }
-    };
-
-    const settleToNearestScene = () => {
-      if (!ready) return;
-      const width = Math.max(1, viewport.clientWidth);
-      const nextIndex = clamp(Math.round(viewport.scrollLeft / width), 0, cards.length - 1);
-      const targetLeft = nextIndex * width;
-      const travel = Math.abs(targetLeft - viewport.scrollLeft) / width;
-
-      if (reducedMotion || travel < 0.002) {
-        viewport.scrollLeft = targetLeft;
-        finishSceneChange(nextIndex);
-        return;
-      }
-
-      snapping = true;
-      sceneTweenRef.current?.kill();
-      sceneTweenRef.current = gsap.to(viewport, {
-        scrollLeft: targetLeft,
-        duration: 0.46 + Math.min(travel, 0.5) * 0.38,
-        ease: "power1.out",
-        overwrite: true,
-        onUpdate: updateScenePresentation,
-        onComplete: () => {
-          sceneTweenRef.current = null;
-          finishSceneChange(nextIndex);
-        },
-      });
-    };
-
-    const handleScroll = () => {
-      if (wrapping) {
-        requestScenePresentation();
-        return;
-      }
-      if (!snapping) {
-        const width = Math.max(1, viewport.clientWidth);
-        const previousScene = Math.max(0, sceneOriginPhysical - 1) * width;
-        const nextScene = Math.min(cards.length - 1, sceneOriginPhysical + 1) * width;
-        const constrainedLeft = clamp(viewport.scrollLeft, previousScene, nextScene);
-        if (Math.abs(viewport.scrollLeft - constrainedLeft) > 0.5) viewport.scrollLeft = constrainedLeft;
-      }
-      requestScenePresentation();
-      if (snapping) return;
-      if (!moving) {
-        updateMotionState(true);
-        setActiveHotspot(null);
-      }
-      window.clearTimeout(settleTimer);
-      settleTimer = window.setTimeout(settleToNearestScene, 34);
-    };
-
-    const handlePointerDown = () => {
-      const width = Math.max(1, viewport.clientWidth);
-      sceneOriginPhysical = clamp(Math.round(viewport.scrollLeft / width), 0, cards.length - 1);
-    };
-
-    updateMotionState(false);
-    viewport.scrollLeft = sceneOriginPhysical * Math.max(1, viewport.clientWidth);
-    updateScenePresentation();
-    viewport.addEventListener("pointerdown", handlePointerDown, { passive: true });
-    viewport.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      viewport.removeEventListener("pointerdown", handlePointerDown);
-      viewport.removeEventListener("scroll", handleScroll);
-      window.clearTimeout(settleTimer);
-      window.cancelAnimationFrame(frame);
-      sceneTweenRef.current?.kill();
-      sceneTweenRef.current = null;
-    };
+    if (!root || !ready) return;
+    return installSceneNavigation({
+      root, prefix: "story", sceneIds: story.scenes.map((scene) => scene.id),
+      initialIndex: activeIndex, reducedMotion,
+      onCommit: (index) => { setActiveIndex(index); setActiveHotspot(null); },
+      onMove: () => setActiveHotspot(null),
+    });
   }, [ready, reducedMotion, story]);
 
   useEffect(() => {
@@ -3806,7 +3888,7 @@ function KilnStoryExperience({ story, onBack }: KilnStoryExperienceProps) {
       const isActive = index === activeIndex && ready && !reducedMotion;
       const hasDedicatedAudio = Boolean(scene.audio);
       // A dedicated ambience track takes precedence over any generated video audio.
-      const videoAudioEnabled = !hasDedicatedAudio && sceneAudioEnabled && !reducedMotion;
+      const videoAudioEnabled = !hasDedicatedAudio && sceneAudioEnabled && isActive;
       video.muted = !videoAudioEnabled;
       video.volume = videoAudioEnabled ? 0.24 : 0;
 
@@ -4024,7 +4106,9 @@ function KilnStoryExperience({ story, onBack }: KilnStoryExperienceProps) {
       });
       frame = window.requestAnimationFrame(monitorTrimLoop);
     };
-    frame = window.requestAnimationFrame(monitorTrimLoop);
+    if (ready && !reducedMotion && story.scenes[activeIndex].videoLoop === "trim") {
+      frame = window.requestAnimationFrame(monitorTrimLoop);
+    }
     return () => window.cancelAnimationFrame(frame);
   }, [activeIndex, ready, reducedMotion, story]);
 
@@ -4244,7 +4328,7 @@ function KilnStoryExperience({ story, onBack }: KilnStoryExperienceProps) {
               inert={hidden}
             >
               <header className="kiln-story-copy">
-                <span>{scene.number} / {String(story.scenes.length).padStart(2, "0")}</span>
+                <span aria-label={`第${scene.number}幕，共三幕`}>{SCENE_NUMERALS[sceneIndex]} · 三</span>
                 <h2>{scene.title}</h2>
                 <p>{scene.tagline}</p>
                 <div className="kiln-story-vessel-label">
@@ -4262,15 +4346,17 @@ function KilnStoryExperience({ story, onBack }: KilnStoryExperienceProps) {
           type="button"
           className="kiln-story-audio-toggle"
           data-enabled={sceneAudioEnabled}
+          aria-pressed={sceneAudioEnabled}
+          disabled={!ready}
           aria-label={sceneAudioEnabled ? "关闭场景环境音" : "开启场景环境音"}
           onClick={() => setSceneAudioEnabled((enabled) => !enabled)}
         >
-          {sceneAudioEnabled ? <SpeakerLoudIcon aria-hidden="true" /> : <SpeakerOffIcon aria-hidden="true" />}
+          <KilnUiIcon kind={sceneAudioEnabled ? "sound" : "muted"} />
         </button>
       ) : null}
 
-      <div className="kiln-story-hotspots" aria-label={`${activeScene.title}知识观察点`}>
-        {activeScene.hotspots.map((hotspot, hotspotIndex) => (
+      <div className="kiln-story-hotspots" aria-label={`${activeScene.title}器物解读`}>
+        {activeScene.hotspots.map((hotspot) => (
           <button
             key={`${activeScene.id}-${hotspot.id}`}
             type="button"
@@ -4280,57 +4366,25 @@ function KilnStoryExperience({ story, onBack }: KilnStoryExperienceProps) {
             disabled={!ready}
             onClick={() => setActiveHotspot(hotspot)}
           >
-            <i aria-hidden="true">{hotspotIndex + 1}</i>
+            <i aria-hidden="true"><KilnUiIcon kind="read" /></i>
             <span>{hotspot.label}</span>
           </button>
         ))}
       </div>
 
-      <button type="button" className="kiln-story-back" onClick={onBack} aria-label="返回窑中">
-        <ArrowLeftIcon aria-hidden="true" />
+      <button type="button" className="kiln-story-back" onClick={onBack} aria-label="返回窑口">
+        <KilnUiIcon kind="back" />
       </button>
 
-      {activeHotspot ? (
-        <aside
-          className="kiln-story-detail"
-          role="dialog"
-          aria-modal="false"
-          aria-labelledby={`${story.id}-story-detail-title`}
-        >
-          <button
-            type="button"
-            className="kiln-story-detail-close"
-            onClick={() => setActiveHotspot(null)}
-            aria-label="关闭知识详情"
-          >
-            <Cross2Icon aria-hidden="true" />
-          </button>
-          <span>{activeScene.title} · 观察点</span>
-          <h3 id={`${story.id}-story-detail-title`}>{activeHotspot.title}</h3>
-          <p>{activeHotspot.body}</p>
-          <dl>
-            <div>
-              <dt>器物依据</dt>
-              <dd>{activeScene.fact}</dd>
-            </div>
-            <div>
-              <dt>场景说明</dt>
-              <dd>{activeScene.reconstruction}</dd>
-            </div>
-          </dl>
-          <a href={activeScene.sourceUrl} target="_blank" rel="noreferrer">
-            资料来源 · {activeScene.sourceLabel}
-          </a>
-        </aside>
-      ) : null}
+      <ScenePlaybackStatus videoRefs={sceneVideoRefs} secondaryRefs={sceneVideoSecondaryRefs} activeIndex={activeIndex} enabled={ready && !reducedMotion} />
+      <KilnKnowledgeSheet hotspot={activeHotspot} scene={activeScene} onClose={() => setActiveHotspot(null)} />
     </section>
   );
 }
 
 export default function Prototype() {
   const keyboard = useKeyboard();
-  const [yaw, setYaw] = useState(INTRO_KILN.yaw);
-  const [pitch, setPitch] = useState(INTRO_KILN.pitch);
+  const sphereRef = useRef<HTMLElement>(null);
   const [activeIndex, setActiveIndex] = useState(INTRO_KILN_INDEX);
   const [dragging, setDragging] = useState(false);
   const [inspecting, setInspecting] = useState(false);
@@ -4354,8 +4408,16 @@ export default function Prototype() {
 
   const updateView = useCallback((nextYaw: number, nextPitch: number) => {
     viewRef.current = { yaw: nextYaw, pitch: nextPitch };
-    setYaw(nextYaw);
-    setPitch(nextPitch);
+    // The renderer reads the live ref. Panning must not reconcile the entire
+    // React tree on every frame; only the four parallax properties change.
+    const style = sphereRef.current?.style;
+    if (!style) return;
+    const y = nextYaw * Math.PI / 180;
+    const p = nextPitch * Math.PI / 180;
+    style.setProperty("--sphere-x", `${Math.sin(y) * -72}px`);
+    style.setProperty("--sphere-y", `${Math.sin(p) * 54}px`);
+    style.setProperty("--sphere-detail-x", `${Math.sin(y + 0.8) * 38}px`);
+    style.setProperty("--sphere-detail-y", `${Math.sin(p * 1.4) * -28}px`);
   }, []);
 
   const stopInertia = useCallback(() => {
@@ -4407,7 +4469,7 @@ export default function Prototype() {
       const targetYaw = start.yaw + normalizeYaw(kiln.yaw - normalizeYaw(start.yaw));
       const targetPitch = kiln.pitch + Math.round((start.pitch - kiln.pitch) / 360) * 360;
       const distance = Math.hypot(targetYaw - start.yaw, targetPitch - start.pitch);
-      const duration = clamp(distance * 5.4, 280, 760);
+      const duration = clamp(distance * 3.15, 180, 420);
       setActiveIndex(index);
       setInspecting(false);
 
@@ -4466,6 +4528,28 @@ export default function Prototype() {
   useEffect(() => {
     void ensureIntroAssets();
   }, [ensureIntroAssets]);
+
+  useEffect(() => {
+    if (introPhase !== "hidden" || typeof window === "undefined") return;
+    const neighboringKilns = [
+      kilns[wrapIndex(activeIndex - 1, kilns.length)],
+      kilns[wrapIndex(activeIndex + 1, kilns.length)],
+    ];
+    const images = neighboringKilns.flatMap((kiln) => [kiln.panorama, kiln.fire, kiln.image])
+      .filter((source): source is string => Boolean(source))
+      .map((source) => {
+        const image = new window.Image();
+        image.decoding = "async";
+        image.src = source;
+        return image;
+      });
+    return () => {
+      images.forEach((image) => {
+        image.onload = null;
+        image.onerror = null;
+      });
+    };
+  }, [activeIndex, introPhase]);
 
   useEffect(() => {
     clearPortalTimer();
@@ -4602,6 +4686,7 @@ export default function Prototype() {
         ? "vessel"
         : null;
     event.currentTarget.setPointerCapture(event.pointerId);
+    event.currentTarget.dataset.viewEdge = "false";
     setDragging(true);
     setInspecting(false);
     dragRef.current = {
@@ -4610,6 +4695,8 @@ export default function Prototype() {
       startY: event.clientY,
       startYaw: viewRef.current.yaw,
       startPitch: viewRef.current.pitch,
+      axis: null,
+      targetIndex: null,
       tapTarget,
       moved: false,
     };
@@ -4621,9 +4708,31 @@ export default function Prototype() {
     if (!drag || drag.pointerId !== event.pointerId) return;
     const totalX = event.clientX - drag.startX;
     const totalY = event.clientY - drag.startY;
-    const nextYaw = drag.startYaw - totalX * 0.34;
-    const nextPitch = drag.startPitch + totalY * 0.23;
     drag.moved ||= Math.hypot(totalX, totalY) > 7;
+    if (!drag.moved) return;
+
+    const centerYaw = activeKiln.yaw + Math.round((drag.startYaw - activeKiln.yaw) / 360) * 360;
+    const centerPitch = activeKiln.pitch + Math.round((drag.startPitch - activeKiln.pitch) / 360) * 360;
+    const rawYaw = drag.startYaw - totalX * 0.16;
+    const rawPitch = drag.startPitch + totalY * 0.12;
+    const yawOffset = rawYaw - centerYaw;
+    const pitchOffset = rawPitch - centerPitch;
+    const horizontalEdge = Math.abs(yawOffset) >= KILN_VIEW_YAW_LIMIT;
+    const verticalEdge = Math.abs(pitchOffset) >= KILN_VIEW_PITCH_LIMIT;
+    const nextYaw = centerYaw + applyKilnViewResistance(yawOffset, KILN_VIEW_YAW_LIMIT);
+    const nextPitch = centerPitch + applyKilnViewResistance(pitchOffset, KILN_VIEW_PITCH_LIMIT);
+
+    if (horizontalEdge || verticalEdge) {
+      drag.axis = Math.abs(yawOffset) / KILN_VIEW_YAW_LIMIT >= Math.abs(pitchOffset) / KILN_VIEW_PITCH_LIMIT ? "x" : "y";
+      const boundaryTravel = drag.axis === "x" ? totalX : totalY;
+      const direction = boundaryTravel < 0 ? 1 : -1;
+      drag.targetIndex = wrapIndex(activeIndex + direction, kilns.length);
+      event.currentTarget.dataset.viewEdge = "true";
+    } else {
+      drag.axis = null;
+      drag.targetIndex = null;
+      event.currentTarget.dataset.viewEdge = "false";
+    }
     pendingDragViewRef.current = { yaw: nextYaw, pitch: nextPitch };
     if (dragMoveFrameRef.current === null) {
       dragMoveFrameRef.current = window.requestAnimationFrame(() => {
@@ -4642,6 +4751,7 @@ export default function Prototype() {
     flushPendingDragView();
     dragRef.current = null;
     setDragging(false);
+    event.currentTarget.dataset.viewEdge = "false";
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
@@ -4651,11 +4761,7 @@ export default function Prototype() {
       window.setTimeout(() => {
         suppressClickRef.current = false;
       }, 120);
-      const travelX = event.clientX - drag.startX;
-      const travelY = event.clientY - drag.startY;
-      const dominantTravel = Math.abs(travelX) >= Math.abs(travelY) ? travelX : travelY;
-      const direction = dominantTravel < 0 ? 1 : -1;
-      navigateTo(wrapIndex(activeIndex + direction, kilns.length));
+      if (drag.targetIndex !== null) navigateTo(drag.targetIndex);
     } else if (drag.tapTarget) {
       if (drag.tapTarget === "portal") {
         enterActiveKiln();
@@ -4672,6 +4778,7 @@ export default function Prototype() {
   };
 
   const sphereStyle = useMemo(() => {
+    const { yaw, pitch } = viewRef.current;
     const radiansYaw = (yaw * Math.PI) / 180;
     const radiansPitch = (pitch * Math.PI) / 180;
     const offsetX = Math.sin(radiansYaw) * -72;
@@ -4696,7 +4803,7 @@ export default function Prototype() {
         ? `url("${activeKiln.panorama}")`
         : 'url("/assets/kilns/kiln-sphere-atlas.webp")',
     } as CSSProperties;
-  }, [activeKiln, pitch, yaw]);
+  }, [activeKiln]);
 
   const navigateByKey = (key: string) => {
     if (knowledgePhase !== "idle") return;
@@ -4786,6 +4893,7 @@ export default function Prototype() {
       ) : null}
       <main
         className="kiln-sphere"
+        ref={sphereRef}
         data-intro-phase={introPhase}
         data-kiln={activeKiln.id}
         data-portal-motion={activeKiln.portalMotion}
@@ -4799,7 +4907,7 @@ export default function Prototype() {
         tabIndex={introPhase === "hidden" ? 0 : -1}
         aria-hidden={introPhase !== "hidden"}
         inert={introPhase !== "hidden"}
-        aria-label="八窑无边球面，向任意方向拖动探索"
+        aria-label="八窑无边球面，拖动观察当前窑面，触及边界切换窑口"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={endPointer}
@@ -4821,8 +4929,9 @@ export default function Prototype() {
             // idle/accelerating phases avoids competing with the clay model.
             enabled={(introPhase === "entering" || introPhase === "hidden") && knowledgePhase !== "knowledge"}
             motion={activeKiln.panoramaMotion}
-            yaw={normalizeYaw(yaw - activeKiln.yaw)}
-            pitch={pitch - activeKiln.pitch}
+            view={viewRef}
+            originYaw={activeKiln.yaw}
+            originPitch={activeKiln.pitch}
             heatStrength={atmospherePreset?.heat ?? 0}
             activity={atmosphereActivity}
             emberOverlaySrc={
@@ -4872,7 +4981,7 @@ export default function Prototype() {
         <header className="kiln-identity" aria-live="polite">
           <p>{activeKiln.feature}</p>
           <h1>{activeKiln.name}</h1>
-          <small>八窑 · 无界</small>
+          <small>宋瓷 · 八窑</small>
         </header>
 
         {portalVisible ? (
@@ -4893,25 +5002,7 @@ export default function Prototype() {
                 longquanHeating ||
                 dingHeating
               }
-              aria-label={
-                activeKiln.id === "ge"
-                  ? "触碰哥窑窑火，观看金丝铁线成纹"
-                  : activeKiln.id === "ru"
-                    ? "触碰汝窑窑火，观看云破透火与釉光凝结"
-                  : activeKiln.id === "guan"
-                    ? "触碰官窑窑火，观看冰裂厚釉承火"
-                  : activeKiln.id === "longquan"
-                    ? "触碰龙泉窑火，观看釉层由内而外逐渐白热烧成"
-                  : activeKiln.id === "cizhou"
-                  ? "触碰磁州窑火，观看黑彩烧成"
-                  : activeKiln.id === "jun"
-                    ? "触碰钧窑火，观看釉色窑变"
-                    : activeKiln.id === "yaozhou"
-                      ? "触碰耀州窑火，观看积釉成翠"
-                    : activeKiln.id === "ding"
-                      ? "触碰定窑火，观看印花凹处纳火凝光"
-                    : `触碰${activeKiln.name}窑火进入器物层`
-              }
+              aria-label={`轻触焰心，进入${activeKiln.name}三幕场景`}
               onClick={enterActiveKiln}
             >
               <span className="fire-portal-hitbox" aria-hidden="true" />
@@ -4933,7 +5024,7 @@ export default function Prototype() {
               className="kiln-material-portal"
               data-motion={activeKiln.portalMotion}
               data-entering={portalPhase === "entering"}
-              aria-label={`触碰${activeKiln.name}窑口进入器物层`}
+              aria-label={`进入${activeKiln.name}三幕场景`}
               onClick={enterActiveKiln}
             >
               <span className="kiln-material-portal-hitbox" aria-hidden="true" />
@@ -4950,7 +5041,7 @@ export default function Prototype() {
           type="button"
           className={`kiln-vessel vessel-shape-${activeKiln.shape}`}
           data-visible={vesselVisible}
-          aria-label={`查看${activeKiln.name}${activeKiln.vessel}`}
+          aria-label={`${inspecting ? "收起" : "查看"}${activeKiln.name}器物说明`}
           aria-hidden={!vesselVisible}
           disabled={!vesselVisible}
           onClick={() => {
@@ -4970,12 +5061,12 @@ export default function Prototype() {
         <aside className="kiln-reading" aria-hidden={!inspecting}>
           <span>{String(activeIndex + 1).padStart(2, "0")} / 08</span>
           <p>{activeKiln.description}</p>
-          <small>再次轻触器物归位</small>
+          <small>再次轻触 · 收起说明</small>
         </aside>
 
         <div className="orbit-hint" aria-hidden="true">
-          <span>向任意方向游历</span>
-          <small>拖动球面</small>
+          <span>拖动观察窑面纹理</span>
+          <small>触及边界 · 切换窑口</small>
         </div>
 
         {geKnowledgeOpen ? <KilnStoryExperience story={kilnStories.ge} onBack={leaveKilnKnowledge} /> : null}

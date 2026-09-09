@@ -50,11 +50,17 @@ type MobileDeviceContextValue = {
 
 const MobileDeviceContext = createContext<MobileDeviceContextValue | null>(null);
 
-export function MobileDeviceProvider({ children }: PropsWithChildren) {
+export function MobileDeviceProvider({ children, viewport }: PropsWithChildren<{viewport?: {width: number; height: number}}>) {
   const [deviceId, setDeviceId] = useState<MobileDeviceId>("iphone");
   const value = useMemo(
-    () => ({ device: mobileDevices[deviceId], deviceId, setDeviceId }),
-    [deviceId],
+    () => {
+      const preset = mobileDevices[deviceId];
+      const device = viewport ? {...preset, geometry: {...preset.geometry,
+        screen: {...preset.geometry.screen, ...viewport}, safeArea: {top: 0, bottom: 0},
+      }} : preset;
+      return {device, deviceId, setDeviceId};
+    },
+    [deviceId, viewport],
   );
 
   return <MobileDeviceContext.Provider value={value}>{children}</MobileDeviceContext.Provider>;

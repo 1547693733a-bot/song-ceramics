@@ -1,5 +1,32 @@
 /* App-specific kiln sphere. Template-owned mobile runtime styles stay in styles.css. */
 
+@font-face {
+  font-family: "Song Reading";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/song-reading-1.woff2") format("woff2");
+  unicode-range: U+B7,U+E1,U+FA,U+201C,U+201D,U+3001,U+3002,U+3007,U+4E00,U+4E03,U+4E07,U+4E09,U+4E0A,U+4E0B,U+4E0D,U+4E0E,U+4E16,U+4E1D,U+4E24,U+4E2A,U+4E2D,U+4E30,U+4E39,U+4E3A,U+4E4B,U+4E5D,U+4E5F,U+4E73,U+4E86,U+4E8B,U+4E8C,U+4E8E,U+4E91,U+4E92,U+4E94,U+4E9B,U+4EA4,U+4EA7,U+4EB2,U+4EBA,U+4ECA,U+4ECD,U+4ECE,U+4EE3,U+4EE5,U+4EEC,U+4EF6,U+4EFD,U+4EFF,U+4F0F,U+4F1A,U+4F20,U+4F34,U+4F38,U+4F3C,U+4F4E,U+4F4F,U+4F53,U+4F5C,U+4F7F,U+4F9B,U+4FA7,U+4FBF,U+4FDD,U+5019,U+501F,U+50CF,U+513F,U+5143,U+5148,U+5149,U+5165,U+516B,U+516D,U+5171,U+5173,U+5174,U+5176,U+5177,U+5185,U+518D,U+5199,U+51B3,U+51B7,U+51C0,U+51C6,U+51C9,U+51CF,U+51DD,U+51E0,U+51E4,U+51F8,U+51F9,U+51FA,U+51FB,U+5200,U+5206,U+5207,U+520A,U+5212,U+5217,U+5219,U+521D,U+5229,U+522B,U+5236,U+523B,U+524D,U+5254,U+52A0,U+52A8,U+52B2,U+5300,U+5305,U+5316,U+5317,U+5319,U+5320,U+5323,U+5341,U+5349,U+534A,U+5357,U+535A,U+535C,U+5367,U+5370,U+5373,U+5374,U+5398,U+539A,U+539F,U+53BB,U+53BF,U+53C2,U+53C8,U+53CA,U+53CC,U+53D1,U+53D6,U+53D8,U+53E3,U+53E4,U+53E6,U+53EA,U+53EF,U+53F0,U+53F3,U+53F6,U+5404,U+5408,U+540C,U+540D,U+540E,U+5411,U+542B,U+542F,U+5448,U+5468,U+5473,U+548C,U+54C1,U+54E5,U+54EA,U+5584,U+5668,U+56DB,U+56DE,U+56E0,U+56F4,U+5706,U+5708,U+571F,U+5728,U+5730,U+573A,U+5740,U+574A,U+575A,U+575B,U+576F,U+5782,U+57CE,U+5821,U+5851,U+586B,U+5883,U+58C1,U+58F0,U+58F6,U+5904,U+5907,U+590D,U+5916,U+591A,U+5927,U+5929,U+592B,U+597D,U+5982,U+5986,U+5999,U+59FF,U+5A49,U+5B50,U+5B54,U+5B57,U+5B58,U+5B66,U+5B69,U+5B83,U+5B89,U+5B8B,U+5B8C,U+5B98,U+5B9A,U+5B9D,U+5B9E,U+5BA4,U+5BAB,U+5BB9,U+5BC6,U+5BDD,U+5BDF,U+5BF8,U+5BF9,U+5BFA,U+5C06,U+5C0A,U+5C0F,U+5C11,U+5C14,U+5C24,U+5C31,U+5C3D,U+5C3E,U+5C42,U+5C45,U+5C55,U+5C5E,U+5C71,U+5CB8,U+5D4C,U+5DDD,U+5DDE,U+5DE5,U+5DE6,U+5DE7,U+5DEE,U+5DF2,U+5E26,U+5E2D,U+5E38,U+5E55,U+5E74,U+5E76,U+5E84,U+5E8F,U+5E95,U+5EA6,U+5EA7,U+5ED3,U+5EF6,U+5EF7,U+5F00,U+5F02,U+5F0F,U+5F26,U+5F52,U+5F53,U+5F62,U+5F69,U+5F6D,U+5F71,U+5F7C,U+5F85,U+5F97,U+5FA1,U+5FAA,U+5FAE,U+5FC3,U+5FC5,U+5FF5,U+6001,U+6027,U+6070,U+60C5,U+610F,U+611F,U+6210,U+6216,U+624B,U+624D,U+6258,U+6267,U+627F,U+628A,U+6298,U+62A4,U+62C2,U+62D6,U+62E5,U+62E9,U+6346,U+6362,U+63A5,U+63D0,U+6487,U+649E,U+64AD,U+652F,U+6536,U+653E,U+6545,U+6548,U+655B,U+6563,U+6574,U+6591,U+6599,U+659C,U+65B0,U+65B9,U+65BD,U+65CB,U+65E0,U+65E2,U+65E5,U+65F6,U+660E,U+6613,U+6620,U+6625,U+662F,U+663E,U+6655,U+665A,U+6668,U+666F,U+6682,U+6696,U+66F2,U+66FE,U+66FF,U+6709,U+671F,U+6728,U+672A,U+672B,U+672C;
+}
+
+@font-face {
+  font-family: "Song Reading";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/song-reading-2.woff2") format("woff2");
+  unicode-range: U+672F,U+6734,U+675F,U+6761,U+6765,U+676D,U+676F,U+677F,U+6784,U+6790,U+6795,U+679C,U+679D,U+67D4,U+67E5,U+6837,U+683C,U+6881,U+6885,U+68C0,U+68F1,U+695A,U+6982,U+6984,U+69BB,U+69FD,U+6A21,U+6A44,U+6B21,U+6B47,U+6B62,U+6B63,U+6B64,U+6B65,U+6BB5,U+6C14,U+6C34,U+6C42,U+6C5D,U+6C5F,U+6C60,U+6CA1,U+6CAB,U+6CB3,U+6CBF,U+6CC9,U+6CD5,U+6CDB,U+6CE5,U+6CE8,U+6CFD,U+6D17,U+6D3B,U+6D41,U+6D45,U+6D4A,U+6D4F,U+6D53,U+6D59,U+6D6E,U+6DA6,U+6DB2,U+6DB5,U+6DE1,U+6DF1,U+6DFB,U+6E05,U+6E10,U+6E29,U+6ED1,U+6EE1,U+6F2B,U+706B,U+706F,U+7070,U+7089,U+70B9,U+70E7,U+711A,U+7130,U+7136,U+7167,U+7247,U+7259,U+7261,U+7269,U+7279,U+72B6,U+72B9,U+72EC,U+7389,U+73AB,U+73AF,U+73B0,U+73CD,U+7403,U+7406,U+742E,U+7470,U+74E3,U+74F6,U+74F7,U+751F,U+7528,U+7531,U+754C,U+7559,U+7565,U+756A,U+758F,U+75D5,U+767D,U+7684,U+76C6,U+76CF,U+76D6,U+76D8,U+76DB,U+76F4,U+76F8,U+770B,U+7740,U+77E5,U+77ED,U+77F3,U+7814,U+786C,U+788E,U+7897,U+78B0,U+78B1,U+78C1,U+78E8,U+793C,U+79B9,U+79CD,U+79E9,U+79EF,U+79F0,U+79FB,U+7A0B,U+7A0D,U+7A33,U+7A76,U+7A7A,U+7A91,U+7A97,U+7ACB,U+7AE5,U+7AEF,U+7AF9,U+7B11,U+7B14,U+7B45,U+7B49,U+7B5B,U+7B80,U+7BA1,U+7BB1,U+7C0B,U+7C73,U+7C7B,U+7C89,U+7C97,U+7CFB,U+7D20,U+7D22,U+7D2B,U+7EA2,U+7EA6,U+7EB9,U+7EBF,U+7EC3,U+7EC6,U+7EC7,U+7ECF,U+7ED8,U+7ED9,U+7EDF,U+7EE7,U+7EED,U+7EF3,U+7F16,U+7F18,U+7F29,U+7F50,U+7F57,U+7F69,U+7F6E,U+7F8E,U+7FE0,U+8000,U+8003,U+800C,U+8010,U+8033,U+8083,U+8086,U+80A9,U+80CC,U+80CE,U+80DC,U+80FD,U+8106,U+8109,U+8179,U+818F,U+81EA,U+81F3,U+81F4,U+8212,U+822C,U+8239,U+8272,U+827A,U+8282,U+82B1,U+8336,U+8349,U+83B1,U+83B2,U+83B9,U+83D4,U+83F1,U+841D,U+843D,U+8457,U+8475,U+8499,U+84C4,U+84DD,U+8513,U+8574,U+8584,U+85CF,U+867D,U+878D,U+884C,U+8863,U+8865,U+8868,U+886C,U+88AB,U+88AD,U+88C2,U+88C5,U+88F9,U+8910,U+8936,U+897F,U+8981,U+8986,U+89C1,U+89C2,U+89C6,U+89C8,U+89D2,U+89E3,U+89E6,U+8BA2,U+8BA4,U+8BA8,U+8BA9,U+8BB0,U+8BBA,U+8BBE,U+8BC6,U+8BD5,U+8BE6,U+8BF4,U+8BFB,U+8C03,U+8C13,U+8C8C,U+8D27,U+8D28,U+8D2F,U+8D34,U+8D4F,U+8D77,U+8DA3,U+8DB3,U+8DEF,U+8E2A,U+8EAB,U+8F66,U+8F6C,U+8F6E,U+8F7B,U+8F7D,U+8F83,U+8F93,U+8FA8,U+8FB9,U+8FD0,U+8FD1,U+8FD4,U+8FD8,U+8FD9,U+8FDB,U+8FDC,U+8FF9,U+9000,U+9009,U+900F,U+9014,U+901A,U+9020,U+9057,U+90A3,U+90AF,U+90CA,U+90E8,U+90F8,U+90FD,U+914D,U+9152,U+91C7,U+91C9,U+91CA,U+91CC,U+91CD,U+91CF,U+91D1,U+9489,U+94A7,U+94C1,U+94DC,U+94FA,U+950B,U+9576,U+957F,U+95ED,U+95F2,U+95F4,U+9633,U+9634,U+9644,U+9648,U+9655,U+9662,U+9686,U+968F,U+9690,U+9694,U+96C5,U+96E8,U+9700,U+971E,U+9732;
+}
+
+@font-face {
+  font-family: "Song Reading";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/fonts/song-reading-3.woff2") format("woff2");
+  unicode-range: U+9752,U+9759,U+975E,U+9760,U+9762,U+97E7,U+97F3,U+97F5,U+9875,U+9888,U+989C,U+98CE,U+98DF,U+996E,U+9970,U+9986,U+9996,U+9999,U+9A8C,U+9AA8,U+9AD8,U+9C7C,U+9C9C,U+9CCD,U+9EC4,U+9ECF,U+9ED1,U+9F13,U+9F99,U+FF08,U+FF09,U+FF0C,U+FF1A,U+FF1B;
+}
+
 .app-screen.kiln-app {
   position: relative;
   height: 100%;
@@ -555,7 +582,7 @@
   height: 100%;
   object-fit: contain;
   pointer-events: none;
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
 }
 
 .fire-render-stack {
@@ -1122,6 +1149,11 @@
   font-size: 8px;
   letter-spacing: 0.1em;
   opacity: 0.58;
+}
+
+.kiln-sphere[data-view-edge="true"] .orbit-hint {
+  opacity: 0.9;
+  animation: none;
 }
 
 .kiln-sphere[data-knowledge-phase="heating"],
@@ -2302,8 +2334,8 @@
 
 .cizhou-knowledge[data-scene-moving="true"] .cizhou-context-prop,
 .cizhou-knowledge[data-scene-moving="true"] .cizhou-atmosphere-raster {
-  filter: blur(2px) brightness(0.72);
-  transition: filter 260ms ease;
+  opacity: 0.82;
+  transition: opacity 180ms linear;
 }
 
 .cizhou-knowledge[data-scene-moving="true"] .cizhou-transition-veil {
@@ -2318,6 +2350,7 @@
 .cizhou-trait-carousel .cizhou-trait-track {
   width: 500%;
   min-width: 500%;
+  will-change: transform;
 }
 
 .cizhou-trait-card {
@@ -2545,6 +2578,12 @@
 .cizhou-knowledge[data-arrival-phase="ready"] .cizhou-trait-copy {
   opacity: var(--scene-copy-opacity);
   transform: translate3d(var(--scene-copy-x), 0, 0);
+}
+
+.cizhou-knowledge[data-scene-moving="true"] .cizhou-trait-copy,
+.kiln-story[data-scene-moving="true"] .kiln-story-copy {
+  transition: none;
+  will-change: transform, opacity;
 }
 
 .cizhou-trait-detail-kicker {
@@ -5941,6 +5980,7 @@
 .kiln-story-carousel .kiln-story-track {
   width: 500%;
   min-width: 500%;
+  will-change: transform;
 }
 
 .kiln-story-card {
@@ -6254,6 +6294,283 @@
   outline: 1px solid color-mix(in srgb, var(--story-accent), transparent 18%);
   outline-offset: 5px;
 }
+
+/* Song-inspired reading: local subset of Noto Serif SC, OFL licensed.
+   License retained in the build: "/assets/fonts/OFL.txt".
+   Tokens apply only to the app and its portalled sheet, never device chrome. */
+.kiln-app,
+.bottom-sheet:has(.kiln-knowledge-content) {
+  --song-font: "Song Reading", "Songti SC", "STSong", "Noto Serif CJK SC", "SimSun", serif;
+  --song-paper: #eae6da;
+  --song-ink: #303a34;
+  --song-ivory: #f2eee3;
+  --song-line: rgb(221 220 203 / 0.42);
+  --song-control-fill: rgb(25 32 28 / 0.68);
+  --song-control-active: rgb(40 54 45 / 0.76);
+  --song-control-blur: none;
+  font-family: var(--song-font);
+  font-synthesis: none;
+}
+.kiln-identity h1 { font-family: var(--song-font); font-weight: 400; line-height: 1.2; }
+.kiln-identity p { font-size: 14px; }
+.kiln-identity small { font-size: 12px; letter-spacing: 0.16em; }
+.fire-portal-label,
+.kiln-material-portal-label,
+.kiln-reading { font-family: var(--song-font); }
+
+/* Shared reading and controls: app-scoped, without altering device chrome. */
+:is(.cizhou-knowledge-back, .cizhou-audio-toggle, .kiln-story-back, .kiln-story-audio-toggle) {
+  width: 44px;
+  height: 44px;
+  color: var(--song-ivory);
+  border: 1px solid rgb(239 236 221 / 0.24);
+  border-radius: 6px;
+  background: var(--song-control-fill);
+  box-shadow: inset 0 1px 0 rgb(255 252 238 / 0.08);
+  -webkit-backdrop-filter: var(--song-control-blur);
+  backdrop-filter: var(--song-control-blur);
+  -webkit-tap-highlight-color: transparent;
+}
+:is(.cizhou-knowledge-back, .cizhou-audio-toggle, .kiln-story-back, .kiln-story-audio-toggle) .kiln-ui-icon {
+  width: 22px;
+  height: 22px;
+}
+:is(.cizhou-audio-toggle, .kiln-story-audio-toggle) {
+  top: calc(var(--mobile-status-bar-height, 54px) + 94px);
+}
+:is(.cizhou-audio-toggle, .kiln-story-audio-toggle)[data-enabled="true"] {
+  color: #dbe7d5;
+  background: var(--song-control-active);
+  border-color: rgb(205 223 198 / 0.55);
+}
+:is(.cizhou-knowledge-back, .cizhou-audio-toggle, .kiln-story-back, .kiln-story-audio-toggle):active {
+  transform: scale(0.94);
+  background: var(--song-control-active);
+}
+:is(.cizhou-knowledge, .kiln-story) button:focus-visible,
+.kiln-knowledge-content :is(button, a):focus-visible {
+  outline: 2px solid #ebe9d6 !important;
+  outline-offset: 4px;
+}
+:is(.cizhou-trait-copy, .kiln-story-copy) {
+  width: min(74%, 305px);
+  color: var(--song-ivory);
+  text-shadow: 0 1px 4px rgb(12 19 15 / 0.78), 0 3px 18px rgb(12 19 15 / 0.38);
+}
+:is(.cizhou-trait-copy, .kiln-story-copy) > span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: #e1e0cd;
+  font-family: var(--song-font);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+}
+:is(.cizhou-trait-copy, .kiln-story-copy) > span::before {
+  content: "";
+  width: 20px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.7;
+}
+:is(.cizhou-trait-copy, .kiln-story-copy) h2 {
+  margin-bottom: 12px;
+  font-family: var(--song-font);
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 0.1em;
+}
+:is(.cizhou-trait-copy, .kiln-story-copy) > p {
+  color: #eee8d9;
+  font-family: var(--song-font);
+  font-size: 15px;
+  line-height: 1.85;
+  letter-spacing: 0.06em;
+  text-wrap: pretty;
+}
+:is(.cizhou-trait-vessel, .kiln-story-vessel-label) {
+  margin-top: 18px;
+  padding-left: 10px;
+  gap: 4px;
+  border-color: var(--song-line);
+}
+:is(.cizhou-trait-vessel, .kiln-story-vessel-label) strong {
+  color: #eee9dc;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: 0.04em;
+}
+:is(.cizhou-trait-vessel, .kiln-story-vessel-label) small {
+  color: #dedbcd;
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: 0.12em;
+}
+:is(.cizhou-trait-hotspot, .kiln-story-hotspot) {
+  min-width: 44px;
+  min-height: 44px;
+  gap: 8px;
+  padding: 4px 10px;
+  border: 1px solid rgb(239 236 221 / 0.2);
+  border-radius: 4px;
+  color: var(--song-ivory);
+  background: var(--song-control-fill);
+  box-shadow: inset 0 1px 0 rgb(255 252 238 / 0.06);
+  text-shadow: 0 1px 3px rgb(10 18 13 / 0.75);
+  -webkit-backdrop-filter: var(--song-control-blur);
+  backdrop-filter: var(--song-control-blur);
+  font-family: var(--song-font);
+  -webkit-tap-highlight-color: transparent;
+}
+:is(.cizhou-trait-hotspot, .kiln-story-hotspot) i {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  animation: none;
+  transform: none;
+}
+:is(.cizhou-trait-hotspot, .kiln-story-hotspot) .kiln-ui-icon { width: 20px; height: 20px; }
+:is(.cizhou-trait-hotspot, .kiln-story-hotspot) > span {
+  padding: 0;
+  border: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  letter-spacing: 0.1em;
+}
+:is(.cizhou-trait-hotspot, .kiln-story-hotspot):active { background: var(--song-control-active); }
+/* Blur only the small interactive surfaces, never a scene or flame layer.
+   Browsers without backdrop support retain the readable ink fallback above. */
+@supports ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))) {
+  .kiln-app {
+    --song-control-fill: rgb(25 32 28 / 0.32);
+    --song-control-active: rgb(40 54 45 / 0.46);
+    --song-control-blur: blur(8px);
+  }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .kiln-app {
+    --song-control-fill: rgb(25 32 28 / 0.92);
+    --song-control-active: rgb(40 54 45 / 0.96);
+    --song-control-blur: none;
+  }
+}
+.cizhou-knowledge[data-scene-moving="true"] .cizhou-scene-hotspots,
+.kiln-story[data-scene-moving="true"] .kiln-story-hotspots {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: none;
+}
+.bottom-sheet:has(.kiln-knowledge-content) {
+  height: 56%;
+  border: 0;
+  border-top: 1px solid rgb(255 253 244 / 0.6);
+  border-radius: 12px 12px 0 0;
+  color: var(--song-ink);
+  background: var(--song-paper);
+  box-shadow: inset 0 1px 0 rgb(255 255 246 / 0.2), 0 -8px 32px rgb(13 20 15 / 0.16);
+}
+/* One bounded backdrop surface; children remain sharp and fully opaque.
+   The dense pale tint keeps ink readable even over a dark scene. */
+@supports ((backdrop-filter: blur(16px)) or (-webkit-backdrop-filter: blur(16px))) {
+  .bottom-sheet:has(.kiln-knowledge-content) {
+    background: rgb(239 237 226 / 0.78);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+}
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .bottom-sheet:has(.kiln-knowledge-content) {
+    background: var(--song-paper);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+.bottom-sheet:has(.kiln-knowledge-content) .sheet-header {
+  flex-shrink: 0;
+  padding: 8px 78px 22px 30px;
+  gap: 10px;
+}
+.bottom-sheet:has(.kiln-knowledge-content) .sheet-title {
+  color: var(--song-ink);
+  font-family: var(--song-font);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+}
+.bottom-sheet:has(.kiln-knowledge-content) .sheet-handle {
+  width: 28px;
+  height: 2px;
+  border-radius: 0;
+  background: #94998a;
+}
+.bottom-sheet:has(.kiln-knowledge-content) .sheet-handle-zone { flex: 0 0 30px; }
+.bottom-sheet:has(.kiln-knowledge-content) .sheet-content {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  padding: 0;
+}
+.kiln-knowledge-content, .kiln-knowledge-scroll { height: 100%; min-height: 0; }
+.kiln-knowledge-scroll { position: relative; inset: auto; }
+.kiln-knowledge-close {
+  position: absolute;
+  top: 32px;
+  right: 22px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--song-ink);
+  cursor: pointer;
+}
+.kiln-knowledge-close svg { width: 22px; height: 22px; }
+.kiln-knowledge-close:active { background: rgb(48 58 52 / 0.08); }
+.kiln-knowledge-content button:focus-visible { outline-color: #4e6758 !important; }
+.kiln-knowledge-body { padding: 0 30px calc(var(--mobile-safe-area-height, 24px) + 28px); }
+.kiln-knowledge-body > p {
+  margin: 0;
+  color: var(--song-ink);
+  font-family: var(--song-font);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 2;
+  letter-spacing: 0.04em;
+  overflow-wrap: break-word;
+}
+.scene-playback-status {
+  position: absolute;
+  z-index: 8;
+  bottom: calc(var(--mobile-safe-area-height, 24px) + 24px);
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 84%;
+  text-align: center;
+  padding: 9px 14px;
+  border: 1px solid rgb(237 222 196 / 0.2);
+  border-radius: 2px;
+  color: var(--song-ivory);
+  background: #25332b;
+  font-family: var(--song-font);
+  font-size: 14px;
+  line-height: 1.6;
+}
+.scene-playback-status button { min-height: 44px; border: 0; padding: 4px; color: inherit; background: none; font: inherit; cursor: pointer; }
+[data-scene-moving="true"] .scene-playback-status,
+[data-detail-open="true"] .scene-playback-status { visibility: hidden; }
 
 /* Keep compositor promotion temporary: persistent layers multiply GPU memory on phones. */
 .cizhou-scene-layer,

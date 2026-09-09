@@ -1,0 +1,30 @@
+.web-stage {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #080a09;
+}
+.web-screen {
+  --mobile-status-bar-height: max(16px, env(safe-area-inset-top, 0px));
+  --mobile-safe-area-height: max(16px, env(safe-area-inset-bottom, 0px));
+  --device-safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  isolation: isolate;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.web-screen img { -webkit-user-drag: none; }
+.web-screen button:focus-visible, .web-screen [role="button"]:focus-visible {
+  outline: 2px solid #efe4cd;
+  outline-offset: -4px;
+}
+.web-screen .kiln-knowledge-body { user-select: text; -webkit-user-select: text; }
+@media (orientation: landscape) and (max-height: 540px) {
+  .web-screen { max-width: 440px; }
+}

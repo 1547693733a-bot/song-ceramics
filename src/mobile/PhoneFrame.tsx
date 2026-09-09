@@ -18,6 +18,7 @@ type ScreenPortalContextValue = {
 };
 
 const ScreenPortalContext = createContext<ScreenPortalContextValue | null>(null);
+export const ScreenPortalProvider = ScreenPortalContext.Provider;
 
 function suppressNativeDrag(event: DragEvent<HTMLElement>) {
   if (event.target instanceof Element && event.target.closest('[data-native-drag="true"]')) {

@@ -1,7 +1,7 @@
 {
   "name": "kiln-wheel-demo",
   "private": true,
-  "version": "0.1.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "check:runtime": "node scripts/check-mobile-runtime.mjs",
@@ -11,7 +11,10 @@
     "predev": "npm run check:runtime",
     "dev": "vite",
     "prebuild": "npm run check:runtime",
-    "build": "tsc && vite build && node scripts/prepare-sites-build.mjs && node scripts/prune-sites-assets.mjs"
+    "build": "tsc && vite build && node scripts/prepare-sites-build.mjs && node scripts/prune-sites-assets.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "build:release": "npm run build && node scripts/package-release.mjs",
+    "test:release": "playwright test --config playwright.release.config.ts"
   },
   "dependencies": {
     "@fontsource/roboto": "5.2.10",

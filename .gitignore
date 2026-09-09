@@ -16,3 +16,11 @@ audit-*/
 Thumbs.db
 .idea/
 .vscode/
+
+.tmp/
+__pycache__/
+*.pyc
+release/
+.env
+.env.*
+!.env.example
